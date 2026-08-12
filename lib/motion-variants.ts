@@ -98,3 +98,27 @@ export const staggerLines: Variants = {
     transition: { staggerChildren: 0.15, delayChildren: 0.95 },
   },
 };
+
+export const slideFromBottom: Variants = {
+  hidden: { opacity: 0, y: 48 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const slideFromRight: Variants = {
+  hidden: { opacity: 0, x: 48 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const pillarCardVariants: Variants[] = [
+  slideFromLeft,
+  slideFromBottom,
+  slideFromRight,
+];
