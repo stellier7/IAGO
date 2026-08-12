@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const cases = [
@@ -9,21 +9,18 @@ const cases = [
     type: "Web corporativa",
     result: "Investment-driven general contracting · Florida",
     href: "https://vulcanox.vercel.app",
-    color: "bg-coral",
   },
   {
     client: "Ichiban BJJ",
     type: "Web · Academia",
     result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
     href: "https://ichibanbjj.vercel.app",
-    color: "bg-ink",
   },
   {
     client: "MegaWatt",
     type: "Catálogo · Web",
     result: "Iluminación LED · El Jordán",
     href: "https://megawatt-eljordan.vercel.app",
-    color: "bg-coral-dim",
   },
 ] as const;
 
@@ -31,28 +28,49 @@ const loopedCases = [...cases, ...cases];
 
 const PREVIEW_WIDTH = 1280;
 const PREVIEW_HEIGHT = 900;
-const PREVIEW_SCALE = 0.26;
 
-function SitePreview({ href, label }: { href: string; label: string }) {
+function FullCardPreview({ href, label }: { href: string; label: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.5);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const { width, height } = el.getBoundingClientRect();
+      const scaleX = width / PREVIEW_WIDTH;
+      const scaleY = height / PREVIEW_HEIGHT;
+      setScale(Math.max(scaleX, scaleY));
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative mb-4 h-36 w-full overflow-hidden rounded-lg bg-black/20 ring-1 ring-white/15 md:mb-5 md:h-[168px]">
+    <div
+      ref={containerRef}
+      className="absolute inset-0 overflow-hidden rounded-2xl bg-ink-raised"
+      aria-hidden
+    >
       <iframe
         src={href}
         title={`Vista previa de ${label}`}
         loading="lazy"
         tabIndex={-1}
-        className="pointer-events-none absolute left-0 top-0 border-0"
+        className="pointer-events-none absolute left-1/2 top-0 border-0"
         style={{
           width: PREVIEW_WIDTH,
           height: PREVIEW_HEIGHT,
-          transform: `scale(${PREVIEW_SCALE})`,
-          transformOrigin: "top left",
+          transform: `translateX(-50%) scale(${scale})`,
+          transformOrigin: "top center",
         }}
       />
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40"
-        aria-hidden
-      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15 transition duration-300 group-hover:from-black/80 group-hover:via-black/35" />
+      <div className="absolute inset-0 ring-1 ring-inset ring-white/10 transition duration-300 group-hover:ring-white/25" />
     </div>
   );
 }
@@ -69,24 +87,22 @@ function CaseCard({
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group flex shrink-0 flex-col rounded-2xl p-5 transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${item.color} ${className}`}
+      className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${className}`}
     >
-      <SitePreview href={item.href} label={item.client} />
-      <div className="flex flex-1 flex-col justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-wider opacity-70 md:text-sm">
-            {item.type}
-          </p>
-          <h3 className="mt-1 font-display text-xl font-bold md:mt-2 md:text-2xl">
-            {item.client}
-          </h3>
-        </div>
-        <div className="mt-3 md:mt-4">
-          <p className="text-sm font-medium md:text-base">{item.result}</p>
-          <p className="mt-2 text-sm font-semibold opacity-80 transition group-hover:opacity-100 md:mt-3">
-            Ver sitio →
-          </p>
-        </div>
+      <FullCardPreview href={item.href} label={item.client} />
+      <div className="relative z-10">
+        <p className="text-xs uppercase tracking-wider text-white/70 md:text-sm">
+          {item.type}
+        </p>
+        <h3 className="mt-1 font-display text-xl font-bold md:mt-2 md:text-2xl">
+          {item.client}
+        </h3>
+        <p className="mt-3 text-sm font-medium text-white/85 md:mt-4 md:text-base">
+          {item.result}
+        </p>
+        <p className="mt-2 text-sm font-semibold text-coral transition group-hover:text-coral-bright md:mt-3">
+          Ver sitio →
+        </p>
       </div>
     </a>
   );
@@ -123,7 +139,11 @@ export default function Work() {
 
       <div className="mt-12 space-y-4 px-6 md:hidden">
         {cases.map((item) => (
-          <CaseCard key={item.client} item={item} className="w-full" />
+          <CaseCard
+            key={item.client}
+            item={item}
+            className="min-h-[360px] w-full"
+          />
         ))}
       </div>
     </section>
