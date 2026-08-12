@@ -187,13 +187,13 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative z-10 min-h-screen overflow-hidden bg-ink text-bone"
+      className="relative z-10 min-h-screen touch-pan-y overflow-hidden bg-ink text-bone"
     >
       <motion.div
         style={prefersReducedMotion ? {} : { y, opacity }}
-        className="sticky top-0 flex min-h-screen flex-col justify-center px-6"
+        className="sticky top-0 flex min-h-screen flex-col justify-center overflow-x-hidden px-6"
       >
-        <div className="mx-auto w-full max-w-content">
+        <div className="mx-auto w-full max-w-content overflow-x-hidden">
           <motion.p
             variants={fadeUp}
             initial="hidden"
@@ -215,42 +215,46 @@ export default function Hero() {
               </>
             ) : (
               <>
-                <motion.span
-                  className="block text-[clamp(2.75rem,8vw,6.5rem)]"
-                  variants={staggerLettersLeft}
-                  initial="hidden"
-                  animate="visible"
-                  aria-label="IAGO"
-                >
-                  {IAGO_LETTERS.map((char) => (
-                    <motion.span
-                      key={char}
-                      variants={letterFromLeft}
-                      className={`inline-block ${char === "O" ? "text-coral" : ""}`}
-                      aria-hidden
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                </motion.span>
-                <motion.span
-                  className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral"
-                  variants={staggerLettersRight}
-                  initial="hidden"
-                  animate="visible"
-                  aria-label="Digital"
-                >
-                  {DIGITAL_LETTERS.map((char, index) => (
-                    <motion.span
-                      key={`${char}-${index}`}
-                      variants={letterFromRight}
-                      className="inline-block"
-                      aria-hidden
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                </motion.span>
+                <div className="overflow-hidden">
+                  <motion.span
+                    className="block text-[clamp(2.75rem,8vw,6.5rem)]"
+                    variants={staggerLettersLeft}
+                    initial="hidden"
+                    animate="visible"
+                    aria-label="IAGO"
+                  >
+                    {IAGO_LETTERS.map((char) => (
+                      <motion.span
+                        key={char}
+                        variants={letterFromLeft}
+                        className={`inline-block ${char === "O" ? "text-coral" : ""}`}
+                        aria-hidden
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                </div>
+                <div className="overflow-hidden">
+                  <motion.span
+                    className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral"
+                    variants={staggerLettersRight}
+                    initial="hidden"
+                    animate="visible"
+                    aria-label="Digital"
+                  >
+                    {DIGITAL_LETTERS.map((char, index) => (
+                      <motion.span
+                        key={`${char}-${index}`}
+                        variants={letterFromRight}
+                        className="inline-block"
+                        aria-hidden
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                </div>
               </>
             )}
             {prefersReducedMotion ? (

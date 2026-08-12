@@ -48,7 +48,7 @@ export default function Work() {
       </div>
 
       {/* Desktop: horizontal scroll pinned */}
-      <div ref={containerRef} className="relative mt-16 hidden h-[420px] md:block">
+      <div ref={containerRef} className="relative mt-16 hidden h-[420px] overflow-hidden md:block">
         <motion.div style={{ x }} className="absolute flex gap-6 pl-6">
           {cases.map((item) => (
             <article

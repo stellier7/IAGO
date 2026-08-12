@@ -4,11 +4,15 @@
 
 @layer base {
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth overflow-x-hidden;
+    max-width: 100%;
   }
 
   body {
-    @apply bg-bone text-ink antialiased;
+    @apply overflow-x-hidden bg-bone text-ink antialiased;
+    max-width: 100%;
+    overscroll-behavior-x: none;
+    position: relative;
   }
 
   ::selection {
