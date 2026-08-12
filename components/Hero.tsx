@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -15,8 +15,6 @@ import {
   slideFromLeftBlur,
   lineSlideFromLeft,
   staggerLines,
-  buttonReveal,
-  staggerButtons,
   staggerLettersLeft,
   staggerLettersRight,
 } from "@/lib/motion-variants";
@@ -30,6 +28,85 @@ const SUBHEAD_LINES = [
   "posicionamos tu marca en Google y automatizamos lo repetitivo",
   "para que te enfoques en crecer.",
 ] as const;
+
+const BUTTON_ENTRANCE_DELAY = 1.75;
+const BUTTON_STAGGER = 0.1;
+const BUTTON_EASE = [0.22, 1, 0.36, 1] as const;
+
+function HeroButtons({ paused }: { paused: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [entryY, setEntryY] = useState(0);
+  const [measured, setMeasured] = useState(false);
+
+  useLayoutEffect(() => {
+    if (paused) return;
+
+    const measure = () => {
+      if (!ref.current) return;
+      const { top, height } = ref.current.getBoundingClientRect();
+      setEntryY(window.innerHeight - top + height + 16);
+      setMeasured(true);
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [paused]);
+
+  const buttonClass = {
+    primary:
+      "rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright",
+    secondary:
+      "rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral",
+  };
+
+  if (paused) {
+    return (
+      <div ref={ref} className="mt-10 flex flex-wrap gap-4">
+        <a href="#contacto" className={buttonClass.primary}>
+          Empezar un proyecto
+        </a>
+        <a href="#trabajo" className={buttonClass.secondary}>
+          Ver casos
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={`mt-10 flex flex-wrap gap-4 ${measured ? "" : "invisible"}`}
+    >
+      <motion.a
+        href="#contacto"
+        initial={{ y: entryY }}
+        animate={measured ? { y: 0 } : { y: entryY }}
+        transition={{
+          delay: BUTTON_ENTRANCE_DELAY,
+          duration: 0.65,
+          ease: BUTTON_EASE,
+        }}
+        className={buttonClass.primary}
+      >
+        Empezar un proyecto
+      </motion.a>
+      <motion.a
+        href="#trabajo"
+        initial={{ y: entryY }}
+        animate={measured ? { y: 0 } : { y: entryY }}
+        transition={{
+          delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
+          duration: 0.65,
+          ease: BUTTON_EASE,
+        }}
+        className={buttonClass.secondary}
+      >
+        Ver casos
+      </motion.a>
+    </div>
+  );
+}
 
 const COUNTRIES = [
   "Honduras",
@@ -91,7 +168,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative z-10 min-h-screen bg-ink text-bone"
+      className="relative z-10 min-h-screen overflow-hidden bg-ink text-bone"
     >
       <motion.div
         style={prefersReducedMotion ? {} : { y, opacity }}
@@ -201,46 +278,7 @@ export default function Hero() {
               </motion.div>
             )}
           </div>
-          {prefersReducedMotion ? (
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#contacto"
-                className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright"
-              >
-                Empezar un proyecto
-              </a>
-              <a
-                href="#trabajo"
-                className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral"
-              >
-                Ver casos
-              </a>
-            </div>
-          ) : (
-            <div className="mt-10 overflow-hidden">
-              <motion.div
-                variants={staggerButtons}
-                initial="hidden"
-                animate="visible"
-                className="flex flex-wrap gap-4"
-              >
-                <motion.a
-                  variants={buttonReveal}
-                  href="#contacto"
-                  className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright"
-                >
-                  Empezar un proyecto
-                </motion.a>
-                <motion.a
-                  variants={buttonReveal}
-                  href="#trabajo"
-                  className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral"
-                >
-                  Ver casos
-                </motion.a>
-              </motion.div>
-            </div>
-          )}
+          <HeroButtons paused={!!prefersReducedMotion} />
         </div>
       </motion.div>
     </section>

@@ -98,18 +98,3 @@ export const staggerLines: Variants = {
     transition: { staggerChildren: 0.15, delayChildren: 0.95 },
   },
 };
-
-export const buttonReveal: Variants = {
-  hidden: { y: "110%" },
-  visible: {
-    y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-export const staggerButtons: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 1.75 },
-  },
-};
