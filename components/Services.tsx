@@ -1,10 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import {
   fadeUp,
   pillarCardVariants,
   staggerContainer,
+  staggerPillarCards,
 } from "@/lib/motion-variants";
 
 const services = [
@@ -31,16 +33,16 @@ const services = [
   },
 ];
 
+const PILLAR_VIEWPORT = { once: true, margin: "-32% 0px -32% 0px" as const };
+
 function ServiceCard({
   service,
   index,
-  paused,
 }: {
   service: (typeof services)[number];
   index: number;
-  paused: boolean;
 }) {
-  const content = (
+  return (
     <>
       <span className="font-display text-5xl font-bold text-ink/10 transition-colors group-hover:text-coral/30">
         0{index + 1}
@@ -60,30 +62,15 @@ function ServiceCard({
       </div>
     </>
   );
-
-  const className =
-    "group rounded-2xl border border-ink/10 bg-white p-8 transition-[border-color,box-shadow] hover:border-coral/40 hover:shadow-lg";
-
-  if (paused) {
-    return <article className={className}>{content}</article>;
-  }
-
-  return (
-    <motion.article
-      variants={pillarCardVariants[index]}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ delay: index * 0.08 }}
-      className={className}
-    >
-      {content}
-    </motion.article>
-  );
 }
 
 export default function Services() {
   const prefersReducedMotion = useReducedMotion();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const pillarsInView = useInView(titleRef, PILLAR_VIEWPORT);
+
+  const cardClassName =
+    "group rounded-2xl border border-ink/10 bg-white p-8 transition-[border-color,box-shadow] hover:border-coral/40 hover:shadow-lg";
 
   return (
     <section id="servicios" className="relative z-20 bg-bone py-24 md:py-32">
@@ -101,6 +88,7 @@ export default function Services() {
             Servicios
           </motion.p>
           <motion.h2
+            ref={titleRef}
             variants={fadeUp}
             className="mt-4 font-display text-4xl font-bold tracking-tightest md:text-5xl"
           >
@@ -108,16 +96,32 @@ export default function Services() {
           </motion.h2>
         </motion.div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-3">
-          {services.map((service, i) => (
-            <ServiceCard
-              key={service.title}
-              service={service}
-              index={i}
-              paused={!!prefersReducedMotion}
-            />
-          ))}
-        </div>
+        {prefersReducedMotion ? (
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
+            {services.map((service, i) => (
+              <article key={service.title} className={cardClassName}>
+                <ServiceCard service={service} index={i} />
+              </article>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            className="mt-16 grid gap-6 md:grid-cols-3"
+            variants={staggerPillarCards}
+            initial="hidden"
+            animate={pillarsInView ? "visible" : "hidden"}
+          >
+            {services.map((service, i) => (
+              <motion.article
+                key={service.title}
+                variants={pillarCardVariants[i]}
+                className={cardClassName}
+              >
+                <ServiceCard service={service} index={i} />
+              </motion.article>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   );

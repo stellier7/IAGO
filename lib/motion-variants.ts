@@ -117,8 +117,47 @@ export const slideFromRight: Variants = {
   },
 };
 
+const pillarTransition = {
+  duration: 0.85,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+};
+
+export const pillarFromLeft: Variants = {
+  hidden: { opacity: 0, x: -96 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: pillarTransition,
+  },
+};
+
+export const pillarFromBottom: Variants = {
+  hidden: { opacity: 0, y: 88 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: pillarTransition,
+  },
+};
+
+export const pillarFromRight: Variants = {
+  hidden: { opacity: 0, x: 96 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: pillarTransition,
+  },
+};
+
+export const staggerPillarCards: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.14, delayChildren: 0.08 },
+  },
+};
+
 export const pillarCardVariants: Variants[] = [
-  slideFromLeft,
-  slideFromBottom,
-  slideFromRight,
+  pillarFromLeft,
+  pillarFromBottom,
+  pillarFromRight,
 ];
