@@ -12,7 +12,9 @@ import {
   fadeUp,
   letterFromLeft,
   letterFromRight,
-  slideFromLeft,
+  slideFromLeftBlur,
+  lineSlideFromLeft,
+  staggerLines,
   buttonReveal,
   staggerButtons,
   staggerLettersLeft,
@@ -22,6 +24,12 @@ import {
 const IAGO_LETTERS = ["I", "A", "G", "O"] as const;
 
 const DIGITAL_LETTERS = "Digital".split("");
+
+const SUBHEAD_LINES = [
+  "Diseñamos experiencias digitales que convierten,",
+  "posicionamos tu marca en Google y automatizamos lo repetitivo",
+  "para que te enfoques en crecer.",
+] as const;
 
 const COUNTRIES = [
   "Honduras",
@@ -154,28 +162,45 @@ export default function Hero() {
                 Desarrollo web, SEO y automatizaciones con IA
               </span>
             ) : (
-              <motion.span
-                variants={slideFromLeft}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.55 }}
-                className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone"
-              >
-                Desarrollo web, SEO y automatizaciones con IA
-              </motion.span>
+              <div className="mt-4 overflow-hidden">
+                <motion.span
+                  variants={slideFromLeftBlur}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.55 }}
+                  className="block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone"
+                >
+                  Desarrollo web, SEO y automatizaciones con IA
+                </motion.span>
+              </div>
             )}
           </h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: prefersReducedMotion ? 0.2 : 0.75 }}
-            className="mt-8 max-w-xl text-lg text-mute"
-          >
-            Diseñamos experiencias digitales que convierten, posicionamos tu
-            marca en Google y automatizamos lo repetitivo para que te enfoques
-            en crecer.
-          </motion.p>
+          <div className="mt-8 max-w-xl text-lg text-mute">
+            {prefersReducedMotion ? (
+              <p>
+                {SUBHEAD_LINES.join(" ")}
+              </p>
+            ) : (
+              <motion.div
+                variants={staggerLines}
+                initial="hidden"
+                animate="visible"
+                aria-label={SUBHEAD_LINES.join(" ")}
+              >
+                {SUBHEAD_LINES.map((line) => (
+                  <div key={line} className="overflow-hidden">
+                    <motion.span
+                      variants={lineSlideFromLeft}
+                      className="block"
+                      aria-hidden
+                    >
+                      {line}
+                    </motion.span>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </div>
           {prefersReducedMotion ? (
             <div className="mt-10 flex flex-wrap gap-4">
               <a

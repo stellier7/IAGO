@@ -74,6 +74,31 @@ export const slideFromLeft: Variants = {
   },
 };
 
+export const slideFromLeftBlur: Variants = {
+  hidden: { opacity: 0, x: -80, filter: "blur(8px)" },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const lineSlideFromLeft: Variants = {
+  hidden: { x: "-110%" },
+  visible: {
+    x: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const staggerLines: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15, delayChildren: 0.95 },
+  },
+};
+
 export const buttonReveal: Variants = {
   hidden: { y: "110%" },
   visible: {
@@ -85,6 +110,6 @@ export const buttonReveal: Variants = {
 export const staggerButtons: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.88 },
+    transition: { staggerChildren: 0.1, delayChildren: 1.75 },
   },
 };
