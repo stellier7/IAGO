@@ -192,27 +192,29 @@ export default function Hero() {
               </a>
             </div>
           ) : (
-            <motion.div
-              variants={staggerButtons}
-              initial="hidden"
-              animate="visible"
-              className="mt-10 flex flex-wrap gap-4"
-            >
-              <motion.a
-                variants={buttonReveal}
-                href="#contacto"
-                className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright"
+            <div className="mt-10 overflow-hidden">
+              <motion.div
+                variants={staggerButtons}
+                initial="hidden"
+                animate="visible"
+                className="flex flex-wrap gap-4"
               >
-                Empezar un proyecto
-              </motion.a>
-              <motion.a
-                variants={buttonReveal}
-                href="#trabajo"
-                className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral"
-              >
-                Ver casos
-              </motion.a>
-            </motion.div>
+                <motion.a
+                  variants={buttonReveal}
+                  href="#contacto"
+                  className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright"
+                >
+                  Empezar un proyecto
+                </motion.a>
+                <motion.a
+                  variants={buttonReveal}
+                  href="#trabajo"
+                  className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral"
+                >
+                  Ver casos
+                </motion.a>
+              </motion.div>
+            </div>
           )}
         </div>
       </motion.div>

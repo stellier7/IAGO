@@ -75,10 +75,10 @@ export const slideFromLeft: Variants = {
 };
 
 export const buttonReveal: Variants = {
-  hidden: { y: 24 },
+  hidden: { y: "110%" },
   visible: {
     y: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
