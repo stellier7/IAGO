@@ -35,8 +35,7 @@ const BUTTON_EASE = [0.22, 1, 0.36, 1] as const;
 
 function HeroButtons({ paused }: { paused: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [entryY, setEntryY] = useState(0);
-  const [measured, setMeasured] = useState(false);
+  const [entryY, setEntryY] = useState<number | null>(null);
 
   useLayoutEffect(() => {
     if (paused) return;
@@ -44,13 +43,18 @@ function HeroButtons({ paused }: { paused: boolean }) {
     const measure = () => {
       if (!ref.current) return;
       const { top, height } = ref.current.getBoundingClientRect();
-      setEntryY(window.innerHeight - top + height + 16);
-      setMeasured(true);
+      const viewportHeight =
+        window.visualViewport?.height ?? window.innerHeight;
+      setEntryY(viewportHeight - top + height + 16);
     };
 
     measure();
+    window.visualViewport?.addEventListener("resize", measure);
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    return () => {
+      window.visualViewport?.removeEventListener("resize", measure);
+      window.removeEventListener("resize", measure);
+    };
   }, [paused]);
 
   const buttonClass = {
@@ -74,36 +78,46 @@ function HeroButtons({ paused }: { paused: boolean }) {
   }
 
   return (
-    <div
-      ref={ref}
-      className={`mt-10 flex flex-wrap gap-4 ${measured ? "" : "invisible"}`}
-    >
-      <motion.a
-        href="#contacto"
-        initial={{ y: entryY }}
-        animate={measured ? { y: 0 } : { y: entryY }}
-        transition={{
-          delay: BUTTON_ENTRANCE_DELAY,
-          duration: 0.65,
-          ease: BUTTON_EASE,
-        }}
-        className={buttonClass.primary}
-      >
-        Empezar un proyecto
-      </motion.a>
-      <motion.a
-        href="#trabajo"
-        initial={{ y: entryY }}
-        animate={measured ? { y: 0 } : { y: entryY }}
-        transition={{
-          delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
-          duration: 0.65,
-          ease: BUTTON_EASE,
-        }}
-        className={buttonClass.secondary}
-      >
-        Ver casos
-      </motion.a>
+    <div ref={ref} className="mt-10 flex flex-wrap gap-4">
+      {entryY === null ? (
+        <>
+          <span className={`${buttonClass.primary} opacity-0`} aria-hidden>
+            Empezar un proyecto
+          </span>
+          <span className={`${buttonClass.secondary} opacity-0`} aria-hidden>
+            Ver casos
+          </span>
+        </>
+      ) : (
+        <>
+          <motion.a
+            href="#contacto"
+            initial={{ y: entryY }}
+            animate={{ y: 0 }}
+            transition={{
+              delay: BUTTON_ENTRANCE_DELAY,
+              duration: 0.65,
+              ease: BUTTON_EASE,
+            }}
+            className={buttonClass.primary}
+          >
+            Empezar un proyecto
+          </motion.a>
+          <motion.a
+            href="#trabajo"
+            initial={{ y: entryY }}
+            animate={{ y: 0 }}
+            transition={{
+              delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
+              duration: 0.65,
+              ease: BUTTON_EASE,
+            }}
+            className={buttonClass.secondary}
+          >
+            Ver casos
+          </motion.a>
+        </>
+      )}
     </div>
   );
 }
