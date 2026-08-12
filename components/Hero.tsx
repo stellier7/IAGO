@@ -30,8 +30,9 @@ const SUBHEAD_LINES = [
 ] as const;
 
 const BUTTON_ENTRANCE_DELAY = 1.75;
-const BUTTON_STAGGER = 0.1;
-const BUTTON_EASE = [0.22, 1, 0.36, 1] as const;
+const BUTTON_STAGGER = 0.14;
+const BUTTON_DURATION = 1.05;
+const BUTTON_EASE = [0.16, 1, 0.3, 1] as const;
 
 function HeroButtons({ paused }: { paused: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -96,7 +97,7 @@ function HeroButtons({ paused }: { paused: boolean }) {
             animate={{ y: 0 }}
             transition={{
               delay: BUTTON_ENTRANCE_DELAY,
-              duration: 0.65,
+              duration: BUTTON_DURATION,
               ease: BUTTON_EASE,
             }}
             className={buttonClass.primary}
@@ -109,7 +110,7 @@ function HeroButtons({ paused }: { paused: boolean }) {
             animate={{ y: 0 }}
             transition={{
               delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
-              duration: 0.65,
+              duration: BUTTON_DURATION,
               ease: BUTTON_EASE,
             }}
             className={buttonClass.secondary}
