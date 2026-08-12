@@ -29,6 +29,34 @@ const cases = [
 
 const loopedCases = [...cases, ...cases];
 
+const PREVIEW_WIDTH = 1280;
+const PREVIEW_HEIGHT = 900;
+const PREVIEW_SCALE = 0.26;
+
+function SitePreview({ href, label }: { href: string; label: string }) {
+  return (
+    <div className="relative mb-4 h-36 w-full overflow-hidden rounded-lg bg-black/20 ring-1 ring-white/15 md:mb-5 md:h-[168px]">
+      <iframe
+        src={href}
+        title={`Vista previa de ${label}`}
+        loading="lazy"
+        tabIndex={-1}
+        className="pointer-events-none absolute left-0 top-0 border-0"
+        style={{
+          width: PREVIEW_WIDTH,
+          height: PREVIEW_HEIGHT,
+          transform: `scale(${PREVIEW_SCALE})`,
+          transformOrigin: "top left",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40"
+        aria-hidden
+      />
+    </div>
+  );
+}
+
 function CaseCard({
   item,
   className,
@@ -41,21 +69,24 @@ function CaseCard({
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group flex shrink-0 flex-col justify-between rounded-2xl p-6 transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-8 ${item.color} ${className}`}
+      className={`group flex shrink-0 flex-col rounded-2xl p-5 transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${item.color} ${className}`}
     >
-      <div>
-        <p className="text-xs uppercase tracking-wider opacity-70 md:text-sm">
-          {item.type}
-        </p>
-        <h3 className="mt-2 font-display text-2xl font-bold md:text-3xl">
-          {item.client}
-        </h3>
-      </div>
-      <div>
-        <p className="text-sm font-medium md:text-lg">{item.result}</p>
-        <p className="mt-4 text-sm font-semibold opacity-80 transition group-hover:opacity-100">
-          Ver sitio →
-        </p>
+      <SitePreview href={item.href} label={item.client} />
+      <div className="flex flex-1 flex-col justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-wider opacity-70 md:text-sm">
+            {item.type}
+          </p>
+          <h3 className="mt-1 font-display text-xl font-bold md:mt-2 md:text-2xl">
+            {item.client}
+          </h3>
+        </div>
+        <div className="mt-3 md:mt-4">
+          <p className="text-sm font-medium md:text-base">{item.result}</p>
+          <p className="mt-2 text-sm font-semibold opacity-80 transition group-hover:opacity-100 md:mt-3">
+            Ver sitio →
+          </p>
+        </div>
       </div>
     </a>
   );
@@ -67,7 +98,6 @@ export default function Work() {
     target: containerRef,
     offset: ["start end", "end start"],
   });
-  // Duplicated track: -50% lands on the second copy (seamless loop)
   const x = useTransform(scrollYProgress, [0, 1], ["2%", "-50%"]);
 
   return (
@@ -79,23 +109,21 @@ export default function Work() {
         </h2>
       </div>
 
-      {/* Desktop: scroll-driven infinite carousel */}
-      <div ref={containerRef} className="relative mt-16 hidden h-[420px] overflow-hidden md:block">
+      <div ref={containerRef} className="relative mt-16 hidden h-[500px] overflow-hidden md:block">
         <motion.div style={{ x }} className="absolute flex w-max gap-6 pl-6">
           {loopedCases.map((item, index) => (
             <CaseCard
               key={`${item.client}-${index}`}
               item={item}
-              className="h-[380px] w-[340px]"
+              className="h-[460px] w-[340px]"
             />
           ))}
         </motion.div>
       </div>
 
-      {/* Mobile: linked list */}
       <div className="mt-12 space-y-4 px-6 md:hidden">
         {cases.map((item) => (
-          <CaseCard key={item.client} item={item} className="min-h-[220px]" />
+          <CaseCard key={item.client} item={item} className="w-full" />
         ))}
       </div>
     </section>
