@@ -3,35 +3,54 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-const cases = [
+type CaseItem = {
+  client: string;
+  type: string;
+  result: string;
+  href: string;
+  previewFocus?: { x?: number; y?: number };
+};
+
+const cases: CaseItem[] = [
   {
     client: "Vulcanox",
     type: "Web corporativa",
     result: "Investment-driven general contracting · Florida",
     href: "https://vulcanox.vercel.app",
+    previewFocus: { x: 50, y: 42 },
   },
   {
     client: "Ichiban BJJ",
     type: "Web · Academia",
     result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
     href: "https://ichibanbjj.vercel.app",
+    previewFocus: { x: 50, y: 40 },
   },
   {
     client: "MegaWatt",
     type: "Catálogo · Web",
     result: "Iluminación LED · El Jordán",
     href: "https://megawatt-eljordan.vercel.app",
+    previewFocus: { x: 50, y: 32 },
   },
-] as const;
+];
 
 const loopedCases = [...cases, ...cases];
 
 const PREVIEW_WIDTH = 1280;
 const PREVIEW_HEIGHT = 900;
 
-function FullCardPreview({ href, label }: { href: string; label: string }) {
+function FullCardPreview({
+  href,
+  label,
+  focus = { x: 50, y: 50 },
+}: {
+  href: string;
+  label: string;
+  focus?: { x?: number; y?: number };
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.5);
+  const [layout, setLayout] = useState({ scale: 0.5, left: 0, top: 0 });
 
   useEffect(() => {
     const el = containerRef.current;
@@ -41,14 +60,24 @@ function FullCardPreview({ href, label }: { href: string; label: string }) {
       const { width, height } = el.getBoundingClientRect();
       const scaleX = width / PREVIEW_WIDTH;
       const scaleY = height / PREVIEW_HEIGHT;
-      setScale(Math.max(scaleX, scaleY));
+      const scale = Math.max(scaleX, scaleY);
+      const scaledW = PREVIEW_WIDTH * scale;
+      const scaledH = PREVIEW_HEIGHT * scale;
+      const focusX = (focus.x ?? 50) / 100;
+      const focusY = (focus.y ?? 50) / 100;
+
+      setLayout({
+        scale,
+        left: width / 2 - scaledW * focusX,
+        top: height / 2 - scaledH * focusY,
+      });
     };
 
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [focus.x, focus.y]);
 
   return (
     <div
@@ -61,12 +90,14 @@ function FullCardPreview({ href, label }: { href: string; label: string }) {
         title={`Vista previa de ${label}`}
         loading="lazy"
         tabIndex={-1}
-        className="pointer-events-none absolute left-1/2 top-0 border-0"
+        className="pointer-events-none absolute border-0"
         style={{
           width: PREVIEW_WIDTH,
           height: PREVIEW_HEIGHT,
-          transform: `translateX(-50%) scale(${scale})`,
-          transformOrigin: "top center",
+          left: layout.left,
+          top: layout.top,
+          transform: `scale(${layout.scale})`,
+          transformOrigin: "top left",
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15 transition duration-300 group-hover:from-black/80 group-hover:via-black/35" />
@@ -79,7 +110,7 @@ function CaseCard({
   item,
   className,
 }: {
-  item: (typeof cases)[number];
+  item: CaseItem;
   className: string;
 }) {
   return (
@@ -89,7 +120,11 @@ function CaseCard({
       rel="noopener noreferrer"
       className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${className}`}
     >
-      <FullCardPreview href={item.href} label={item.client} />
+      <FullCardPreview
+        href={item.href}
+        label={item.client}
+        focus={item.previewFocus}
+      />
       <div className="relative z-10">
         <p className="text-xs uppercase tracking-wider text-white/70 md:text-sm">
           {item.type}
