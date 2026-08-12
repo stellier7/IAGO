@@ -81,14 +81,11 @@ function CaseCard({
   className: string;
 }) {
   return (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <article
       className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${className}`}
     >
       <MobileCardPreview href={item.href} label={item.client} />
-      <div className="pointer-events-none relative z-10">
+      <div className="relative z-10">
         <p className="text-xs uppercase tracking-wider text-white/70 md:text-sm">
           {item.type}
         </p>
@@ -98,11 +95,16 @@ function CaseCard({
         <p className="mt-3 text-sm font-medium text-white/85 md:mt-4 md:text-base">
           {item.result}
         </p>
-        <p className="mt-2 text-sm font-semibold text-coral transition group-hover:text-coral-bright md:mt-3">
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-20 mt-2 inline-block text-sm font-semibold text-coral transition hover:text-coral-bright md:mt-3"
+        >
           Ver sitio →
-        </p>
+        </a>
       </div>
-    </a>
+    </article>
   );
 }
 
