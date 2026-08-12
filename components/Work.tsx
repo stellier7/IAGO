@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 
 type CaseItem = {
   client: string;
   type: string;
   result: string;
   href: string;
-  previewFocus?: { x?: number; y?: number };
 };
 
 const cases: CaseItem[] = [
@@ -17,169 +15,148 @@ const cases: CaseItem[] = [
     type: "Web corporativa",
     result: "Investment-driven general contracting · Florida",
     href: "https://vulcanox.vercel.app",
-    previewFocus: { x: 50, y: 42 },
   },
   {
     client: "Ichiban BJJ",
     type: "Web · Academia",
     result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
     href: "https://ichibanbjj.vercel.app",
-    previewFocus: { x: 50, y: 40 },
   },
   {
     client: "MegaWatt",
     type: "Catálogo · Web",
     result: "Iluminación LED · El Jordán",
     href: "https://megawatt-eljordan.vercel.app",
-    previewFocus: { x: 50, y: 32 },
   },
 ];
 
-const loopedCases = [...cases, ...cases];
+const SCREEN_W = 250;
+const SCREEN_H = 520;
 
-const PREVIEW_WIDTH = 1280;
-const PREVIEW_HEIGHT = 900;
-
-function FullCardPreview({
-  href,
-  label,
-  focus = { x: 50, y: 50 },
-}: {
-  href: string;
-  label: string;
-  focus?: { x?: number; y?: number };
-}) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [layout, setLayout] = useState({ scale: 0.5, left: 0, top: 0 });
+function PhoneMockup({ href, label }: { href: string; label: string }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const el = containerRef.current;
+    const el = rootRef.current;
     if (!el) return;
 
-    const update = () => {
-      const { width, height } = el.getBoundingClientRect();
-      const scaleX = width / PREVIEW_WIDTH;
-      const scaleY = height / PREVIEW_HEIGHT;
-      const scale = Math.max(scaleX, scaleY);
-      const scaledW = PREVIEW_WIDTH * scale;
-      const scaledH = PREVIEW_HEIGHT * scale;
-      const focusX = (focus.x ?? 50) / 100;
-      const focusY = (focus.y ?? 50) / 100;
+    const observer = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { rootMargin: "120px 0px", threshold: 0.05 },
+    );
 
-      setLayout({
-        scale,
-        left: width / 2 - scaledW * focusX,
-        top: height / 2 - scaledH * focusY,
-      });
-    };
-
-    update();
-    const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [focus.x, focus.y]);
+  }, []);
 
   return (
     <div
-      ref={containerRef}
-      className="absolute inset-0 overflow-hidden rounded-2xl bg-ink-raised"
-      aria-hidden
+      ref={rootRef}
+      className="relative shrink-0"
+      data-lenis-prevent
+      onWheel={(e) => e.stopPropagation()}
     >
-      <iframe
-        src={href}
-        title={`Vista previa de ${label}`}
-        loading="lazy"
-        tabIndex={-1}
-        className="pointer-events-none absolute border-0"
-        style={{
-          width: PREVIEW_WIDTH,
-          height: PREVIEW_HEIGHT,
-          left: layout.left,
-          top: layout.top,
-          transform: `scale(${layout.scale})`,
-          transformOrigin: "top left",
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15 transition duration-300 group-hover:from-black/80 group-hover:via-black/35" />
-      <div className="absolute inset-0 ring-1 ring-inset ring-white/10 transition duration-300 group-hover:ring-white/25" />
+      {/* Phone frame */}
+      <div
+        className="relative rounded-[2.4rem] bg-gradient-to-b from-zinc-700 to-zinc-900 p-[10px] shadow-[0_24px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/10"
+        style={{ width: SCREEN_W + 20 }}
+      >
+        {/* Side buttons (decorative) */}
+        <div
+          className="absolute -left-[2px] top-[88px] h-8 w-[3px] rounded-l bg-zinc-600"
+          aria-hidden
+        />
+        <div
+          className="absolute -left-[2px] top-[132px] h-12 w-[3px] rounded-l bg-zinc-600"
+          aria-hidden
+        />
+        <div
+          className="absolute -right-[2px] top-[108px] h-16 w-[3px] rounded-r bg-zinc-600"
+          aria-hidden
+        />
+
+        {/* Screen */}
+        <div
+          className="relative overflow-hidden rounded-[1.85rem] bg-black ring-1 ring-inset ring-white/5"
+          style={{ width: SCREEN_W, height: SCREEN_H }}
+        >
+          {/* Dynamic island / notch */}
+          <div
+            className="pointer-events-none absolute left-1/2 top-2 z-20 h-[22px] w-[72px] -translate-x-1/2 rounded-full bg-black"
+            aria-hidden
+          />
+
+          {active ? (
+            <iframe
+              src={href}
+              title={`Vista móvil de ${label}`}
+              loading="lazy"
+              className="h-full w-full border-0 bg-white"
+              style={{ colorScheme: "light" }}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-zinc-900 text-xs text-white/40">
+              Cargando…
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-function CaseCard({
-  item,
-  className,
-}: {
-  item: CaseItem;
-  className: string;
-}) {
+function PhoneCaseCard({ item }: { item: CaseItem }) {
   return (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${className}`}
-    >
-      <FullCardPreview
-        href={item.href}
-        label={item.client}
-        focus={item.previewFocus}
-      />
-      <div className="relative z-10">
-        <p className="text-xs uppercase tracking-wider text-white/70 md:text-sm">
+    <article className="flex w-[270px] shrink-0 snap-center flex-col items-center gap-5">
+      <PhoneMockup href={item.href} label={item.client} />
+      <div className="w-full text-center">
+        <p className="text-xs uppercase tracking-wider text-white/60">
           {item.type}
         </p>
-        <h3 className="mt-1 font-display text-xl font-bold md:mt-2 md:text-2xl">
+        <h3 className="mt-1 font-display text-xl font-bold text-bone">
           {item.client}
         </h3>
-        <p className="mt-3 text-sm font-medium text-white/85 md:mt-4 md:text-base">
-          {item.result}
-        </p>
-        <p className="mt-2 text-sm font-semibold text-coral transition group-hover:text-coral-bright md:mt-3">
+        <p className="mt-2 text-sm text-mute">{item.result}</p>
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-block text-sm font-semibold text-coral transition hover:text-coral-bright"
+        >
           Ver sitio →
-        </p>
+        </a>
       </div>
-    </a>
+    </article>
   );
 }
 
 export default function Work() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const x = useTransform(scrollYProgress, [0, 1], ["2%", "-50%"]);
-
   return (
-    <section id="trabajo" className="relative z-20 overflow-hidden bg-ink py-24 text-bone md:py-32">
+    <section
+      id="trabajo"
+      className="relative z-20 overflow-hidden bg-ink py-24 text-bone md:py-32"
+    >
       <div className="mx-auto max-w-content px-6">
         <p className="text-sm uppercase tracking-[0.2em] text-coral">Trabajo</p>
         <h2 className="mt-4 font-display text-4xl font-bold tracking-tightest md:text-5xl">
           Casos recientes
         </h2>
+        <p className="mt-3 max-w-lg text-sm text-mute md:text-base">
+          Desliza horizontalmente y explora cada sitio en vista móvil — puedes
+          hacer scroll dentro de cada teléfono.
+        </p>
       </div>
 
-      <div ref={containerRef} className="relative mt-16 hidden h-[500px] overflow-hidden md:block">
-        <motion.div style={{ x }} className="absolute flex w-max gap-6 pl-6">
-          {loopedCases.map((item, index) => (
-            <CaseCard
-              key={`${item.client}-${index}`}
-              item={item}
-              className="h-[460px] w-[340px]"
-            />
+      <div
+        className="mt-14 overflow-x-auto overscroll-x-contain px-6 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-16 md:px-[max(1.5rem,calc((100vw-1240px)/2+1.5rem))] [&::-webkit-scrollbar]:hidden"
+        data-lenis-prevent
+      >
+        <div className="flex w-max snap-x snap-mandatory gap-10 md:gap-14">
+          {cases.map((item) => (
+            <PhoneCaseCard key={item.client} item={item} />
           ))}
-        </motion.div>
-      </div>
-
-      <div className="mt-12 space-y-4 px-6 md:hidden">
-        {cases.map((item) => (
-          <CaseCard
-            key={item.client}
-            item={item}
-            className="min-h-[360px] w-full"
-          />
-        ))}
+        </div>
       </div>
     </section>
   );
