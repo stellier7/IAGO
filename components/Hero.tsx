@@ -31,8 +31,12 @@ const SUBHEAD_LINES = [
 
 const BUTTON_ENTRANCE_DELAY = 1.75;
 const BUTTON_STAGGER = 0.14;
-const BUTTON_DURATION = 1.35;
-const BUTTON_EASE = "linear" as const;
+const BUTTON_DURATION = 1.5;
+const BUTTON_TRANSITION = {
+  type: "tween" as const,
+  ease: [0, 0, 1, 1] as [number, number, number, number],
+  duration: BUTTON_DURATION,
+};
 
 function HeroButtons({ paused }: { paused: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -60,9 +64,9 @@ function HeroButtons({ paused }: { paused: boolean }) {
 
   const buttonClass = {
     primary:
-      "rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright",
+      "rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-coral-bright",
     secondary:
-      "rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral",
+      "rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-colors duration-200 hover:border-coral hover:text-coral",
   };
 
   if (paused) {
@@ -95,10 +99,10 @@ function HeroButtons({ paused }: { paused: boolean }) {
             href="#contacto"
             initial={{ y: entryY }}
             animate={{ y: 0 }}
+            whileHover={{ scale: 1.02 }}
             transition={{
-              delay: BUTTON_ENTRANCE_DELAY,
-              duration: BUTTON_DURATION,
-              ease: BUTTON_EASE,
+              y: { ...BUTTON_TRANSITION, delay: BUTTON_ENTRANCE_DELAY },
+              scale: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
             }}
             className={buttonClass.primary}
           >
@@ -108,10 +112,10 @@ function HeroButtons({ paused }: { paused: boolean }) {
             href="#trabajo"
             initial={{ y: entryY }}
             animate={{ y: 0 }}
+            whileHover={{ scale: 1.02 }}
             transition={{
-              delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
-              duration: BUTTON_DURATION,
-              ease: BUTTON_EASE,
+              y: { ...BUTTON_TRANSITION, delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER },
+              scale: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
             }}
             className={buttonClass.secondary}
           >
