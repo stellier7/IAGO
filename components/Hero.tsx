@@ -1,8 +1,60 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
 import { fadeUp } from "@/lib/motion-variants";
+
+const COUNTRIES = [
+  "Honduras",
+  "El Salvador",
+  "Costa Rica",
+  "Guatemala",
+  "Panamá",
+  "Nicaragua",
+] as const;
+
+function RotatingCountry({ paused }: { paused: boolean }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = window.setInterval(() => {
+      setIndex((current) => (current + 1) % COUNTRIES.length);
+    }, 2600);
+    return () => window.clearInterval(id);
+  }, [paused]);
+
+  if (paused) {
+    return <span>{COUNTRIES[0]}</span>;
+  }
+
+  return (
+    <span className="relative inline-grid overflow-hidden align-bottom">
+      {/* Reserve width of the longest label to avoid layout jump */}
+      <span className="invisible col-start-1 row-start-1 whitespace-nowrap" aria-hidden>
+        Costa Rica
+      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={COUNTRIES[index]}
+          className="col-start-1 row-start-1 whitespace-nowrap"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {COUNTRIES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -31,20 +83,25 @@ export default function Hero() {
             animate="visible"
             className="mb-6 text-sm uppercase tracking-[0.2em] text-coral"
           >
-            Agencia digital · Honduras
+            Agencia Digital ·{" "}
+            <RotatingCountry paused={!!prefersReducedMotion} />
           </motion.p>
           <motion.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.1 }}
-            className="font-display text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[0.95] tracking-tightest"
+            className="font-display font-bold leading-[0.95] tracking-tightest"
           >
-            Web, SEO y
-            <br />
-            <span className="text-coral">automatizaciones</span>
-            <br />
-            con IA
+            <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
+              IAG<span className="text-coral">O</span>
+            </span>
+            <span className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral">
+              Digital
+            </span>
+            <span className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-mute">
+              Desarrollo web, SEO y automatizaciones con IA
+            </span>
           </motion.h1>
           <motion.p
             variants={fadeUp}
