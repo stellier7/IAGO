@@ -12,6 +12,9 @@ import {
   fadeUp,
   letterFromLeft,
   letterFromRight,
+  slideFromLeft,
+  buttonReveal,
+  staggerButtons,
   staggerLettersLeft,
   staggerLettersRight,
 } from "@/lib/motion-variants";
@@ -146,15 +149,21 @@ export default function Hero() {
                 </motion.span>
               </>
             )}
-            <motion.span
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: prefersReducedMotion ? 0.1 : 0.65 }}
-              className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-mute"
-            >
-              Desarrollo web, SEO y automatizaciones con IA
-            </motion.span>
+            {prefersReducedMotion ? (
+              <span className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone">
+                Desarrollo web, SEO y automatizaciones con IA
+              </span>
+            ) : (
+              <motion.span
+                variants={slideFromLeft}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.55 }}
+                className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone"
+              >
+                Desarrollo web, SEO y automatizaciones con IA
+              </motion.span>
+            )}
           </h1>
           <motion.p
             variants={fadeUp}
@@ -167,26 +176,44 @@ export default function Hero() {
             marca en Google y automatizamos lo repetitivo para que te enfoques
             en crecer.
           </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: prefersReducedMotion ? 0.3 : 0.85 }}
-            className="mt-10 flex flex-wrap gap-4"
-          >
-            <a
-              href="#contacto"
-              className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-coral-bright"
+          {prefersReducedMotion ? (
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a
+                href="#contacto"
+                className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright"
+              >
+                Empezar un proyecto
+              </a>
+              <a
+                href="#trabajo"
+                className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral"
+              >
+                Ver casos
+              </a>
+            </div>
+          ) : (
+            <motion.div
+              variants={staggerButtons}
+              initial="hidden"
+              animate="visible"
+              className="mt-10 flex flex-wrap gap-4"
             >
-              Empezar un proyecto
-            </a>
-            <a
-              href="#trabajo"
-              className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition hover:border-coral hover:text-coral"
-            >
-              Ver casos
-            </a>
-          </motion.div>
+              <motion.a
+                variants={buttonReveal}
+                href="#contacto"
+                className="rounded-full bg-coral px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-coral-bright"
+              >
+                Empezar un proyecto
+              </motion.a>
+              <motion.a
+                variants={buttonReveal}
+                href="#trabajo"
+                className="rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:border-coral hover:text-coral"
+              >
+                Ver casos
+              </motion.a>
+            </motion.div>
+          )}
         </div>
       </motion.div>
     </section>
