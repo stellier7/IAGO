@@ -8,7 +8,17 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import { fadeUp } from "@/lib/motion-variants";
+import {
+  fadeUp,
+  letterFromLeft,
+  letterFromRight,
+  staggerLettersLeft,
+  staggerLettersRight,
+} from "@/lib/motion-variants";
+
+const IAGO_LETTERS = ["I", "A", "G", "O"] as const;
+
+const DIGITAL_LETTERS = "Digital".split("");
 
 const COUNTRIES = [
   "Honduras",
@@ -86,28 +96,71 @@ export default function Hero() {
             Agencia Digital ·{" "}
             <RotatingCountry paused={!!prefersReducedMotion} />
           </motion.p>
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.1 }}
-            className="font-display font-bold leading-[0.95] tracking-tightest"
-          >
-            <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
-              IAG<span className="text-coral">O</span>
-            </span>
-            <span className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral">
-              Digital
-            </span>
-            <span className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-mute">
+          <h1 className="font-display font-bold leading-[0.95] tracking-tightest">
+            {prefersReducedMotion ? (
+              <>
+                <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
+                  IAG<span className="text-coral">O</span>
+                </span>
+                <span className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral">
+                  Digital
+                </span>
+              </>
+            ) : (
+              <>
+                <motion.span
+                  className="block text-[clamp(2.75rem,8vw,6.5rem)]"
+                  variants={staggerLettersLeft}
+                  initial="hidden"
+                  animate="visible"
+                  aria-label="IAGO"
+                >
+                  {IAGO_LETTERS.map((char) => (
+                    <motion.span
+                      key={char}
+                      variants={letterFromLeft}
+                      className={`inline-block ${char === "O" ? "text-coral" : ""}`}
+                      aria-hidden
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </motion.span>
+                <motion.span
+                  className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral"
+                  variants={staggerLettersRight}
+                  initial="hidden"
+                  animate="visible"
+                  aria-label="Digital"
+                >
+                  {DIGITAL_LETTERS.map((char, index) => (
+                    <motion.span
+                      key={`${char}-${index}`}
+                      variants={letterFromRight}
+                      className="inline-block"
+                      aria-hidden
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </motion.span>
+              </>
+            )}
+            <motion.span
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: prefersReducedMotion ? 0.1 : 0.65 }}
+              className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-mute"
+            >
               Desarrollo web, SEO y automatizaciones con IA
-            </span>
-          </motion.h1>
+            </motion.span>
+          </h1>
           <motion.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.2 }}
+            transition={{ delay: prefersReducedMotion ? 0.2 : 0.75 }}
             className="mt-8 max-w-xl text-lg text-mute"
           >
             Diseñamos experiencias digitales que convierten, posicionamos tu
@@ -118,7 +171,7 @@ export default function Hero() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.3 }}
+            transition={{ delay: prefersReducedMotion ? 0.3 : 0.85 }}
             className="mt-10 flex flex-wrap gap-4"
           >
             <a

@@ -32,3 +32,35 @@ export const scaleIn: Variants = {
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
 };
+
+export const letterFromLeft: Variants = {
+  hidden: { opacity: 0, x: -52 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const letterFromRight: Variants = {
+  hidden: { opacity: 0, x: 52 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const staggerLettersLeft: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.12 },
+  },
+};
+
+export const staggerLettersRight: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.06, delayChildren: 0.18 },
+  },
+};
