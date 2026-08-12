@@ -31,7 +31,7 @@ const SUBHEAD_LINES = [
 
 const BUTTON_ENTRANCE_DELAY = 1.75;
 const BUTTON_STAGGER = 0.14;
-const BUTTON_DURATION = 1.25;
+const BUTTON_DURATION = 1.05;
 const BUTTON_TRANSITION = {
   type: "tween" as const,
   ease: [0, 0, 1, 1] as [number, number, number, number],
