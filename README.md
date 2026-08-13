@@ -45,8 +45,8 @@ lib/
 
 ## Pendientes / notas
 
-- Reemplazar `hola@iagodigital.com` y el número de WhatsApp
-  (`wa.me/50400000000`) por los reales.
+- Contacto actualizado: `iagodigitalweb@gmail.com` y WhatsApp
+  (`wa.me/50496784674`).
 - Agregar `public/og-image.png` (1200×630) y `public/favicon.ico` antes
   de lanzar — el layout ya los referencia.
 - El grid de `Services.tsx` está pensado para agregar un cuarto pilar

@@ -25,13 +25,13 @@ export default function CTA() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="mailto:hola@iagodigital.com"
+              href="mailto:iagodigitalweb@gmail.com"
               className="rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-coral transition hover:bg-bone"
             >
-              hola@iagodigital.com
+              iagodigitalweb@gmail.com
             </a>
             <a
-              href="https://wa.me/50400000000"
+              href="https://wa.me/50496784674"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-white/40 px-8 py-3.5 text-sm font-semibold transition hover:bg-white/10"
