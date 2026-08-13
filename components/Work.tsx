@@ -5,30 +5,92 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 const cases = [
   {
-    client: "Retail Pro",
-    type: "E-commerce + SEO",
-    result: "+180% tráfico orgánico en 6 meses",
+    client: "Vulcanox",
+    type: "Web corporativa",
+    result: "Investment-driven general contracting · Florida",
+    href: "https://vulcanox.vercel.app",
     color: "bg-coral",
   },
   {
-    client: "Clínica Vida",
-    type: "Web + Automatización",
-    result: "70% menos tiempo en citas manuales",
+    client: "Ichiban BJJ",
+    type: "Web · Academia",
+    result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
+    href: "https://ichibanbjj.vercel.app",
     color: "bg-ink",
   },
   {
-    client: "FinanzasHN",
-    type: "Landing + Analytics",
-    result: "3.2× tasa de conversión vs. sitio anterior",
+    client: "MegaWatt",
+    type: "Catálogo · Web",
+    result: "Iluminación LED · El Jordán",
+    href: "https://megawatt-eljordan.vercel.app",
     color: "bg-coral-dim",
   },
-  {
-    client: "Logística Norte",
-    type: "Dashboard IA",
-    result: "Reportes automáticos cada mañana",
-    color: "bg-ink-raised",
-  },
-];
+] as const;
+
+const loopedCases = [...cases, ...cases];
+
+const PREVIEW_WIDTH = 1280;
+const PREVIEW_HEIGHT = 900;
+const PREVIEW_SCALE = 0.26;
+
+function SitePreview({ href, label }: { href: string; label: string }) {
+  return (
+    <div className="relative mb-4 h-36 w-full overflow-hidden rounded-lg bg-black/20 ring-1 ring-white/15 md:mb-5 md:h-[168px]">
+      <iframe
+        src={href}
+        title={`Vista previa de ${label}`}
+        loading="lazy"
+        tabIndex={-1}
+        className="pointer-events-none absolute left-0 top-0 border-0"
+        style={{
+          width: PREVIEW_WIDTH,
+          height: PREVIEW_HEIGHT,
+          transform: `scale(${PREVIEW_SCALE})`,
+          transformOrigin: "top left",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40"
+        aria-hidden
+      />
+    </div>
+  );
+}
+
+function CaseCard({
+  item,
+  className,
+}: {
+  item: (typeof cases)[number];
+  className: string;
+}) {
+  return (
+    <a
+      href={item.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group flex shrink-0 flex-col rounded-2xl p-5 transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${item.color} ${className}`}
+    >
+      <SitePreview href={item.href} label={item.client} />
+      <div className="flex flex-1 flex-col justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-wider opacity-70 md:text-sm">
+            {item.type}
+          </p>
+          <h3 className="mt-1 font-display text-xl font-bold md:mt-2 md:text-2xl">
+            {item.client}
+          </h3>
+        </div>
+        <div className="mt-3 md:mt-4">
+          <p className="text-sm font-medium md:text-base">{item.result}</p>
+          <p className="mt-2 text-sm font-semibold opacity-80 transition group-hover:opacity-100 md:mt-3">
+            Ver sitio →
+          </p>
+        </div>
+      </div>
+    </a>
+  );
+}
 
 export default function Work() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +98,7 @@ export default function Work() {
     target: containerRef,
     offset: ["start end", "end start"],
   });
-  const x = useTransform(scrollYProgress, [0, 1], ["5%", "-55%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["2%", "-50%"]);
 
   return (
     <section id="trabajo" className="relative z-20 overflow-hidden bg-ink py-24 text-bone md:py-32">
@@ -47,35 +109,21 @@ export default function Work() {
         </h2>
       </div>
 
-      {/* Desktop: horizontal scroll pinned */}
-      <div ref={containerRef} className="relative mt-16 hidden h-[420px] md:block">
-        <motion.div style={{ x }} className="absolute flex gap-6 pl-6">
-          {cases.map((item) => (
-            <article
-              key={item.client}
-              className={`flex h-[380px] w-[340px] shrink-0 flex-col justify-between rounded-2xl p-8 ${item.color}`}
-            >
-              <div>
-                <p className="text-sm uppercase tracking-wider opacity-70">{item.type}</p>
-                <h3 className="mt-2 font-display text-3xl font-bold">{item.client}</h3>
-              </div>
-              <p className="text-lg font-medium">{item.result}</p>
-            </article>
+      <div ref={containerRef} className="relative mt-16 hidden h-[500px] overflow-hidden md:block">
+        <motion.div style={{ x }} className="absolute flex w-max gap-6 pl-6">
+          {loopedCases.map((item, index) => (
+            <CaseCard
+              key={`${item.client}-${index}`}
+              item={item}
+              className="h-[460px] w-[340px]"
+            />
           ))}
         </motion.div>
       </div>
 
-      {/* Mobile: simple list */}
       <div className="mt-12 space-y-4 px-6 md:hidden">
         {cases.map((item) => (
-          <article
-            key={item.client}
-            className={`rounded-2xl p-6 ${item.color}`}
-          >
-            <p className="text-xs uppercase tracking-wider opacity-70">{item.type}</p>
-            <h3 className="mt-1 font-display text-2xl font-bold">{item.client}</h3>
-            <p className="mt-3 text-sm">{item.result}</p>
-          </article>
+          <CaseCard key={item.client} item={item} className="w-full" />
         ))}
       </div>
     </section>
