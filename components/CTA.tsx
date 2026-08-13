@@ -23,22 +23,26 @@ export default function CTA() {
             Cuéntanos tu proyecto y te respondemos en menos de 48 horas con
             una propuesta clara.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <p className="mt-10 text-sm font-semibold uppercase tracking-[0.2em] text-white/90">
+            Contáctanos
+          </p>
+          <div className="mt-4 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href="mailto:iagodigitalweb@gmail.com"
-              className="rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-coral transition hover:bg-bone"
+              className="rounded-full bg-ink px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-ink-raised"
             >
-              iagodigitalweb@gmail.com
+              Email
             </a>
             <a
-              href="https://wa.me/50496784674"
+              href="https://wa.me/50496784678"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/40 px-8 py-3.5 text-sm font-semibold transition hover:bg-white/10"
+              className="rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-coral transition hover:bg-bone"
             >
-              WhatsApp
+              Escríbenos por WhatsApp
             </a>
           </div>
+          <p className="mt-3 text-sm text-white/75">+504 9678-4678</p>
         </motion.div>
       </div>
     </section>
