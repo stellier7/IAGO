@@ -34,15 +34,14 @@ export default function CTA() {
               Email
             </a>
             <a
-              href="https://wa.me/50496784678"
+              href="https://wa.me/50496784674"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-coral transition hover:bg-bone"
+              className="rounded-full border border-white/40 px-8 py-3.5 text-sm font-semibold transition hover:bg-white/10"
             >
-              Escríbenos por WhatsApp
+              WhatsApp
             </a>
           </div>
-          <p className="mt-3 text-sm text-white/75">+504 9678-4678</p>
         </motion.div>
       </div>
     </section>
