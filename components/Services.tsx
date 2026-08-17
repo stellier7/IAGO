@@ -170,6 +170,15 @@ export default function Services() {
           : isMobile
             ? mobileCardGrid
             : desktopCardGrid}
+
+        <div className="mt-12 flex justify-center md:mt-16">
+          <a
+            href="/pricing"
+            className="rounded-full bg-ink px-8 py-3.5 text-sm font-medium text-bone transition hover:bg-coral"
+          >
+            Ver planes
+          </a>
+        </div>
       </div>
     </section>
   );
