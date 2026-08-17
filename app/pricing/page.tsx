@@ -48,22 +48,12 @@ export default async function PricingPage() {
             >
               <p className="font-medium text-coral">{configIssue.message}</p>
               <p className="mt-2 text-sm text-ink">{configIssue.detail}</p>
-              <p className="mt-4 text-sm text-mute">
-                Mientras configuras live, puedes volver temporalmente a sandbox
-                en Vercel Production:{" "}
-                <code className="rounded bg-white px-1.5 py-0.5 text-xs">
-                  NEXT_PUBLIC_PADDLE_ENVIRONMENT=sandbox
-                </code>
-                , token{" "}
-                <code className="rounded bg-white px-1.5 py-0.5 text-xs">
-                  test_...
-                </code>
-                , y{" "}
-                <code className="rounded bg-white px-1.5 py-0.5 text-xs">
-                  PADDLE_ENVIRONMENT=sandbox
-                </code>
-                .
-              </p>
+              <a
+                href="/admin/live-catalog"
+                className="mt-4 inline-flex rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-bone transition hover:bg-coral"
+              >
+                Abrir configurador (iPad)
+              </a>
             </div>
           </div>
         ) : tiers ? (
