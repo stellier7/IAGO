@@ -86,6 +86,9 @@ export const CONTACT_TIER: ContactTier = {
 
 export type BillingCycle = "month" | "year";
 
+/** Free hosting months before the first subscription charge (Paddle trial_period). */
+export const SUBSCRIPTION_TRIAL_MONTHS = 2;
+
 export function getPriceIdsForCycle(cycle: BillingCycle): string[] {
   return PRICING_TIERS.flatMap((tier) => [
     cycle === "month" ? tier.priceId.month : tier.priceId.year,

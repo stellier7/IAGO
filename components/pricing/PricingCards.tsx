@@ -5,6 +5,7 @@ import { initializePaddle, type Paddle } from "@paddle/paddle-js";
 import {
   CONTACT_TIER,
   PRICING_TIERS,
+  SUBSCRIPTION_TRIAL_MONTHS,
   type BillingCycle,
   type Tier,
   getPriceIdsForCycle,
@@ -166,6 +167,9 @@ export default function PricingCards({
         {billingCycle === "year" && (
           <p className="text-sm text-coral">Ahorra con facturación anual</p>
         )}
+        <p className="rounded-full border border-coral/30 bg-coral/10 px-4 py-2 text-sm font-medium text-coral">
+          Te regalamos los primeros {SUBSCRIPTION_TRIAL_MONTHS} meses de hosting
+        </p>
       </div>
 
       {error && (
@@ -249,6 +253,14 @@ export default function PricingCards({
                         >
                           /{billingCycle === "month" ? "mes" : "año"}
                         </span>
+                      </p>
+                      <p
+                        className={`mt-1 text-xs ${
+                          isHighlighted ? "text-bone/50" : "text-mute"
+                        }`}
+                      >
+                        {SUBSCRIPTION_TRIAL_MONTHS} meses gratis — primer cobro
+                        después
                       </p>
                     </div>
                   </div>
@@ -334,9 +346,10 @@ export default function PricingCards({
       </div>
 
       <p className="mt-10 text-center text-xs text-mute">
-        Los precios incluyen impuestos estimados según tu ubicación. Al
-        suscribirte, el checkout incluye la tarifa de desarrollo inicial más la
-        suscripción recurrente.
+        Hoy pagas la tarifa de desarrollo. La suscripción incluye{" "}
+        {SUBSCRIPTION_TRIAL_MONTHS} meses de hosting gratis; Paddle cobrará la
+        suscripción cuando termine el periodo de prueba. Impuestos estimados
+        según tu ubicación.
       </p>
     </div>
   );

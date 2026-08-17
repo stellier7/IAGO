@@ -27,8 +27,8 @@ export default async function PricingPage() {
             El plan perfecto para tu negocio
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-mute">
-            Sitios web, SEO y automatización con IA. Precios en tu moneda local,
-            facturación mensual o anual.
+            Pagas el desarrollo hoy. Te regalamos los primeros 2 meses de
+            hosting — la suscripción empieza a cobrarse después.
           </p>
         </div>
 
