@@ -3,8 +3,21 @@
 # Requires: PADDLE_API_KEY (sandbox key containing _sdbx)
 set -euo pipefail
 
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+if [[ -f "${ROOT}/.env.local" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${ROOT}/.env.local"
+  set +a
+fi
+
 API_BASE="https://sandbox-api.paddle.com"
-API_KEY="${PADDLE_API_KEY:?Set PADDLE_API_KEY to your sandbox API key}"
+if [[ -z "${PADDLE_API_KEY:-}" ]]; then
+  echo "Error: PADDLE_API_KEY is not set." >&2
+  echo "Add it as a Cursor secret named exactly PADDLE_API_KEY, or uncomment it in .env.local" >&2
+  exit 1
+fi
+API_KEY="${PADDLE_API_KEY}"
 
 paddle_post() {
   local endpoint="$1"
