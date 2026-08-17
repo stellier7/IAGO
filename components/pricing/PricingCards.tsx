@@ -102,7 +102,12 @@ export default function PricingCards({
         setPrices(buildPriceMap(result.data.details.lineItems));
       } catch (err) {
         console.error("Paddle PricePreview failed:", err);
-        setError("No pudimos cargar los precios. Intenta de nuevo.");
+        const detail =
+          paddleConfig.environment === "production"
+            ? "El sitio usa Paddle live pero los price IDs no coinciden con tu cuenta live. " +
+              "Crea el catálogo live, agrega PADDLE_PRICE_* en Vercel y redeploy."
+            : "Revisa NEXT_PUBLIC_PADDLE_CLIENT_TOKEN y que los price IDs existan en sandbox.";
+        setError(`No pudimos cargar los precios. ${detail}`);
       } finally {
         setLoading(false);
       }
