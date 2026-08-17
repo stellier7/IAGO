@@ -3,10 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { initializePaddle, type Paddle } from "@paddle/paddle-js";
 import {
+  CONTACT_TIER,
   PRICING_TIERS,
   type BillingCycle,
   type Tier,
   getPriceIdsForCycle,
+  getSubscriptionPriceId,
 } from "@/lib/pricing/tiers";
 import { getPaddleClientConfig } from "@/lib/paddle/config";
 
@@ -22,6 +24,23 @@ function buildPriceMap(
 ): PriceMap {
   return Object.fromEntries(
     lineItems.map((item) => [item.price.id, item.formattedTotals.subtotal]),
+  );
+}
+
+function PriceSkeleton({ highlighted }: { highlighted?: boolean }) {
+  return (
+    <div className="space-y-3" aria-hidden="true">
+      <div
+        className={`h-5 w-40 animate-pulse rounded ${
+          highlighted ? "bg-bone/20" : "bg-bone"
+        }`}
+      />
+      <div
+        className={`h-10 w-32 animate-pulse rounded-lg ${
+          highlighted ? "bg-bone/20" : "bg-bone"
+        }`}
+      />
+    </div>
   );
 }
 
@@ -97,8 +116,7 @@ export default function PricingCards({
       return;
     }
 
-    const priceId =
-      billingCycle === "month" ? tier.priceId.month : tier.priceId.year;
+    const subscriptionPriceId = getSubscriptionPriceId(tier, billingCycle);
 
     setCheckoutTier(tier);
 
@@ -108,7 +126,10 @@ export default function PricingCards({
         variant: "one-page",
         successUrl: `${window.location.origin}/welcome`,
       },
-      items: [{ priceId, quantity: 1 }],
+      items: [
+        { priceId: subscriptionPriceId, quantity: 1 },
+        { priceId: tier.developmentFeePriceId, quantity: 1 },
+      ],
       customer: customerEmail ? { email: customerEmail } : undefined,
     });
 
@@ -153,11 +174,15 @@ export default function PricingCards({
         </p>
       )}
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {PRICING_TIERS.map((tier) => {
-          const priceId =
-            billingCycle === "month" ? tier.priceId.month : tier.priceId.year;
-          const formattedPrice = prices[priceId];
+          const subscriptionPriceId = getSubscriptionPriceId(
+            tier,
+            billingCycle,
+          );
+          const developmentPrice = prices[tier.developmentFeePriceId];
+          const subscriptionPrice = prices[subscriptionPriceId];
+          const pricesReady = Boolean(developmentPrice && subscriptionPrice);
           const isHighlighted = tier.highlighted;
 
           return (
@@ -190,25 +215,43 @@ export default function PricingCards({
                 {tier.description}
               </p>
 
-              <div className="my-8 min-h-[3rem]">
-                {loading || !formattedPrice ? (
-                  <div
-                    className={`h-10 w-32 animate-pulse rounded-lg ${
-                      isHighlighted ? "bg-bone/20" : "bg-bone"
-                    }`}
-                    aria-hidden="true"
-                  />
+              <div className="my-8 min-h-[5.5rem]">
+                {loading || !pricesReady ? (
+                  <PriceSkeleton highlighted={isHighlighted} />
                 ) : (
-                  <p className="font-display text-4xl font-bold tracking-tightest">
-                    {formattedPrice}
-                    <span
-                      className={`ml-1 text-base font-normal ${
-                        isHighlighted ? "text-bone/60" : "text-mute"
-                      }`}
-                    >
-                      /{billingCycle === "month" ? "mes" : "año"}
-                    </span>
-                  </p>
+                  <div className="space-y-4">
+                    <div>
+                      <p
+                        className={`text-xs font-medium uppercase tracking-wider ${
+                          isHighlighted ? "text-bone/50" : "text-mute"
+                        }`}
+                      >
+                        Desarrollo (pago único)
+                      </p>
+                      <p className="font-display text-2xl font-bold tracking-tightest">
+                        {developmentPrice}
+                      </p>
+                    </div>
+                    <div>
+                      <p
+                        className={`text-xs font-medium uppercase tracking-wider ${
+                          isHighlighted ? "text-bone/50" : "text-mute"
+                        }`}
+                      >
+                        Suscripción
+                      </p>
+                      <p className="font-display text-2xl font-bold tracking-tightest">
+                        {subscriptionPrice}
+                        <span
+                          className={`ml-1 text-sm font-normal ${
+                            isHighlighted ? "text-bone/60" : "text-mute"
+                          }`}
+                        >
+                          /{billingCycle === "month" ? "mes" : "año"}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
                 )}
               </div>
 
@@ -236,7 +279,7 @@ export default function PricingCards({
               <button
                 type="button"
                 onClick={() => handleSubscribe(tier)}
-                disabled={loading || !formattedPrice || !paddle}
+                disabled={loading || !pricesReady || !paddle}
                 className={`w-full rounded-full px-6 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50 ${
                   isHighlighted
                     ? "bg-coral text-white hover:bg-coral-bright"
@@ -248,11 +291,52 @@ export default function PricingCards({
             </article>
           );
         })}
+
+        <article className="flex flex-col rounded-2xl border border-dashed border-ink-line/30 bg-bone p-8">
+          <span className="mb-4 inline-flex w-fit rounded-full border border-ink-line/20 px-3 py-1 text-xs font-medium text-mute">
+            Negociable
+          </span>
+
+          <h2 className="font-display text-2xl font-bold tracking-tightest text-ink">
+            {CONTACT_TIER.displayName}
+          </h2>
+          <p className="mt-2 text-sm text-mute">{CONTACT_TIER.description}</p>
+
+          <div className="my-8 min-h-[5.5rem] flex items-center">
+            <p className="font-display text-2xl font-bold tracking-tightest text-ink">
+              Precio personalizado
+            </p>
+          </div>
+
+          <ul className="mb-8 flex-1 space-y-3">
+            {CONTACT_TIER.features.map((feature) => (
+              <li
+                key={feature}
+                className="flex items-start gap-2 text-sm text-ink"
+              >
+                <span className="mt-0.5 shrink-0 text-coral" aria-hidden="true">
+                  ✓
+                </span>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={CONTACT_TIER.contactHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full rounded-full border border-ink px-6 py-3 text-center text-sm font-medium text-ink transition hover:bg-ink hover:text-bone"
+          >
+            {CONTACT_TIER.contactLabel}
+          </a>
+        </article>
       </div>
 
       <p className="mt-10 text-center text-xs text-mute">
-        Los precios incluyen impuestos estimados según tu ubicación. Tarifa de
-        desarrollo inicial aplicable por separado.
+        Los precios incluyen impuestos estimados según tu ubicación. Al
+        suscribirte, el checkout incluye la tarifa de desarrollo inicial más la
+        suscripción recurrente.
       </p>
     </div>
   );
