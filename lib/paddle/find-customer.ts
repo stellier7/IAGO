@@ -1,8 +1,6 @@
 import type { Customer } from "@paddle/paddle-node-sdk";
 import type { Paddle } from "@paddle/paddle-node-sdk";
 
-const CUSTOMER_STATUSES = ["active", "archived"] as const;
-
 function emailsMatch(a: string, b: string): boolean {
   return a.trim().toLowerCase() === b.trim().toLowerCase();
 }
@@ -25,6 +23,32 @@ async function scanCustomerCollection(
   return null;
 }
 
+async function findViaTransactionCustomerIds(
+  paddle: Paddle,
+  sessionEmail: string,
+): Promise<Customer | null> {
+  const seenCustomerIds = new Set<string>();
+
+  for await (const transaction of paddle.transactions.list({ perPage: 200 })) {
+    if (!transaction.customerId || seenCustomerIds.has(transaction.customerId)) {
+      continue;
+    }
+
+    seenCustomerIds.add(transaction.customerId);
+
+    try {
+      const customer = await paddle.customers.get(transaction.customerId);
+      if (matchesSessionEmail(customer, sessionEmail)) {
+        return customer;
+      }
+    } catch {
+      // Skip missing customers
+    }
+  }
+
+  return null;
+}
+
 /**
  * Paddle's `email` filter requires an exact case match. Login stores email
  * lowercased, so we try several lookup strategies before giving up.
@@ -35,39 +59,34 @@ export async function findPaddleCustomerByEmail(
 ): Promise<Customer | null> {
   const trimmedEmail = sessionEmail.trim();
   const normalizedEmail = trimmedEmail.toLowerCase();
-  const baseQuery = { status: [...CUSTOMER_STATUSES], perPage: 200 as const };
 
-  const exactCandidates = new Set(
-    [trimmedEmail, normalizedEmail].filter(Boolean),
-  );
-
-  for (const candidate of exactCandidates) {
-    const match = await scanCustomerCollection(
+  for (const candidate of new Set([trimmedEmail, normalizedEmail])) {
+    const exactMatch = await scanCustomerCollection(
       paddle,
-      { ...baseQuery, email: [candidate] },
+      { email: [candidate], perPage: 200 },
       sessionEmail,
     );
-    if (match) {
-      return match;
+    if (exactMatch) {
+      return exactMatch;
     }
   }
 
   const searchMatch = await scanCustomerCollection(
     paddle,
-    { ...baseQuery, search: normalizedEmail },
+    { search: normalizedEmail, perPage: 200 },
     sessionEmail,
   );
   if (searchMatch) {
     return searchMatch;
   }
 
-  const fullScanMatch = await scanCustomerCollection(
+  const defaultListMatch = await scanCustomerCollection(
     paddle,
-    baseQuery,
+    { perPage: 200 },
     sessionEmail,
   );
-  if (fullScanMatch) {
-    return fullScanMatch;
+  if (defaultListMatch) {
+    return defaultListMatch;
   }
 
   for await (const subscription of paddle.subscriptions.list({ perPage: 200 })) {
@@ -81,16 +100,12 @@ export async function findPaddleCustomerByEmail(
     }
   }
 
-  for await (const transaction of paddle.transactions.list({
-    include: ["customer"],
-    perPage: 200,
-  })) {
-    if (
-      transaction.customer &&
-      matchesSessionEmail(transaction.customer, sessionEmail)
-    ) {
-      return transaction.customer;
-    }
+  const transactionMatch = await findViaTransactionCustomerIds(
+    paddle,
+    sessionEmail,
+  );
+  if (transactionMatch) {
+    return transactionMatch;
   }
 
   return null;
@@ -99,10 +114,7 @@ export async function findPaddleCustomerByEmail(
 export async function countPaddleCustomers(paddle: Paddle): Promise<number> {
   let count = 0;
 
-  for await (const _customer of paddle.customers.list({
-    status: [...CUSTOMER_STATUSES],
-    perPage: 200,
-  })) {
+  for await (const _customer of paddle.customers.list({ perPage: 200 })) {
     count += 1;
   }
 
@@ -112,14 +124,19 @@ export async function countPaddleCustomers(paddle: Paddle): Promise<number> {
 export interface PaddleSyncDiagnostic {
   environment: string;
   paddleCustomerCount: number;
+  syncedCustomers: number;
+  syncedSubscriptions: number;
 }
 
 export async function getPaddleSyncDiagnostic(
   paddle: Paddle,
   environment: string,
+  syncStats?: { customers: number; subscriptions: number },
 ): Promise<PaddleSyncDiagnostic> {
   return {
     environment,
-    paddleCustomerCount: await countPaddleCustomers(paddle),
+    paddleCustomerCount: syncStats?.customers ?? (await countPaddleCustomers(paddle)),
+    syncedCustomers: syncStats?.customers ?? 0,
+    syncedSubscriptions: syncStats?.subscriptions ?? 0,
   };
 }

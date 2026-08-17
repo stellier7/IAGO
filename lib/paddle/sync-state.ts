@@ -79,11 +79,32 @@ export async function mirrorSubscriptionById(
   await mirrorPaddleSubscription(subscription);
 }
 
+async function mirrorSubscriptionsForCustomer(
+  customerId: string,
+): Promise<void> {
+  const paddle = getPaddleServerClient();
+
+  for await (const subscription of paddle.subscriptions.list({
+    customerId: [customerId],
+  })) {
+    try {
+      await mirrorPaddleSubscription(subscription);
+    } catch (error) {
+      console.warn(
+        `[paddle/sync] Skipping subscription ${subscription.id}:`,
+        error,
+      );
+    }
+  }
+}
+
 export interface SyncCustomerResult {
   customer: CustomerRow | null;
   diagnostic: {
     environment: string;
     paddleCustomerCount: number;
+    syncedCustomers: number;
+    syncedSubscriptions: number;
   } | null;
 }
 
@@ -109,33 +130,35 @@ export async function syncCustomerByEmailDetailed(
   try {
     const paddle = getPaddleServerClient();
     const environment = getPaddleEnvironmentName();
+
+    // Mirror all Paddle customers/subscriptions first (sandbox-scale safe).
+    const syncStats = await syncAllPaddleState();
+
+    let customer = await getCustomerByEmail(email);
+    const diagnostic = await getPaddleSyncDiagnostic(
+      paddle,
+      environment,
+      syncStats,
+    );
+
+    if (customer) {
+      return { customer, diagnostic };
+    }
+
     const matchedCustomer = await findPaddleCustomerByEmail(paddle, email);
-    const diagnostic = await getPaddleSyncDiagnostic(paddle, environment);
 
-    if (!matchedCustomer) {
-      console.warn(
-        `[paddle/sync] No Paddle customer for ${email} (${diagnostic.paddleCustomerCount} customers in ${environment})`,
-      );
-      return { customer: null, diagnostic };
+    if (matchedCustomer) {
+      await mirrorPaddleCustomer(matchedCustomer.id, matchedCustomer.email);
+      await mirrorSubscriptionsForCustomer(matchedCustomer.id);
+      customer = await getCustomerByEmail(email);
+      return { customer, diagnostic };
     }
 
-    await mirrorPaddleCustomer(matchedCustomer.id, matchedCustomer.email);
+    console.warn(
+      `[paddle/sync] No Paddle customer for ${email} after syncing ${syncStats.customers} customers in ${environment}`,
+    );
 
-    for await (const subscription of paddle.subscriptions.list({
-      customerId: [matchedCustomer.id],
-    })) {
-      try {
-        await mirrorPaddleSubscription(subscription);
-      } catch (error) {
-        console.warn(
-          `[paddle/sync] Skipping subscription ${subscription.id}:`,
-          error,
-        );
-      }
-    }
-
-    const customer = await getCustomerByEmail(email);
-    return { customer, diagnostic };
+    return { customer: null, diagnostic };
   } catch (error) {
     console.error("[paddle/sync] Failed to sync customer by email:", error);
     return { customer: null, diagnostic: null };
@@ -150,15 +173,26 @@ export async function syncAllPaddleState(): Promise<{
   let customers = 0;
   let subscriptions = 0;
 
-  for await (const customer of paddle.customers.list()) {
-    await mirrorPaddleCustomer(customer.id, customer.email);
-    customers += 1;
+  for await (const customer of paddle.customers.list({ perPage: 200 })) {
+    try {
+      await mirrorPaddleCustomer(customer.id, customer.email);
+      customers += 1;
+    } catch (error) {
+      console.warn(`[paddle/sync] Skipping customer ${customer.id}:`, error);
+    }
   }
 
-  for await (const subscription of paddle.subscriptions.list()) {
-    await ensureCustomerRecord(subscription.customerId);
-    await mirrorPaddleSubscription(subscription);
-    subscriptions += 1;
+  for await (const subscription of paddle.subscriptions.list({ perPage: 200 })) {
+    try {
+      await ensureCustomerRecord(subscription.customerId);
+      await mirrorPaddleSubscription(subscription);
+      subscriptions += 1;
+    } catch (error) {
+      console.warn(
+        `[paddle/sync] Skipping subscription ${subscription.id}:`,
+        error,
+      );
+    }
   }
 
   return { customers, subscriptions };
