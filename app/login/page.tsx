@@ -27,7 +27,33 @@ function LoginForm() {
     setLoading(false);
 
     if (!response.ok) {
-      setError("No pudimos iniciar sesión. Revisa tu email.");
+      let serverError = "login_failed";
+      try {
+        const payload = (await response.json()) as {
+          error?: string;
+          detail?: string;
+        };
+        serverError = payload.error ?? serverError;
+        if (payload.error === "server_misconfigured") {
+          setError(
+            "Inicio de sesión no disponible: falta SESSION_SECRET en Vercel. Agrega la variable de entorno y redeploy.",
+          );
+          return;
+        }
+      } catch {
+        // ignore JSON parse errors
+      }
+
+      if (response.status === 400) {
+        setError("Ingresa un email válido.");
+        return;
+      }
+
+      setError(
+        serverError === "login_failed"
+          ? "No pudimos iniciar sesión. Intenta de nuevo."
+          : "No pudimos iniciar sesión. Revisa tu email.",
+      );
       return;
     }
 
