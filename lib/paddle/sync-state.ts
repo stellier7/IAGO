@@ -1,4 +1,4 @@
-import { getPaddleServerClient } from "@/lib/paddle/server";
+import { getPaddleServerClient, isPaddleServerConfigured } from "@/lib/paddle/server";
 import {
   getCustomerByEmail,
   upsertCustomerRecord,
@@ -78,33 +78,58 @@ export async function mirrorSubscriptionById(
 export async function syncCustomerByEmail(
   email: string,
 ): Promise<CustomerRow | null> {
-  const paddle = getPaddleServerClient();
-  const normalizedEmail = email.trim().toLowerCase();
-
-  let matchedCustomer: { id: string; email: string } | null = null;
-
-  for await (const customer of paddle.customers.list({
-    email: [normalizedEmail],
-  })) {
-    if (customer.email.toLowerCase() === normalizedEmail) {
-      matchedCustomer = customer;
-      break;
-    }
-  }
-
-  if (!matchedCustomer) {
+  if (!isPaddleServerConfigured()) {
+    console.warn("[paddle/sync] Skipping sync — Paddle server env is not configured");
     return null;
   }
 
-  await mirrorPaddleCustomer(matchedCustomer.id, matchedCustomer.email);
+  const trimmedEmail = email.trim();
+  const normalizedEmail = trimmedEmail.toLowerCase();
 
-  for await (const subscription of paddle.subscriptions.list({
-    customerId: [matchedCustomer.id],
-  })) {
-    await mirrorPaddleSubscription(subscription);
+  try {
+    const paddle = getPaddleServerClient();
+
+    let matchedCustomer: { id: string; email: string } | null = null;
+
+    for (const candidate of new Set([trimmedEmail, normalizedEmail])) {
+      for await (const customer of paddle.customers.list({
+        email: [candidate],
+      })) {
+        if (customer.email.toLowerCase() === normalizedEmail) {
+          matchedCustomer = customer;
+          break;
+        }
+      }
+
+      if (matchedCustomer) {
+        break;
+      }
+    }
+
+    if (!matchedCustomer) {
+      return null;
+    }
+
+    await mirrorPaddleCustomer(matchedCustomer.id, matchedCustomer.email);
+
+    for await (const subscription of paddle.subscriptions.list({
+      customerId: [matchedCustomer.id],
+    })) {
+      try {
+        await mirrorPaddleSubscription(subscription);
+      } catch (error) {
+        console.warn(
+          `[paddle/sync] Skipping subscription ${subscription.id}:`,
+          error,
+        );
+      }
+    }
+
+    return getCustomerByEmail(email);
+  } catch (error) {
+    console.error("[paddle/sync] Failed to sync customer by email:", error);
+    return null;
   }
-
-  return getCustomerByEmail(email);
 }
 
 export async function syncAllPaddleState(): Promise<{

@@ -4,7 +4,7 @@ import {
   getCustomerByEmail,
   getSubscriptionsForCustomer,
 } from "@/lib/subscriptions/repository";
-import { getPaddleServerClient } from "@/lib/paddle/server";
+import { getPaddleServerClient, isPaddleServerConfigured } from "@/lib/paddle/server";
 import { syncCustomerByEmail } from "@/lib/paddle/sync-state";
 
 export async function GET(request: Request): Promise<Response> {
@@ -17,7 +17,7 @@ export async function GET(request: Request): Promise<Response> {
 
   let customer = await getCustomerByEmail(session.email);
 
-  if (!customer) {
+  if (!customer && isPaddleServerConfigured()) {
     customer = await syncCustomerByEmail(session.email);
   }
 

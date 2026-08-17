@@ -49,3 +49,12 @@ export function getPaddleServerClient(): Paddle {
 
   return new Paddle(getPaddleApiKey(), { environment });
 }
+
+export function isPaddleServerConfigured(): boolean {
+  const apiKey = process.env.PADDLE_API_KEY;
+  const environment =
+    process.env.PADDLE_ENVIRONMENT ??
+    process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT;
+
+  return Boolean(apiKey && environment && VALID_ENVIRONMENTS.has(environment));
+}

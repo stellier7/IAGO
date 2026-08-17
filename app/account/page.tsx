@@ -8,7 +8,9 @@ import {
   getSubscriptionsForCustomer,
   type CustomerRow,
 } from "@/lib/subscriptions/repository";
+import { isPaddleServerConfigured } from "@/lib/paddle/server";
 import { syncCustomerByEmail } from "@/lib/paddle/sync-state";
+import { isDatabaseConnectionError } from "@/lib/db/client";
 import {
   describeAccessStatus,
   subscriptionGrantsAccess,
@@ -29,17 +31,31 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   const error = searchParams?.error;
   let customer: CustomerRow | null = null;
   let databaseError: string | null = null;
+  let syncError: string | null = null;
 
   try {
     customer = await getCustomerByEmail(session.email);
-
-    if (!customer) {
-      customer = await syncCustomerByEmail(session.email);
-    }
   } catch (error) {
     console.error("[account] Database lookup failed:", error);
-    databaseError =
-      "No pudimos conectar con la base de datos. Si acabas de crear Postgres, ejecuta la migración (npm run db:migrate).";
+    if (isDatabaseConnectionError(error)) {
+      databaseError =
+        "No pudimos conectar con la base de datos. Verifica que POSTGRES_URL esté configurado en Vercel y que las tablas existan (npm run db:migrate).";
+    } else {
+      databaseError =
+        "No pudimos leer tu cuenta en la base de datos. Revisa la configuración de Postgres.";
+    }
+  }
+
+  if (!customer && !databaseError) {
+    customer = await syncCustomerByEmail(session.email);
+
+    if (!customer && isPaddleServerConfigured()) {
+      syncError =
+        "No encontramos una cuenta de Paddle con este email todavía. Usa el mismo email con el que pagaste.";
+    } else if (!customer && !isPaddleServerConfigured()) {
+      syncError =
+        "Paddle no está configurado en el servidor (PADDLE_API_KEY). No podemos sincronizar tu compra todavía.";
+    }
   }
 
   return (
@@ -58,6 +74,12 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </p>
           )}
 
+          {syncError && (
+            <p className="mt-6 rounded-xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">
+              {syncError}
+            </p>
+          )}
+
           {error === "no-customer" && (
             <p className="mt-6 rounded-xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">
               No encontramos una cuenta de Paddle con este email todavía. Si
@@ -65,7 +87,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </p>
           )}
 
-          {!databaseError && !customer ? (
+          {!databaseError && !syncError && !customer ? (
             <div className="mt-8 rounded-2xl border border-ink-line/15 bg-white p-8">
               <p className="text-sm text-mute">
                 Aún no hay datos sincronizados para este email.
