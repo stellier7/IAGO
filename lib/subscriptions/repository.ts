@@ -80,33 +80,33 @@ export async function upsertSubscriptionRecord(
 export async function getCustomerByEmail(
   email: string,
 ): Promise<CustomerRow | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT customer_id, email, created_at, updated_at
     FROM customers
     WHERE LOWER(email) = LOWER(${email})
     LIMIT 1
   `;
 
-  return (result.rows[0] as CustomerRow | undefined) ?? null;
+  return (rows[0] as CustomerRow | undefined) ?? null;
 }
 
 export async function getCustomerById(
   customerId: string,
 ): Promise<CustomerRow | null> {
-  const result = await sql`
+  const rows = await sql`
     SELECT customer_id, email, created_at, updated_at
     FROM customers
     WHERE customer_id = ${customerId}
     LIMIT 1
   `;
 
-  return (result.rows[0] as CustomerRow | undefined) ?? null;
+  return (rows[0] as CustomerRow | undefined) ?? null;
 }
 
 export async function getSubscriptionsForCustomer(
   customerId: string,
 ): Promise<SubscriptionRow[]> {
-  const result = await sql`
+  const rows = await sql`
     SELECT
       subscription_id,
       customer_id,
@@ -122,11 +122,11 @@ export async function getSubscriptionsForCustomer(
     ORDER BY updated_at DESC
   `;
 
-  return result.rows as SubscriptionRow[];
+  return rows as unknown as SubscriptionRow[];
 }
 
 export async function customerHasAccess(customerId: string): Promise<boolean> {
-  const result = await sql`
+  const rows = await sql`
     SELECT EXISTS (
       SELECT 1
       FROM subscriptions
@@ -135,5 +135,5 @@ export async function customerHasAccess(customerId: string): Promise<boolean> {
     ) AS has_access
   `;
 
-  return Boolean(result.rows[0]?.has_access);
+  return Boolean((rows[0] as { has_access: boolean } | undefined)?.has_access);
 }

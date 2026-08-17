@@ -6,15 +6,33 @@
  * Usage: PADDLE_API_KEY=... PADDLE_ENVIRONMENT=sandbox POSTGRES_URL=... node scripts/backfill-paddle-state.mjs
  */
 import { Environment, Paddle } from "@paddle/paddle-node-sdk";
-import { sql } from "@vercel/postgres";
+import postgres from "postgres";
 
 const apiKey = process.env.PADDLE_API_KEY;
 const environmentName = process.env.PADDLE_ENVIRONMENT ?? "sandbox";
+const connectionString =
+  process.env.POSTGRES_URL ??
+  process.env.DATABASE_URL ??
+  process.env.POSTGRES_URL_NON_POOLING;
 
 if (!apiKey) {
   console.error("PADDLE_API_KEY is required");
   process.exit(1);
 }
+
+if (!connectionString) {
+  console.error("POSTGRES_URL (or DATABASE_URL) is required");
+  process.exit(1);
+}
+
+const isSupabase =
+  connectionString.includes("supabase.com") ||
+  connectionString.includes("pooler.supabase");
+
+const sql = postgres(connectionString, {
+  prepare: false,
+  ssl: isSupabase ? "require" : undefined,
+});
 
 const paddle = new Paddle(apiKey, {
   environment:
@@ -41,7 +59,9 @@ async function upsertSubscription(subscription) {
   const productId = item?.price?.productId ?? item?.product?.id;
 
   if (!priceId || !productId) {
-    console.warn(`Skipping subscription ${subscription.id} — missing price/product`);
+    console.warn(
+      `Skipping subscription ${subscription.id} — missing price/product`,
+    );
     return;
   }
 
@@ -91,10 +111,12 @@ async function main() {
     console.log(`Subscription ${subscription.id} ${subscription.status}`);
   }
 
+  await sql.end();
   console.log("Backfill complete.");
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error("Backfill failed:", error);
+  await sql.end().catch(() => undefined);
   process.exit(1);
 });
