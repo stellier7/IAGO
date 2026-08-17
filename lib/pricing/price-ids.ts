@@ -52,15 +52,61 @@ function resolvePaddleBillingEnvironment(): "sandbox" | "production" {
   return environment === "production" ? "production" : "sandbox";
 }
 
-function readProductionPriceId(envKey: string, label: string): string {
+function readProductionPriceId(envKey: string): string | null {
   const value = process.env[envKey]?.trim();
-  if (!value) {
-    throw new Error(
-      `${envKey} is required when PADDLE_ENVIRONMENT=production (${label}). ` +
-        "Run scripts/create-paddle-catalog-live.sh and add the printed price IDs to Vercel.",
-    );
+  return value || null;
+}
+
+function readLiveCatalogJson(): Record<PlanKey, PlanPriceIds> | null {
+  const raw = process.env.PADDLE_LIVE_CATALOG_JSON?.trim();
+  if (!raw) {
+    return null;
   }
-  return value;
+
+  try {
+    const parsed = JSON.parse(raw) as Record<string, Partial<PlanPriceIds>>;
+    const plans: PlanKey[] = ["basico", "seo", "ia"];
+    const catalog = {} as Record<PlanKey, PlanPriceIds>;
+
+    for (const plan of plans) {
+      const entry = parsed[plan];
+      if (!entry?.month || !entry?.year || !entry?.developmentFee) {
+        return null;
+      }
+      catalog[plan] = {
+        month: entry.month,
+        year: entry.year,
+        developmentFee: entry.developmentFee,
+      };
+    }
+
+    return catalog;
+  } catch {
+    return null;
+  }
+}
+
+function readProductionPriceIdsFromEnv(): Record<PlanKey, PlanPriceIds> | null {
+  const jsonCatalog = readLiveCatalogJson();
+  if (jsonCatalog) {
+    return jsonCatalog;
+  }
+
+  const catalog = {} as Record<PlanKey, PlanPriceIds>;
+  for (const plan of Object.keys(PRODUCTION_ENV_KEYS) as PlanKey[]) {
+    const keys = PRODUCTION_ENV_KEYS[plan];
+    const month = readProductionPriceId(keys.month);
+    const year = readProductionPriceId(keys.year);
+    const developmentFee = readProductionPriceId(keys.developmentFee);
+
+    if (!month || !year || !developmentFee) {
+      return null;
+    }
+
+    catalog[plan] = { month, year, developmentFee };
+  }
+
+  return catalog;
 }
 
 export function getPlanPriceIds(plan: PlanKey): PlanPriceIds {
@@ -68,15 +114,22 @@ export function getPlanPriceIds(plan: PlanKey): PlanPriceIds {
     return SANDBOX_PRICE_IDS[plan];
   }
 
-  const keys = PRODUCTION_ENV_KEYS[plan];
-  return {
-    month: readProductionPriceId(keys.month, `${plan} monthly`),
-    year: readProductionPriceId(keys.year, `${plan} annual`),
-    developmentFee: readProductionPriceId(
-      keys.developmentFee,
-      `${plan} development fee`,
-    ),
-  };
+  const productionCatalog = readProductionPriceIdsFromEnv();
+  if (!productionCatalog) {
+    throw new Error(
+      "Live price IDs are not configured. Set PADDLE_LIVE_CATALOG_JSON or the nine PADDLE_PRICE_* variables in Vercel Production.",
+    );
+  }
+
+  return productionCatalog[plan];
+}
+
+export function hasProductionPriceIdsConfigured(): boolean {
+  if (resolvePaddleBillingEnvironment() !== "production") {
+    return true;
+  }
+
+  return readProductionPriceIdsFromEnv() !== null;
 }
 
 export function getAllPlanPriceIds(): Record<PlanKey, PlanPriceIds> {
