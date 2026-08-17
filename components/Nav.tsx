@@ -34,9 +34,12 @@ export default function Nav() {
       <div className="mx-auto flex max-w-content items-center justify-between px-6">
         <a
           href="#"
-          className="font-display text-lg font-bold tracking-tightest text-ink"
+          className={`font-display text-lg font-bold tracking-tightest transition-colors duration-300 ${
+            scrolled ? "text-ink" : "text-bone"
+          }`}
         >
-          IAGO<span className="text-coral">.</span>
+          iA<span className="text-coral">GO</span>
+          <span className="text-coral">.</span>
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -14,12 +14,11 @@ import {
   letterFromRight,
   slideFromLeftBlur,
   lineSlideFromLeft,
-  staggerLines,
   staggerLettersLeft,
   staggerLettersRight,
 } from "@/lib/motion-variants";
 
-const IAGO_LETTERS = ["I", "A", "G", "O"] as const;
+const IAGO_LETTERS = ["i", "A", "G", "O"] as const;
 
 const DIGITAL_LETTERS = "Digital".split("");
 
@@ -29,37 +28,45 @@ const SUBHEAD_LINES = [
   "para que te enfoques en crecer.",
 ] as const;
 
-const BUTTON_ENTRANCE_DELAY = 1.75;
-const BUTTON_STAGGER = 0.14;
-const BUTTON_DURATION = 1.05;
+// Hero copy entrance chain: tagline → subhead → buttons
+const TAGLINE_DELAY = 0.4;
+const TAGLINE_DURATION = 0.65;
+const SUBHEAD_DELAY = TAGLINE_DELAY + TAGLINE_DURATION + 0.04;
+const SUBHEAD_STAGGER = 0.1;
+const SUBHEAD_LINE_DURATION = 0.5;
+const BUTTON_ENTRANCE_DELAY =
+  SUBHEAD_DELAY + SUBHEAD_STAGGER * (SUBHEAD_LINES.length - 1) + SUBHEAD_LINE_DURATION + 0.04;
+const BUTTON_STAGGER = 0.1;
+const BUTTON_DURATION = 0.55;
 const BUTTON_TRANSITION = {
   type: "tween" as const,
-  ease: [0, 0, 1, 1] as [number, number, number, number],
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
   duration: BUTTON_DURATION,
+};
+
+const heroStaggerLines = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: SUBHEAD_STAGGER,
+      delayChildren: SUBHEAD_DELAY,
+    },
+  },
 };
 
 function HeroButtons({ paused }: { paused: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [entryY, setEntryY] = useState<number | null>(null);
+  const [buttonsInteractive, setButtonsInteractive] = useState(paused);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (paused) return;
 
-    const measure = () => {
-      if (!ref.current) return;
-      const { top, height } = ref.current.getBoundingClientRect();
-      const viewportHeight =
-        window.visualViewport?.height ?? window.innerHeight;
-      setEntryY(viewportHeight - top + height + 16);
-    };
+    const id = window.setTimeout(
+      () => setButtonsInteractive(true),
+      BUTTON_ENTRANCE_DELAY * 1000,
+    );
 
-    measure();
-    window.visualViewport?.addEventListener("resize", measure);
-    window.addEventListener("resize", measure);
-    return () => {
-      window.visualViewport?.removeEventListener("resize", measure);
-      window.removeEventListener("resize", measure);
-    };
+    return () => window.clearTimeout(id);
   }, [paused]);
 
   const buttonClass = {
@@ -83,46 +90,44 @@ function HeroButtons({ paused }: { paused: boolean }) {
   }
 
   return (
-    <div ref={ref} className="mt-10 flex flex-wrap gap-4">
-      {entryY === null ? (
-        <>
-          <span className={`${buttonClass.primary} opacity-0`} aria-hidden>
-            Empezar un proyecto
-          </span>
-          <span className={`${buttonClass.secondary} opacity-0`} aria-hidden>
-            Ver casos
-          </span>
-        </>
-      ) : (
-        <>
-          <motion.a
-            href="#contacto"
-            initial={{ y: entryY }}
-            animate={{ y: 0 }}
-            whileHover={{ scale: 1.02 }}
-            transition={{
-              y: { ...BUTTON_TRANSITION, delay: BUTTON_ENTRANCE_DELAY },
-              scale: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
-            }}
-            className={buttonClass.primary}
-          >
-            Empezar un proyecto
-          </motion.a>
-          <motion.a
-            href="#trabajo"
-            initial={{ y: entryY }}
-            animate={{ y: 0 }}
-            whileHover={{ scale: 1.02 }}
-            transition={{
-              y: { ...BUTTON_TRANSITION, delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER },
-              scale: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
-            }}
-            className={buttonClass.secondary}
-          >
-            Ver casos
-          </motion.a>
-        </>
-      )}
+    <div
+      ref={ref}
+      className={`mt-10 flex flex-wrap gap-4${buttonsInteractive ? "" : " pointer-events-none"}`}
+    >
+      <motion.a
+        href="#contacto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02 }}
+        transition={{
+          opacity: { ...BUTTON_TRANSITION, delay: BUTTON_ENTRANCE_DELAY },
+          y: { ...BUTTON_TRANSITION, delay: BUTTON_ENTRANCE_DELAY },
+          scale: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+        }}
+        className={buttonClass.primary}
+      >
+        Empezar un proyecto
+      </motion.a>
+      <motion.a
+        href="#trabajo"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02 }}
+        transition={{
+          opacity: {
+            ...BUTTON_TRANSITION,
+            delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
+          },
+          y: {
+            ...BUTTON_TRANSITION,
+            delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
+          },
+          scale: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+        }}
+        className={buttonClass.secondary}
+      >
+        Ver casos
+      </motion.a>
     </div>
   );
 }
@@ -207,7 +212,7 @@ export default function Hero() {
             {prefersReducedMotion ? (
               <>
                 <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
-                  IAG<span className="text-coral">O</span>
+                  iA<span className="text-coral">GO</span>
                 </span>
                 <span className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral">
                   Digital
@@ -221,13 +226,13 @@ export default function Hero() {
                     variants={staggerLettersLeft}
                     initial="hidden"
                     animate="visible"
-                    aria-label="IAGO"
+                    aria-label="iAGO"
                   >
                     {IAGO_LETTERS.map((char) => (
                       <motion.span
                         key={char}
                         variants={letterFromLeft}
-                        className={`inline-block ${char === "O" ? "text-coral" : ""}`}
+                        className={`inline-block ${char === "G" || char === "O" ? "text-coral" : ""}`}
                         aria-hidden
                       >
                         {char}
@@ -267,7 +272,7 @@ export default function Hero() {
                   variants={slideFromLeftBlur}
                   initial="hidden"
                   animate="visible"
-                  transition={{ delay: 0.55 }}
+                  transition={{ delay: TAGLINE_DELAY, duration: TAGLINE_DURATION }}
                   className="block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone"
                 >
                   Desarrollo web, SEO y automatizaciones con IA
@@ -282,7 +287,7 @@ export default function Hero() {
               </p>
             ) : (
               <motion.div
-                variants={staggerLines}
+                variants={heroStaggerLines}
                 initial="hidden"
                 animate="visible"
                 aria-label={SUBHEAD_LINES.join(" ")}
@@ -291,6 +296,7 @@ export default function Hero() {
                   <div key={line} className="overflow-hidden">
                     <motion.span
                       variants={lineSlideFromLeft}
+                      transition={{ duration: SUBHEAD_LINE_DURATION }}
                       className="block"
                       aria-hidden
                     >
