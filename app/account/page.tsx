@@ -8,6 +8,7 @@ import {
   getSubscriptionsForCustomer,
   type CustomerRow,
 } from "@/lib/subscriptions/repository";
+import { syncCustomerByEmail } from "@/lib/paddle/sync-state";
 import {
   describeAccessStatus,
   subscriptionGrantsAccess,
@@ -31,6 +32,10 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   try {
     customer = await getCustomerByEmail(session.email);
+
+    if (!customer) {
+      customer = await syncCustomerByEmail(session.email);
+    }
   } catch (error) {
     console.error("[account] Database lookup failed:", error);
     databaseError =

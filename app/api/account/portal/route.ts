@@ -5,6 +5,7 @@ import {
   getSubscriptionsForCustomer,
 } from "@/lib/subscriptions/repository";
 import { getPaddleServerClient } from "@/lib/paddle/server";
+import { syncCustomerByEmail } from "@/lib/paddle/sync-state";
 
 export async function GET(request: Request): Promise<Response> {
   const origin = new URL(request.url).origin;
@@ -14,7 +15,11 @@ export async function GET(request: Request): Promise<Response> {
     return NextResponse.redirect(new URL("/login?next=/account", origin));
   }
 
-  const customer = await getCustomerByEmail(session.email);
+  let customer = await getCustomerByEmail(session.email);
+
+  if (!customer) {
+    customer = await syncCustomerByEmail(session.email);
+  }
 
   if (!customer) {
     return NextResponse.redirect(new URL("/account?error=no-customer", origin));
