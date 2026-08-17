@@ -36,7 +36,8 @@ export default function Nav() {
           href="#"
           className="font-display text-lg font-bold tracking-tightest text-ink"
         >
-          IAGO<span className="text-coral">.</span>
+          iA<span className="text-coral">GO</span>
+          <span className="text-coral">.</span>
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (

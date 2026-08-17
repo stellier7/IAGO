@@ -19,7 +19,7 @@ import {
   staggerLettersRight,
 } from "@/lib/motion-variants";
 
-const IAGO_LETTERS = ["I", "A", "G", "O"] as const;
+const IAGO_LETTERS = ["i", "A", "G", "O"] as const;
 
 const DIGITAL_LETTERS = "Digital".split("");
 
@@ -207,7 +207,7 @@ export default function Hero() {
             {prefersReducedMotion ? (
               <>
                 <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
-                  IAG<span className="text-coral">O</span>
+                  iA<span className="text-coral">GO</span>
                 </span>
                 <span className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral">
                   Digital
@@ -221,13 +221,13 @@ export default function Hero() {
                     variants={staggerLettersLeft}
                     initial="hidden"
                     animate="visible"
-                    aria-label="IAGO"
+                    aria-label="iAGO"
                   >
                     {IAGO_LETTERS.map((char) => (
                       <motion.span
                         key={char}
                         variants={letterFromLeft}
-                        className={`inline-block ${char === "O" ? "text-coral" : ""}`}
+                        className={`inline-block ${char === "G" || char === "O" ? "text-coral" : ""}`}
                         aria-hidden
                       >
                         {char}
