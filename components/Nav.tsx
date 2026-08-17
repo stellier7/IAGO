@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const links = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#trabajo", label: "Trabajo" },
-  { href: "#proceso", label: "Proceso" },
-  { href: "#contacto", label: "Contacto" },
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/#trabajo", label: "Trabajo" },
+  { href: "/#proceso", label: "Proceso" },
+  { href: "/pricing", label: "Precios" },
+  { href: "/#contacto", label: "Contacto" },
 ];
 
-export default function Nav() {
+interface NavProps {
+  /** Use on light (bone) pages instead of the dark hero. */
+  variant?: "dark" | "light";
+}
+
+export default function Nav({ variant = "dark" }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,22 +26,24 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const isLight = variant === "light" || scrolled;
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
+        isLight
           ? "border-b border-ink-line/10 bg-bone/80 py-3 backdrop-blur-md"
           : "bg-transparent py-5"
       }`}
     >
       <div className="mx-auto flex max-w-content items-center justify-between px-6">
         <a
-          href="#"
+          href="/"
           className={`font-display text-lg font-bold tracking-tightest transition-colors duration-300 ${
-            scrolled ? "text-ink" : "text-bone"
+            isLight ? "text-ink" : "text-bone"
           }`}
         >
           iA<span className="text-coral">GO</span>
@@ -53,7 +61,7 @@ export default function Nav() {
           ))}
         </nav>
         <a
-          href="#contacto"
+          href="/#contacto"
           className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone transition hover:bg-coral"
         >
           Hablemos
