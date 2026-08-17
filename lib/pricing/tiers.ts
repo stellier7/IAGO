@@ -1,3 +1,5 @@
+import { getPlanPriceIds, type PlanKey } from "@/lib/pricing/price-ids";
+
 export interface Tier {
   name: "Basico" | "SEO" | "Automatizado con IA";
   displayName: string;
@@ -17,8 +19,16 @@ export interface ContactTier {
   contactLabel: string;
 }
 
-export const PRICING_TIERS: Tier[] = [
+const TIER_DEFINITIONS: Array<{
+  planKey: PlanKey;
+  name: Tier["name"];
+  displayName: string;
+  description: string;
+  features: string[];
+  highlighted?: boolean;
+}> = [
   {
+    planKey: "basico",
     name: "Basico",
     displayName: "Básico",
     description: "Sitio web esencial con hosting y soporte continuo.",
@@ -28,13 +38,9 @@ export const PRICING_TIERS: Tier[] = [
       "Formulario de contacto",
       "Soporte por email",
     ],
-    priceId: {
-      month: "pri_01m06ra6ta5hf6s6yt1rpavre4",
-      year: "pri_01m06ra6xj3r9fx0t98jvswfzp",
-    },
-    developmentFeePriceId: "pri_01m06ra70eba00jzjwd2v9dfzm",
   },
   {
+    planKey: "seo",
     name: "SEO",
     displayName: "SEO",
     description: "Sitio optimizado para buscadores y mayor visibilidad.",
@@ -44,14 +50,10 @@ export const PRICING_TIERS: Tier[] = [
       "Google Search Console y Analytics",
       "Informe mensual de rendimiento",
     ],
-    priceId: {
-      month: "pri_01m06ra77pdkpdc70t9rsjt8n9",
-      year: "pri_01m06ra7ahhj5kdkbhwj3krxnm",
-    },
-    developmentFeePriceId: "pri_01m06ra7depc2jhfjh9nf1sh9x",
     highlighted: true,
   },
   {
+    planKey: "ia",
     name: "Automatizado con IA",
     displayName: "Automatizado con IA",
     description: "Sitio inteligente con automatización y flujos con IA.",
@@ -61,13 +63,26 @@ export const PRICING_TIERS: Tier[] = [
       "Automatización de leads y CRM",
       "Integraciones personalizadas",
     ],
-    priceId: {
-      month: "pri_01m06ra7m02aedptextmasy2t6",
-      year: "pri_01m06ra7q0bdygh9ny3hqmfrxh",
-    },
-    developmentFeePriceId: "pri_01m06ra7stggeyg67c6j9rhw5k",
   },
 ];
+
+export function getPricingTiers(): Tier[] {
+  return TIER_DEFINITIONS.map((definition) => {
+    const priceIds = getPlanPriceIds(definition.planKey);
+    return {
+      name: definition.name,
+      displayName: definition.displayName,
+      description: definition.description,
+      features: definition.features,
+      highlighted: definition.highlighted,
+      priceId: {
+        month: priceIds.month,
+        year: priceIds.year,
+      },
+      developmentFeePriceId: priceIds.developmentFee,
+    };
+  });
+}
 
 export const CONTACT_TIER: ContactTier = {
   name: "A medida",
@@ -89,8 +104,11 @@ export type BillingCycle = "month" | "year";
 /** Free hosting months before the first subscription charge (Paddle trial_period). */
 export const SUBSCRIPTION_TRIAL_MONTHS = 2;
 
-export function getPriceIdsForCycle(cycle: BillingCycle): string[] {
-  return PRICING_TIERS.flatMap((tier) => [
+export function getPriceIdsForCycle(
+  tiers: Tier[],
+  cycle: BillingCycle,
+): string[] {
+  return tiers.flatMap((tier) => [
     cycle === "month" ? tier.priceId.month : tier.priceId.year,
     tier.developmentFeePriceId,
   ]);
@@ -103,8 +121,11 @@ export function getSubscriptionPriceId(
   return cycle === "month" ? tier.priceId.month : tier.priceId.year;
 }
 
-export function findTierByPriceId(priceId: string): Tier | undefined {
-  return PRICING_TIERS.find(
+export function findTierByPriceId(
+  tiers: Tier[],
+  priceId: string,
+): Tier | undefined {
+  return tiers.find(
     (tier) =>
       tier.priceId.month === priceId ||
       tier.priceId.year === priceId ||

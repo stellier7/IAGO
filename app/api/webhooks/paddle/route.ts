@@ -1,14 +1,42 @@
 import { NextResponse } from "next/server";
 import { dispatchPaddleWebhookEvent } from "@/lib/paddle/webhooks/router";
 import {
+  getPaddleEnvironmentName,
   getPaddleServerClient,
   getPaddleWebhookSecret,
 } from "@/lib/paddle/server";
+import {
+  getClientIpFromRequest,
+  isAllowedPaddleWebhookIp,
+} from "@/lib/paddle/webhook-ip-allowlist";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request): Promise<Response> {
+  if (getPaddleEnvironmentName() === "production") {
+    const clientIp = getClientIpFromRequest(request);
+
+    if (!clientIp) {
+      return NextResponse.json({ error: "Unable to determine client IP" }, {
+        status: 403,
+      });
+    }
+
+    try {
+      const allowed = await isAllowedPaddleWebhookIp(clientIp);
+      if (!allowed) {
+        console.warn("[paddle] Rejected webhook from non-Paddle IP:", clientIp);
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+    } catch (error) {
+      console.error("[paddle] Webhook IP allowlist check failed:", error);
+      return NextResponse.json({ error: "Webhook IP verification failed" }, {
+        status: 503,
+      });
+    }
+  }
+
   const signature = request.headers.get("paddle-signature");
 
   if (!signature) {

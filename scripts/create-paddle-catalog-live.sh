@@ -172,3 +172,50 @@ done
 
 echo "Done. Results written to ${RESULTS_FILE}" >&2
 cat "$RESULTS_FILE" | jq .
+
+echo "" >&2
+echo "Add these to Vercel Production (PADDLE_ENVIRONMENT=production):" >&2
+node - "$RESULTS_FILE" <<'NODE'
+const fs = require("fs");
+const results = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+const byKey = {};
+for (const entry of results) {
+  if (entry.type === "price") {
+    byKey[entry.key] ??= {};
+    byKey[entry.key][entry.price_type] = entry.id;
+  }
+}
+const envMap = {
+  basico: {
+    month: "PADDLE_PRICE_BASICO_MONTH",
+    monthly: "PADDLE_PRICE_BASICO_MONTH",
+    annual: "PADDLE_PRICE_BASICO_YEAR",
+    year: "PADDLE_PRICE_BASICO_YEAR",
+    development_fee: "PADDLE_PRICE_BASICO_DEV",
+  },
+  seo: {
+    month: "PADDLE_PRICE_SEO_MONTH",
+    monthly: "PADDLE_PRICE_SEO_MONTH",
+    annual: "PADDLE_PRICE_SEO_YEAR",
+    year: "PADDLE_PRICE_SEO_YEAR",
+    development_fee: "PADDLE_PRICE_SEO_DEV",
+  },
+  ia: {
+    month: "PADDLE_PRICE_IA_MONTH",
+    monthly: "PADDLE_PRICE_IA_MONTH",
+    annual: "PADDLE_PRICE_IA_YEAR",
+    year: "PADDLE_PRICE_IA_YEAR",
+    development_fee: "PADDLE_PRICE_IA_DEV",
+  },
+};
+const printed = new Set();
+for (const [key, prices] of Object.entries(byKey)) {
+  for (const [priceType, priceId] of Object.entries(prices)) {
+    const envKey = envMap[key]?.[priceType];
+    if (envKey && !printed.has(envKey)) {
+      console.log(`${envKey}=${priceId}`);
+      printed.add(envKey);
+    }
+  }
+}
+NODE

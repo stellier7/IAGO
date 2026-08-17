@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { initializePaddle, type Paddle } from "@paddle/paddle-js";
 import {
   CONTACT_TIER,
-  PRICING_TIERS,
   SUBSCRIPTION_TRIAL_MONTHS,
   type BillingCycle,
   type Tier,
@@ -14,8 +13,10 @@ import {
 import { getPaddleClientConfig } from "@/lib/paddle/config";
 
 interface PricingCardsProps {
+  tiers: Tier[];
   countryCode?: string;
   customerEmail?: string | null;
+  paddleCustomerId?: string | null;
 }
 
 type PriceMap = Record<string, string>;
@@ -46,8 +47,10 @@ function PriceSkeleton({ highlighted }: { highlighted?: boolean }) {
 }
 
 export default function PricingCards({
+  tiers,
   countryCode,
   customerEmail,
+  paddleCustomerId,
 }: PricingCardsProps) {
   const [paddle, setPaddle] = useState<Paddle>();
   const [billingCycle, setBillingCycle] = useState<BillingCycle>("month");
@@ -64,6 +67,7 @@ export default function PricingCards({
     initializePaddle({
       environment: paddleConfig.environment,
       token: paddleConfig.token,
+      ...(paddleCustomerId ? { pwCustomer: { id: paddleCustomerId } } : {}),
     }).then((instance) => {
       if (!cancelled && instance) {
         setPaddle(instance);
@@ -73,7 +77,7 @@ export default function PricingCards({
     return () => {
       cancelled = true;
     };
-  }, [paddleConfig.environment, paddleConfig.token]);
+  }, [paddleConfig.environment, paddleConfig.token, paddleCustomerId]);
 
   const fetchPrices = useCallback(
     async (cycle: BillingCycle) => {
@@ -84,7 +88,7 @@ export default function PricingCards({
       setLoading(true);
       setError(null);
 
-      const priceIds = getPriceIdsForCycle(cycle);
+      const priceIds = getPriceIdsForCycle(tiers, cycle);
       const request: Parameters<Paddle["PricePreview"]>[0] = {
         items: priceIds.map((priceId) => ({ priceId, quantity: 1 })),
       };
@@ -103,7 +107,7 @@ export default function PricingCards({
         setLoading(false);
       }
     },
-    [countryCode, paddle],
+    [countryCode, paddle, tiers],
   );
 
   useEffect(() => {
@@ -179,7 +183,7 @@ export default function PricingCards({
       )}
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {PRICING_TIERS.map((tier) => {
+        {tiers.map((tier) => {
           const subscriptionPriceId = getSubscriptionPriceId(
             tier,
             billingCycle,

@@ -3,7 +3,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PricingCards from "@/components/pricing/PricingCards";
 import { getSignedInCustomerEmail } from "@/lib/auth/get-customer-email";
+import { getSignedInPaddleCustomerId } from "@/lib/auth/get-paddle-customer-id";
 import { getCountryCodeFromHeaders } from "@/lib/geo/country-code";
+import { getPricingTiers } from "@/lib/pricing/tiers";
 
 export const metadata: Metadata = {
   title: "Planes y precios — IAGO Digital",
@@ -14,6 +16,8 @@ export const metadata: Metadata = {
 export default async function PricingPage() {
   const countryCode = getCountryCodeFromHeaders();
   const customerEmail = await getSignedInCustomerEmail();
+  const paddleCustomerId = await getSignedInPaddleCustomerId();
+  const tiers = getPricingTiers();
 
   return (
     <>
@@ -33,8 +37,10 @@ export default async function PricingPage() {
         </div>
 
         <PricingCards
+          tiers={tiers}
           countryCode={countryCode}
           customerEmail={customerEmail}
+          paddleCustomerId={paddleCustomerId}
         />
       </main>
       <Footer />
