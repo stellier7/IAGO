@@ -1,4 +1,12 @@
-import { getPaddleServerClient, isPaddleServerConfigured } from "@/lib/paddle/server";
+import {
+  getPaddleServerClient,
+  getPaddleEnvironmentName,
+  isPaddleServerConfigured,
+} from "@/lib/paddle/server";
+import {
+  findPaddleCustomerByEmail,
+  getPaddleSyncDiagnostic,
+} from "@/lib/paddle/find-customer";
 import {
   getCustomerByEmail,
   upsertCustomerRecord,
@@ -71,6 +79,14 @@ export async function mirrorSubscriptionById(
   await mirrorPaddleSubscription(subscription);
 }
 
+export interface SyncCustomerResult {
+  customer: CustomerRow | null;
+  diagnostic: {
+    environment: string;
+    paddleCustomerCount: number;
+  } | null;
+}
+
 /**
  * Pull a Paddle customer (and their subscriptions) into Postgres by email.
  * Used when webhooks missed the initial checkout sync.
@@ -78,36 +94,29 @@ export async function mirrorSubscriptionById(
 export async function syncCustomerByEmail(
   email: string,
 ): Promise<CustomerRow | null> {
+  const result = await syncCustomerByEmailDetailed(email);
+  return result.customer;
+}
+
+export async function syncCustomerByEmailDetailed(
+  email: string,
+): Promise<SyncCustomerResult> {
   if (!isPaddleServerConfigured()) {
     console.warn("[paddle/sync] Skipping sync — Paddle server env is not configured");
-    return null;
+    return { customer: null, diagnostic: null };
   }
-
-  const trimmedEmail = email.trim();
-  const normalizedEmail = trimmedEmail.toLowerCase();
 
   try {
     const paddle = getPaddleServerClient();
-
-    let matchedCustomer: { id: string; email: string } | null = null;
-
-    for (const candidate of new Set([trimmedEmail, normalizedEmail])) {
-      for await (const customer of paddle.customers.list({
-        email: [candidate],
-      })) {
-        if (customer.email.toLowerCase() === normalizedEmail) {
-          matchedCustomer = customer;
-          break;
-        }
-      }
-
-      if (matchedCustomer) {
-        break;
-      }
-    }
+    const environment = getPaddleEnvironmentName();
+    const matchedCustomer = await findPaddleCustomerByEmail(paddle, email);
+    const diagnostic = await getPaddleSyncDiagnostic(paddle, environment);
 
     if (!matchedCustomer) {
-      return null;
+      console.warn(
+        `[paddle/sync] No Paddle customer for ${email} (${diagnostic.paddleCustomerCount} customers in ${environment})`,
+      );
+      return { customer: null, diagnostic };
     }
 
     await mirrorPaddleCustomer(matchedCustomer.id, matchedCustomer.email);
@@ -125,10 +134,11 @@ export async function syncCustomerByEmail(
       }
     }
 
-    return getCustomerByEmail(email);
+    const customer = await getCustomerByEmail(email);
+    return { customer, diagnostic };
   } catch (error) {
     console.error("[paddle/sync] Failed to sync customer by email:", error);
-    return null;
+    return { customer: null, diagnostic: null };
   }
 }
 

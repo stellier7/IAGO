@@ -9,7 +9,7 @@ import {
   type CustomerRow,
 } from "@/lib/subscriptions/repository";
 import { isPaddleServerConfigured } from "@/lib/paddle/server";
-import { syncCustomerByEmail } from "@/lib/paddle/sync-state";
+import { syncCustomerByEmailDetailed } from "@/lib/paddle/sync-state";
 import { isDatabaseConnectionError } from "@/lib/db/client";
 import {
   describeAccessStatus,
@@ -47,11 +47,25 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   }
 
   if (!customer && !databaseError) {
-    customer = await syncCustomerByEmail(session.email);
+    const syncResult = await syncCustomerByEmailDetailed(session.email);
+    customer = syncResult.customer;
 
     if (!customer && isPaddleServerConfigured()) {
-      syncError =
-        "No encontramos una cuenta de Paddle con este email todavía. Usa el mismo email con el que pagaste.";
+      const paddleCustomers = syncResult.diagnostic?.paddleCustomerCount ?? null;
+      const environment =
+        syncResult.diagnostic?.environment ??
+        process.env.PADDLE_ENVIRONMENT ??
+        "sandbox";
+
+      if (paddleCustomers === 0) {
+        syncError =
+          `No hay clientes en tu cuenta Paddle (${environment}). ` +
+          "Confirma que PADDLE_API_KEY pertenece a la misma cuenta sandbox donde hiciste el checkout, " +
+          "y que NEXT_PUBLIC_PADDLE_CLIENT_TOKEN también es de esa cuenta.";
+      } else {
+        syncError =
+          "No encontramos una cuenta de Paddle con este email. Usa el mismo email con el que pagaste en checkout.";
+      }
     } else if (!customer && !isPaddleServerConfigured()) {
       syncError =
         "Paddle no está configurado en el servidor (PADDLE_API_KEY). No podemos sincronizar tu compra todavía.";
