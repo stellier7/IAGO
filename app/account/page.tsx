@@ -64,8 +64,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         if (paddleCustomers === 0 || syncedCustomers === 0) {
           syncError =
             `No hay clientes en tu cuenta Paddle (${environment}). ` +
-            "Confirma que PADDLE_API_KEY pertenece a la misma cuenta sandbox donde hiciste el checkout, " +
-            "y que NEXT_PUBLIC_PADDLE_CLIENT_TOKEN también es de esa cuenta.";
+            "Confirma que PADDLE_API_KEY y NEXT_PUBLIC_PADDLE_CLIENT_TOKEN pertenecen a la misma cuenta Paddle " +
+            `(actualmente configurada como ${environment}).`;
         } else {
           syncError =
             `Sincronizamos ${syncedCustomers} cliente(s) desde Paddle, pero ninguno coincide con ${session.email}. ` +

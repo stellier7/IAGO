@@ -3,7 +3,12 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PricingCards from "@/components/pricing/PricingCards";
 import { getSignedInCustomerEmail } from "@/lib/auth/get-customer-email";
+import { getSignedInPaddleCustomerId } from "@/lib/auth/get-paddle-customer-id";
 import { getCountryCodeFromHeaders } from "@/lib/geo/country-code";
+import {
+  getPricingConfigIssue,
+  getPricingTiersOrNull,
+} from "@/lib/pricing/validate-config";
 
 export const metadata: Metadata = {
   title: "Planes y precios — IAGO Digital",
@@ -14,6 +19,9 @@ export const metadata: Metadata = {
 export default async function PricingPage() {
   const countryCode = getCountryCodeFromHeaders();
   const customerEmail = await getSignedInCustomerEmail();
+  const paddleCustomerId = await getSignedInPaddleCustomerId();
+  const configIssue = getPricingConfigIssue();
+  const tiers = getPricingTiersOrNull();
 
   return (
     <>
@@ -32,10 +40,40 @@ export default async function PricingPage() {
           </p>
         </div>
 
-        <PricingCards
-          countryCode={countryCode}
-          customerEmail={customerEmail}
-        />
+        {configIssue ? (
+          <div className="mx-auto max-w-2xl px-6">
+            <div
+              className="rounded-2xl border border-coral/30 bg-coral/10 px-6 py-5 text-left"
+              role="alert"
+            >
+              <p className="font-medium text-coral">{configIssue.message}</p>
+              <p className="mt-2 text-sm text-ink">{configIssue.detail}</p>
+              <p className="mt-4 text-sm text-mute">
+                Mientras configuras live, puedes volver temporalmente a sandbox
+                en Vercel Production:{" "}
+                <code className="rounded bg-white px-1.5 py-0.5 text-xs">
+                  NEXT_PUBLIC_PADDLE_ENVIRONMENT=sandbox
+                </code>
+                , token{" "}
+                <code className="rounded bg-white px-1.5 py-0.5 text-xs">
+                  test_...
+                </code>
+                , y{" "}
+                <code className="rounded bg-white px-1.5 py-0.5 text-xs">
+                  PADDLE_ENVIRONMENT=sandbox
+                </code>
+                .
+              </p>
+            </div>
+          </div>
+        ) : tiers ? (
+          <PricingCards
+            tiers={tiers}
+            countryCode={countryCode}
+            customerEmail={customerEmail}
+            paddleCustomerId={paddleCustomerId}
+          />
+        ) : null}
       </main>
       <Footer />
     </>

@@ -10,12 +10,21 @@ export default function Footer() {
         <p className="text-sm text-mute">
           © {year} IAGO Digital. Todos los derechos reservados.
         </p>
-        <div className="flex gap-6 text-sm text-mute">
-          <a href="#servicios" className="transition hover:text-coral">
-            Servicios
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-mute">
+          <a href="/pricing" className="transition hover:text-coral">
+            Planes
           </a>
-          <a href="#contacto" className="transition hover:text-coral">
+          <a href="/#contacto" className="transition hover:text-coral">
             Contacto
+          </a>
+          <a href="/terms" className="transition hover:text-coral">
+            Términos
+          </a>
+          <a href="/privacy" className="transition hover:text-coral">
+            Privacidad
+          </a>
+          <a href="/refund" className="transition hover:text-coral">
+            Reembolsos
           </a>
         </div>
       </div>
