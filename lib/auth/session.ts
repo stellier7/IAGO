@@ -68,7 +68,11 @@ export async function getUserSession(): Promise<UserSession | null> {
     return null;
   }
 
-  return parseSessionToken(token);
+  try {
+    return parseSessionToken(token);
+  } catch {
+    return null;
+  }
 }
 
 export function sessionCookieOptions(token: string) {

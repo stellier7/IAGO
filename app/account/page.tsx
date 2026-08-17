@@ -6,6 +6,7 @@ import {
   customerHasAccess,
   getCustomerByEmail,
   getSubscriptionsForCustomer,
+  type CustomerRow,
 } from "@/lib/subscriptions/repository";
 import {
   describeAccessStatus,
@@ -24,8 +25,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     redirect("/login?next=/account");
   }
 
-  const customer = await getCustomerByEmail(session.email);
   const error = searchParams?.error;
+  let customer: CustomerRow | null = null;
+  let databaseError: string | null = null;
+
+  try {
+    customer = await getCustomerByEmail(session.email);
+  } catch (error) {
+    console.error("[account] Database lookup failed:", error);
+    databaseError =
+      "No pudimos conectar con la base de datos. Si acabas de crear Postgres, ejecuta la migración (npm run db:migrate).";
+  }
 
   return (
     <>
@@ -37,6 +47,12 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </h1>
           <p className="mt-2 text-mute">Sesión: {session.email}</p>
 
+          {databaseError && (
+            <p className="mt-6 rounded-xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">
+              {databaseError}
+            </p>
+          )}
+
           {error === "no-customer" && (
             <p className="mt-6 rounded-xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">
               No encontramos una cuenta de Paddle con este email todavía. Si
@@ -44,7 +60,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </p>
           )}
 
-          {!customer ? (
+          {!databaseError && !customer ? (
             <div className="mt-8 rounded-2xl border border-ink-line/15 bg-white p-8">
               <p className="text-sm text-mute">
                 Aún no hay datos sincronizados para este email.
@@ -56,9 +72,9 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                 Ver planes
               </Link>
             </div>
-          ) : (
+          ) : customer ? (
             <AccountDetails customerId={customer.customer_id} />
-          )}
+          ) : null}
         </div>
       </main>
       <Footer />
@@ -67,11 +83,28 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 }
 
 async function AccountDetails({ customerId }: { customerId: string }) {
-  const subscriptions = await getSubscriptionsForCustomer(customerId);
-  const hasAccess = await customerHasAccess(customerId);
+  let subscriptions: Awaited<ReturnType<typeof getSubscriptionsForCustomer>> =
+    [];
+  let hasAccess = false;
+  let databaseError: string | null = null;
+
+  try {
+    subscriptions = await getSubscriptionsForCustomer(customerId);
+    hasAccess = await customerHasAccess(customerId);
+  } catch (error) {
+    console.error("[account] Subscription lookup failed:", error);
+    databaseError =
+      "No pudimos cargar tus suscripciones. Verifica que la migración de base de datos se haya ejecutado.";
+  }
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
+      {databaseError && (
+        <p className="lg:col-span-2 rounded-xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">
+          {databaseError}
+        </p>
+      )}
+
       <section className="rounded-2xl border border-ink-line/15 bg-white p-8">
         <h2 className="font-display text-2xl font-bold tracking-tightest text-ink">
           Suscripciones
