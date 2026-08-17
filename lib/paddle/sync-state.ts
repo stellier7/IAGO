@@ -3,10 +3,8 @@ import {
   getPaddleEnvironmentName,
   isPaddleServerConfigured,
 } from "@/lib/paddle/server";
-import {
-  findPaddleCustomerByEmail,
-  getPaddleSyncDiagnostic,
-} from "@/lib/paddle/find-customer";
+import { findPaddleCustomerByEmail } from "@/lib/paddle/find-customer";
+import { describePaddleSyncError, type PaddleSyncError } from "@/lib/paddle/errors";
 import {
   getCustomerByEmail,
   upsertCustomerRecord,
@@ -106,6 +104,7 @@ export interface SyncCustomerResult {
     syncedCustomers: number;
     syncedSubscriptions: number;
   } | null;
+  syncError: PaddleSyncError | null;
 }
 
 /**
@@ -124,44 +123,82 @@ export async function syncCustomerByEmailDetailed(
 ): Promise<SyncCustomerResult> {
   if (!isPaddleServerConfigured()) {
     console.warn("[paddle/sync] Skipping sync — Paddle server env is not configured");
-    return { customer: null, diagnostic: null };
+    return {
+      customer: null,
+      diagnostic: null,
+      syncError: {
+        kind: "config",
+        message:
+          "PADDLE_API_KEY o PADDLE_ENVIRONMENT no están configurados en el servidor.",
+      },
+    };
   }
 
+  let environment: string;
   try {
-    const paddle = getPaddleServerClient();
-    const environment = getPaddleEnvironmentName();
+    environment = getPaddleEnvironmentName();
+    getPaddleServerClient();
+  } catch (error) {
+    return {
+      customer: null,
+      diagnostic: null,
+      syncError: describePaddleSyncError(error),
+    };
+  }
 
-    // Mirror all Paddle customers/subscriptions first (sandbox-scale safe).
-    const syncStats = await syncAllPaddleState();
+  let syncStats = { customers: 0, subscriptions: 0 };
+  try {
+    syncStats = await syncAllPaddleState();
+  } catch (error) {
+    console.error("[paddle/sync] Paddle API sync failed:", error);
+    return {
+      customer: null,
+      diagnostic: {
+        environment,
+        paddleCustomerCount: 0,
+        syncedCustomers: 0,
+        syncedSubscriptions: 0,
+      },
+      syncError: describePaddleSyncError(error),
+    };
+  }
 
+  const diagnostic = {
+    environment,
+    paddleCustomerCount: syncStats.customers,
+    syncedCustomers: syncStats.customers,
+    syncedSubscriptions: syncStats.subscriptions,
+  };
+
+  try {
     let customer = await getCustomerByEmail(email);
-    const diagnostic = await getPaddleSyncDiagnostic(
-      paddle,
-      environment,
-      syncStats,
-    );
 
     if (customer) {
-      return { customer, diagnostic };
+      return { customer, diagnostic, syncError: null };
     }
 
+    const paddle = getPaddleServerClient();
     const matchedCustomer = await findPaddleCustomerByEmail(paddle, email);
 
     if (matchedCustomer) {
       await mirrorPaddleCustomer(matchedCustomer.id, matchedCustomer.email);
       await mirrorSubscriptionsForCustomer(matchedCustomer.id);
       customer = await getCustomerByEmail(email);
-      return { customer, diagnostic };
+      return { customer, diagnostic, syncError: null };
     }
 
     console.warn(
       `[paddle/sync] No Paddle customer for ${email} after syncing ${syncStats.customers} customers in ${environment}`,
     );
 
-    return { customer: null, diagnostic };
+    return { customer: null, diagnostic, syncError: null };
   } catch (error) {
-    console.error("[paddle/sync] Failed to sync customer by email:", error);
-    return { customer: null, diagnostic: null };
+    console.error("[paddle/sync] Post-sync database lookup failed:", error);
+    return {
+      customer: null,
+      diagnostic,
+      syncError: describePaddleSyncError(error),
+    };
   }
 }
 
@@ -173,26 +210,36 @@ export async function syncAllPaddleState(): Promise<{
   let customers = 0;
   let subscriptions = 0;
 
-  for await (const customer of paddle.customers.list({ perPage: 200 })) {
-    try {
-      await mirrorPaddleCustomer(customer.id, customer.email);
-      customers += 1;
-    } catch (error) {
-      console.warn(`[paddle/sync] Skipping customer ${customer.id}:`, error);
+  try {
+    for await (const customer of paddle.customers.list({ perPage: 200 })) {
+      try {
+        await mirrorPaddleCustomer(customer.id, customer.email);
+        customers += 1;
+      } catch (error) {
+        console.warn(`[paddle/sync] Skipping customer ${customer.id}:`, error);
+      }
     }
+  } catch (error) {
+    console.error("[paddle/sync] Failed to list Paddle customers:", error);
+    throw error;
   }
 
-  for await (const subscription of paddle.subscriptions.list({ perPage: 200 })) {
-    try {
-      await ensureCustomerRecord(subscription.customerId);
-      await mirrorPaddleSubscription(subscription);
-      subscriptions += 1;
-    } catch (error) {
-      console.warn(
-        `[paddle/sync] Skipping subscription ${subscription.id}:`,
-        error,
-      );
+  try {
+    for await (const subscription of paddle.subscriptions.list({ perPage: 200 })) {
+      try {
+        await ensureCustomerRecord(subscription.customerId);
+        await mirrorPaddleSubscription(subscription);
+        subscriptions += 1;
+      } catch (error) {
+        console.warn(
+          `[paddle/sync] Skipping subscription ${subscription.id}:`,
+          error,
+        );
+      }
     }
+  } catch (error) {
+    console.error("[paddle/sync] Failed to list Paddle subscriptions:", error);
+    throw error;
   }
 
   return { customers, subscriptions };

@@ -51,25 +51,26 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     customer = syncResult.customer;
 
     if (!customer && isPaddleServerConfigured()) {
-      const paddleCustomers = syncResult.diagnostic?.paddleCustomerCount ?? null;
-      const syncedCustomers = syncResult.diagnostic?.syncedCustomers ?? null;
-      const environment =
-        syncResult.diagnostic?.environment ??
-        process.env.PADDLE_ENVIRONMENT ??
-        "sandbox";
-
-      if (syncResult.diagnostic === null) {
-        syncError =
-          "No pudimos sincronizar con Paddle. Revisa PADDLE_API_KEY y PADDLE_ENVIRONMENT en Vercel.";
-      } else if (paddleCustomers === 0 || syncedCustomers === 0) {
-        syncError =
-          `No hay clientes en tu cuenta Paddle (${environment}). ` +
-          "Confirma que PADDLE_API_KEY pertenece a la misma cuenta sandbox donde hiciste el checkout, " +
-          "y que NEXT_PUBLIC_PADDLE_CLIENT_TOKEN también es de esa cuenta.";
+      if (syncResult.syncError) {
+        syncError = syncResult.syncError.message;
       } else {
-        syncError =
-          `Sincronizamos ${syncedCustomers} cliente(s) desde Paddle, pero ninguno coincide con ${session.email}. ` +
-          "Usa el mismo email con el que pagaste en checkout.";
+        const paddleCustomers = syncResult.diagnostic?.paddleCustomerCount ?? null;
+        const syncedCustomers = syncResult.diagnostic?.syncedCustomers ?? null;
+        const environment =
+          syncResult.diagnostic?.environment ??
+          process.env.PADDLE_ENVIRONMENT ??
+          "sandbox";
+
+        if (paddleCustomers === 0 || syncedCustomers === 0) {
+          syncError =
+            `No hay clientes en tu cuenta Paddle (${environment}). ` +
+            "Confirma que PADDLE_API_KEY pertenece a la misma cuenta sandbox donde hiciste el checkout, " +
+            "y que NEXT_PUBLIC_PADDLE_CLIENT_TOKEN también es de esa cuenta.";
+        } else {
+          syncError =
+            `Sincronizamos ${syncedCustomers} cliente(s) desde Paddle, pero ninguno coincide con ${session.email}. ` +
+            "Usa el mismo email con el que pagaste en checkout.";
+        }
       }
     } else if (!customer && !isPaddleServerConfigured()) {
       syncError =

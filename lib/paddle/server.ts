@@ -3,7 +3,7 @@ import { Environment, Paddle } from "@paddle/paddle-node-sdk";
 const VALID_ENVIRONMENTS = new Set<string>(["sandbox", "production"]);
 
 function requireEnv(name: string): string {
-  const value = process.env[name];
+  const value = process.env[name]?.trim();
   if (!value) {
     throw new Error(
       `${name} is not set. Configure it in your environment before using the Paddle server SDK.`,
@@ -13,9 +13,10 @@ function requireEnv(name: string): string {
 }
 
 export function getPaddleEnvironmentName(): "sandbox" | "production" {
-  const environment =
+  const environment = (
     process.env.PADDLE_ENVIRONMENT ??
-    process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT;
+    process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT
+  )?.trim();
 
   if (!environment) {
     throw new Error(
@@ -51,10 +52,11 @@ export function getPaddleServerClient(): Paddle {
 }
 
 export function isPaddleServerConfigured(): boolean {
-  const apiKey = process.env.PADDLE_API_KEY;
-  const environment =
+  const apiKey = process.env.PADDLE_API_KEY?.trim();
+  const environment = (
     process.env.PADDLE_ENVIRONMENT ??
-    process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT;
+    process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT
+  )?.trim();
 
   return Boolean(apiKey && environment && VALID_ENVIRONMENTS.has(environment));
 }
