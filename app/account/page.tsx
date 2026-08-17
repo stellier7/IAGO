@@ -1,0 +1,145 @@
+import Link from "next/link";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { getUserSession } from "@/lib/auth/session";
+import {
+  customerHasAccess,
+  getCustomerByEmail,
+  getSubscriptionsForCustomer,
+} from "@/lib/subscriptions/repository";
+import {
+  describeAccessStatus,
+  subscriptionGrantsAccess,
+} from "@/lib/subscriptions/access";
+import { redirect } from "next/navigation";
+
+interface AccountPageProps {
+  searchParams?: { error?: string };
+}
+
+export default async function AccountPage({ searchParams }: AccountPageProps) {
+  const session = await getUserSession();
+
+  if (!session) {
+    redirect("/login?next=/account");
+  }
+
+  const customer = await getCustomerByEmail(session.email);
+  const error = searchParams?.error;
+
+  return (
+    <>
+      <Nav theme="solid" />
+      <main className="min-h-screen bg-bone pb-24 pt-32">
+        <div className="mx-auto max-w-content px-6">
+          <h1 className="font-display text-4xl font-bold tracking-tightest text-ink">
+            Mi cuenta
+          </h1>
+          <p className="mt-2 text-mute">Sesión: {session.email}</p>
+
+          {error === "no-customer" && (
+            <p className="mt-6 rounded-xl border border-coral/30 bg-coral/10 px-4 py-3 text-sm text-coral">
+              No encontramos una cuenta de Paddle con este email todavía. Si
+              acabas de pagar, espera unos minutos y vuelve a intentar.
+            </p>
+          )}
+
+          {!customer ? (
+            <div className="mt-8 rounded-2xl border border-ink-line/15 bg-white p-8">
+              <p className="text-sm text-mute">
+                Aún no hay datos sincronizados para este email.
+              </p>
+              <Link
+                href="/pricing"
+                className="mt-4 inline-flex rounded-full bg-ink px-6 py-3 text-sm font-medium text-bone transition hover:bg-coral"
+              >
+                Ver planes
+              </Link>
+            </div>
+          ) : (
+            <AccountDetails customerId={customer.customer_id} />
+          )}
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+async function AccountDetails({ customerId }: { customerId: string }) {
+  const subscriptions = await getSubscriptionsForCustomer(customerId);
+  const hasAccess = await customerHasAccess(customerId);
+
+  return (
+    <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
+      <section className="rounded-2xl border border-ink-line/15 bg-white p-8">
+        <h2 className="font-display text-2xl font-bold tracking-tightest text-ink">
+          Suscripciones
+        </h2>
+        {subscriptions.length === 0 ? (
+          <p className="mt-4 text-sm text-mute">
+            No hay suscripciones sincronizadas todavía.
+          </p>
+        ) : (
+          <ul className="mt-6 space-y-4">
+            {subscriptions.map((subscription) => (
+              <li
+                key={subscription.subscription_id}
+                className="rounded-xl border border-ink-line/10 p-4"
+              >
+                <p className="font-medium text-ink">
+                  {subscription.subscription_id}
+                </p>
+                <p className="mt-1 text-sm text-mute">
+                  Estado:{" "}
+                  {describeAccessStatus(subscription.status)}
+                  {subscriptionGrantsAccess(subscription.status)
+                    ? " · acceso activo"
+                    : ""}
+                </p>
+                {subscription.scheduled_change_action && (
+                  <p className="mt-1 text-xs text-mute">
+                    Cambio programado: {subscription.scheduled_change_action}
+                    {subscription.scheduled_change_at
+                      ? ` · ${subscription.scheduled_change_at.toISOString()}`
+                      : ""}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="rounded-2xl border border-ink-line/15 bg-white p-8">
+        <h2 className="font-display text-2xl font-bold tracking-tightest text-ink">
+          Portal de cliente
+        </h2>
+        <p className="mt-2 text-sm text-mute">
+          Actualiza tu método de pago, cancela o revisa facturas en el portal
+          seguro de Paddle.
+        </p>
+        <p className="mt-4 text-sm text-ink">
+          Acceso al producto:{" "}
+          <span className={hasAccess ? "text-coral" : "text-mute"}>
+            {hasAccess ? "Activo" : "Inactivo"}
+          </span>
+        </p>
+        <Link
+          href="/api/account/portal"
+          className="mt-6 inline-flex w-full justify-center rounded-full bg-ink px-6 py-3 text-sm font-medium text-bone transition hover:bg-coral"
+        >
+          Abrir portal de Paddle
+        </Link>
+        <form action="/api/auth/logout" method="post" className="mt-3">
+          <button
+            type="submit"
+            className="w-full rounded-full border border-ink-line/20 px-6 py-3 text-sm font-medium text-ink transition hover:bg-bone"
+          >
+            Cerrar sesión
+          </button>
+        </form>
+      </section>
+    </div>
+  );
+}

@@ -6,10 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "node scripts/migrate-db.mjs"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.4",
+    "@paddle/paddle-node-sdk": "^3.10.0",
+    "@vercel/postgres": "^0.10.0",
     "framer-motion": "^11.3.19",
     "lenis": "^1.1.13",
     "next": "14.2.5",
