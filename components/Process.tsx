@@ -1,18 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer } from "@/lib/motion-variants";
+import { initStepsTimeline } from "@/lib/init-steps-timeline";
 
 const steps = [
   {
     num: "01",
     title: "Descubrimiento",
-    description: "Entendemos tu negocio, audiencia y objetivos en una sesión inicial.",
+    description:
+      "Entendemos tu negocio, audiencia y objetivos en una sesión inicial.",
   },
   {
     num: "02",
     title: "Estrategia",
-    description: "Definimos alcance, KPIs y un roadmap claro con entregables por fase.",
+    description:
+      "Definimos alcance, KPIs y un roadmap claro con entregables por fase.",
   },
   {
     num: "03",
@@ -22,11 +26,14 @@ const steps = [
   {
     num: "04",
     title: "Crecimiento",
-    description: "Lanzamiento, monitoreo y mejoras continuas basadas en datos.",
+    description:
+      "Lanzamiento, monitoreo y mejoras continuas basadas en datos.",
   },
 ];
 
 export default function Process() {
+  useEffect(() => initStepsTimeline(), []);
+
   return (
     <section id="proceso" className="relative z-20 bg-ink-raised py-24 text-bone md:py-32">
       <div className="mx-auto max-w-content px-6">
@@ -51,28 +58,17 @@ export default function Process() {
           </motion.h2>
         </motion.div>
 
-        <div className="relative mt-16">
-          <div
-            className="absolute left-8 top-0 hidden h-full w-px bg-coral/30 md:block"
-            aria-hidden
-          />
-          <div className="space-y-8 md:space-y-12">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative flex gap-8 md:pl-16"
-              >
-                <span className="absolute left-0 hidden h-4 w-4 -translate-x-1/2 rounded-full bg-coral md:block md:left-8" />
-                <span className="font-display text-sm text-coral">{step.num}</span>
-                <div>
-                  <h3 className="font-display text-2xl font-bold">{step.title}</h3>
-                  <p className="mt-2 max-w-lg text-mute">{step.description}</p>
-                </div>
-              </motion.div>
+        <div className="steps-timeline mt-16">
+          <div className="steps-line" aria-hidden="true">
+            <span className="steps-line-fill" />
+          </div>
+          <div className="steps">
+            {steps.map((step) => (
+              <div key={step.num} className="step">
+                <span className="step-num">{step.num}</span>
+                <h4>{step.title}</h4>
+                <p>{step.description}</p>
+              </div>
             ))}
           </div>
         </div>
