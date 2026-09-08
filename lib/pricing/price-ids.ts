@@ -43,13 +43,24 @@ const PRODUCTION_ENV_KEYS: Record<PlanKey, Record<keyof PlanPriceIds, string>> =
     },
   };
 
-function resolvePaddleBillingEnvironment(): "sandbox" | "production" {
+export function resolvePaddleBillingEnvironment(): "sandbox" | "production" {
   const environment =
     process.env.PADDLE_ENVIRONMENT ??
     process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT ??
     "sandbox";
 
   return environment === "production" ? "production" : "sandbox";
+}
+
+export function getPaddleEnvironmentMismatch(): string | null {
+  const server = process.env.PADDLE_ENVIRONMENT?.trim();
+  const client = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT?.trim();
+
+  if (server && client && server !== client) {
+    return `PADDLE_ENVIRONMENT=${server} but NEXT_PUBLIC_PADDLE_ENVIRONMENT=${client}`;
+  }
+
+  return null;
 }
 
 function readProductionPriceId(envKey: string): string | null {

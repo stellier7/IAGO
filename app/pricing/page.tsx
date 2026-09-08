@@ -63,7 +63,22 @@ export default async function PricingPage() {
             customerEmail={customerEmail}
             paddleCustomerId={paddleCustomerId}
           />
-        ) : null}
+        ) : (
+          <div className="mx-auto max-w-2xl px-6">
+            <div
+              className="rounded-2xl border border-coral/30 bg-coral/10 px-6 py-5 text-left"
+              role="alert"
+            >
+              <p className="font-medium text-coral">
+                No se pudieron cargar los planes.
+              </p>
+              <p className="mt-2 text-sm text-ink">
+                Revisa la configuración de Paddle en Vercel y vuelve a desplegar.
+                Si el problema continúa, contáctanos.
+              </p>
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </>

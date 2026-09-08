@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getPaddleEnvironment } from "@/lib/paddle/config";
+import { getPaddleEnvironmentMismatch } from "@/lib/pricing/price-ids";
 import {
   collectTierPriceIds,
   getPricingConfigIssue,
@@ -30,6 +31,7 @@ export async function GET(): Promise<Response> {
       process.env.PADDLE_ENVIRONMENT ??
       process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT ??
       null,
+    environmentMismatch: getPaddleEnvironmentMismatch(),
     priceIds: tiers ? collectTierPriceIds(tiers) : null,
     issue,
   });

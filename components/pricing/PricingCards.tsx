@@ -59,25 +59,56 @@ export default function PricingCards({
   const [error, setError] = useState<string | null>(null);
   const [checkoutTier, setCheckoutTier] = useState<Tier | null>(null);
 
-  const paddleConfig = useMemo(() => getPaddleClientConfig(), []);
+  const paddleConfig = useMemo(() => {
+    try {
+      return getPaddleClientConfig();
+    } catch (error) {
+      console.error("Paddle client config is missing:", error);
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
+    if (!paddleConfig) {
+      setLoading(false);
+      setError(
+        "No pudimos cargar los precios. Revisa NEXT_PUBLIC_PADDLE_ENVIRONMENT y NEXT_PUBLIC_PADDLE_CLIENT_TOKEN en Vercel.",
+      );
+      return;
+    }
+
     let cancelled = false;
 
     initializePaddle({
       environment: paddleConfig.environment,
       token: paddleConfig.token,
       ...(paddleCustomerId ? { pwCustomer: { id: paddleCustomerId } } : {}),
-    }).then((instance) => {
-      if (!cancelled && instance) {
-        setPaddle(instance);
-      }
-    });
+    })
+      .then((instance) => {
+        if (cancelled) {
+          return;
+        }
+
+        if (instance) {
+          setPaddle(instance);
+          return;
+        }
+
+        setLoading(false);
+        setError("No pudimos inicializar Paddle. Recarga la página e inténtalo de nuevo.");
+      })
+      .catch((err) => {
+        console.error("Paddle initialization failed:", err);
+        if (!cancelled) {
+          setLoading(false);
+          setError("No pudimos inicializar Paddle. Recarga la página e inténtalo de nuevo.");
+        }
+      });
 
     return () => {
       cancelled = true;
     };
-  }, [paddleConfig.environment, paddleConfig.token, paddleCustomerId]);
+  }, [paddleConfig, paddleCustomerId]);
 
   const fetchPrices = useCallback(
     async (cycle: BillingCycle) => {
@@ -103,7 +134,7 @@ export default function PricingCards({
       } catch (err) {
         console.error("Paddle PricePreview failed:", err);
         const detail =
-          paddleConfig.environment === "production"
+          paddleConfig?.environment === "production"
             ? "El sitio usa Paddle live pero los price IDs no coinciden con tu cuenta live. " +
               "Crea el catálogo live, agrega PADDLE_PRICE_* en Vercel y redeploy."
             : "Revisa NEXT_PUBLIC_PADDLE_CLIENT_TOKEN y que los price IDs existan en sandbox.";
@@ -112,7 +143,7 @@ export default function PricingCards({
         setLoading(false);
       }
     },
-    [countryCode, paddle, tiers],
+    [countryCode, paddle, paddleConfig?.environment, tiers],
   );
 
   useEffect(() => {

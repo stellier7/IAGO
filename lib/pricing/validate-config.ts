@@ -1,6 +1,8 @@
 import { getPaddleEnvironment } from "@/lib/paddle/config";
 import {
+  getPaddleEnvironmentMismatch,
   hasProductionPriceIdsConfigured,
+  resolvePaddleBillingEnvironment,
   SANDBOX_PRICE_IDS,
 } from "@/lib/pricing/price-ids";
 import { getPricingTiers, type Tier } from "@/lib/pricing/tiers";
@@ -17,7 +19,9 @@ export interface PricingConfigIssue {
   code:
     | "sandbox_ids_in_production"
     | "missing_live_price_ids"
-    | "invalid_live_price_ids";
+    | "invalid_live_price_ids"
+    | "paddle_env_mismatch"
+    | "missing_paddle_client_env";
   message: string;
   detail: string;
 }
@@ -31,14 +35,43 @@ export function collectTierPriceIds(tiers: Tier[]): string[] {
 }
 
 export function getPricingConfigIssue(): PricingConfigIssue | null {
-  let environment: "sandbox" | "production";
-  try {
-    environment = getPaddleEnvironment();
-  } catch {
-    return null;
+  const mismatch = getPaddleEnvironmentMismatch();
+  if (mismatch) {
+    return {
+      code: "paddle_env_mismatch",
+      message: "Paddle está mal configurado: el entorno del servidor y del navegador no coinciden.",
+      detail:
+        `${mismatch}. Ambos deben ser iguales (sandbox o production). ` +
+        "Corrige las variables en Vercel Production y redeploy.",
+    };
   }
 
-  if (environment !== "production") {
+  let clientEnvironment: "sandbox" | "production";
+  try {
+    clientEnvironment = getPaddleEnvironment();
+  } catch (error) {
+    return {
+      code: "missing_paddle_client_env",
+      message: "Falta configurar Paddle en el navegador.",
+      detail:
+        error instanceof Error
+          ? error.message
+          : "Configura NEXT_PUBLIC_PADDLE_ENVIRONMENT y NEXT_PUBLIC_PADDLE_CLIENT_TOKEN en Vercel.",
+    };
+  }
+
+  const billingEnvironment = resolvePaddleBillingEnvironment();
+  if (billingEnvironment !== clientEnvironment) {
+    return {
+      code: "paddle_env_mismatch",
+      message: "Paddle está mal configurado: el entorno del servidor y del navegador no coinciden.",
+      detail:
+        `El servidor resuelve ${billingEnvironment} pero el cliente usa ${clientEnvironment}. ` +
+        "Asegúrate de que PADDLE_ENVIRONMENT y NEXT_PUBLIC_PADDLE_ENVIRONMENT coincidan, luego redeploy.",
+    };
+  }
+
+  if (billingEnvironment !== "production") {
     return null;
   }
 
@@ -95,5 +128,10 @@ export function getPricingTiersOrNull(): Tier[] | null {
     return null;
   }
 
-  return getPricingTiers();
+  try {
+    return getPricingTiers();
+  } catch (error) {
+    console.error("[pricing] Failed to resolve tiers:", error);
+    return null;
+  }
 }
