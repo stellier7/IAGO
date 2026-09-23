@@ -25,17 +25,17 @@ const cases: CaseItem[] = [
     href: "https://ichibanbjj.vercel.app",
   },
   {
-    client: "MegaWatt",
-    type: "Catálogo · Web",
-    result: "Iluminación LED · El Jordán",
-    href: "https://megawatt-eljordan.vercel.app",
-  },
-  {
     client: "Amani Joyería",
     type: "E-commerce · Web",
     result: "Plata 925 · Honduras",
     href: "https://www.amanijoyeria.com",
     featured: true,
+  },
+  {
+    client: "MegaWatt",
+    type: "Catálogo · Web",
+    result: "Iluminación LED · El Jordán",
+    href: "https://megawatt-eljordan.vercel.app",
   },
 ];
 
