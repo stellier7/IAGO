@@ -12,16 +12,16 @@ type CaseItem = {
 
 const cases: CaseItem[] = [
   {
-    client: "Vulcanox",
-    type: "Web corporativa",
-    result: "Investment-driven general contracting · Florida",
-    href: "https://vulcanox.vercel.app",
-  },
-  {
     client: "Amani Joyería",
     type: "E-commerce · Web",
     result: "Plata 925 · Honduras",
     href: "https://www.amanijoyeria.com",
+  },
+  {
+    client: "Vulcanox",
+    type: "Web corporativa",
+    result: "Investment-driven general contracting · Florida",
+    href: "https://vulcanox.vercel.app",
   },
   {
     client: "Ichiban BJJ",
