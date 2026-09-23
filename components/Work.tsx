@@ -8,15 +8,10 @@ type CaseItem = {
   type: string;
   result: string;
   href: string;
+  featured?: boolean;
 };
 
 const cases: CaseItem[] = [
-  {
-    client: "Amani Joyería",
-    type: "E-commerce · Web",
-    result: "Plata 925 · Honduras",
-    href: "https://www.amanijoyeria.com",
-  },
   {
     client: "Vulcanox",
     type: "Web corporativa",
@@ -34,6 +29,13 @@ const cases: CaseItem[] = [
     type: "Catálogo · Web",
     result: "Iluminación LED · El Jordán",
     href: "https://megawatt-eljordan.vercel.app",
+  },
+  {
+    client: "Amani Joyería",
+    type: "E-commerce · Web",
+    result: "Plata 925 · Honduras",
+    href: "https://www.amanijoyeria.com",
+    featured: true,
   },
 ];
 
@@ -86,16 +88,35 @@ function CaseCard({
   item: CaseItem;
   className: string;
 }) {
+  const featured = item.featured ?? false;
+
   return (
     <article
-      className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${className}`}
+      className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 md:p-6 ${
+        featured
+          ? "scale-[1.03] shadow-2xl shadow-coral/25 ring-2 ring-coral/80 hover:scale-[1.05] hover:shadow-coral/35"
+          : "hover:scale-[1.02] hover:shadow-2xl"
+      } ${className}`}
     >
       <MobileCardPreview href={item.href} label={item.client} />
       <div className="relative z-10">
-        <p className="text-xs uppercase tracking-wider text-white/70 md:text-sm">
+        {featured && (
+          <span className="mb-3 inline-flex w-fit rounded-full bg-coral px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+            Destacado
+          </span>
+        )}
+        <p
+          className={`text-xs uppercase tracking-wider md:text-sm ${
+            featured ? "text-coral-bright" : "text-white/70"
+          }`}
+        >
           {item.type}
         </p>
-        <h3 className="mt-1 font-display text-xl font-bold md:mt-2 md:text-2xl">
+        <h3
+          className={`mt-1 font-display font-bold md:mt-2 ${
+            featured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
+          }`}
+        >
           {item.client}
         </h3>
         <p className="mt-3 text-sm font-medium text-white/85 md:mt-4 md:text-base">
@@ -146,7 +167,11 @@ export default function Work() {
             <CaseCard
               key={`${item.client}-${index}`}
               item={item}
-              className="h-[460px] w-[340px]"
+              className={
+                item.featured
+                  ? "h-[520px] w-[400px]"
+                  : "h-[460px] w-[340px]"
+              }
             />
           ))}
         </motion.div>
@@ -157,7 +182,9 @@ export default function Work() {
           <CaseCard
             key={item.client}
             item={item}
-            className="min-h-[420px] w-full"
+            className={
+              item.featured ? "min-h-[460px] w-full" : "min-h-[420px] w-full"
+            }
           />
         ))}
       </div>
