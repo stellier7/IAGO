@@ -5,14 +5,15 @@
  *
  * Usage:
  *   PADDLE_API_KEY=... PADDLE_ENVIRONMENT=production \
- *   WEBHOOK_URL=https://iagodigital.vercel.app/api/webhooks/paddle \
+ *   WEBHOOK_URL=https://www.iagodigital.com/api/webhooks/paddle \
  *   node scripts/create-paddle-webhook.mjs
  */
 const apiKey = process.env.PADDLE_API_KEY;
 const environmentName = process.env.PADDLE_ENVIRONMENT ?? "sandbox";
+const defaultSiteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.iagodigital.com";
 const webhookUrl =
-  process.env.WEBHOOK_URL ??
-  "https://iagodigital.vercel.app/api/webhooks/paddle";
+  process.env.WEBHOOK_URL ?? `${defaultSiteUrl.replace(/\/$/, "")}/api/webhooks/paddle`;
 
 if (!apiKey) {
   console.error("PADDLE_API_KEY is required");

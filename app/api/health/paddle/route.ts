@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyPaddleApiAccess } from "@/lib/paddle/errors";
 import { isPaddleServerConfigured } from "@/lib/paddle/server";
+import { getSiteUrl, getWebhookUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +19,8 @@ export async function GET(): Promise<Response> {
   return NextResponse.json({
     ok: result.ok,
     environment: result.environment,
+    siteUrl: getSiteUrl(),
+    webhookUrl: getWebhookUrl(),
     error: result.error?.message ?? null,
   });
 }
