@@ -33,7 +33,7 @@ const TIER_DEFINITIONS: Array<{
     displayName: "Básico",
     description: "Sitio web esencial con hosting y soporte continuo.",
     features: [
-      "Sitio web responsivo de hasta 5 páginas",
+      "Sitio web responsivo",
       "Hosting y SSL incluidos",
       "Formulario de contacto",
       "Soporte por email",
