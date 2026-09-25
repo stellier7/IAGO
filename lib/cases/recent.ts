@@ -13,16 +13,22 @@ export const recentCases: CaseItem[] = [
     href: "https://vulcanox.vercel.app",
   },
   {
-    client: "Ichiban BJJ",
-    type: "Web · Academia",
-    result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
-    href: "https://ichibanbjj.vercel.app",
-  },
-  {
     client: "Amani Joyería",
     type: "E-commerce · Web",
     result: "Plata 925 · Honduras",
     href: "https://www.amanijoyeria.com",
+  },
+  {
+    client: "Vanessa Pacheco Studio",
+    type: "Web · Estudio",
+    result: "Maquillaje & cuidado capilar · Tegucigalpa",
+    href: "https://www.vanessapachecostudio.com",
+  },
+  {
+    client: "Ichiban BJJ",
+    type: "Web · Academia",
+    result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
+    href: "https://ichibanbjj.vercel.app",
   },
   {
     client: "MegaWatt",
