@@ -28,7 +28,7 @@ export const recentCases: CaseItem[] = [
     client: "Ichiban BJJ",
     type: "Web · Academia",
     result: "Jiu Jitsu & Muay Thai · Tegucigalpa",
-    href: "https://ichibanbjj.vercel.app",
+    href: "https://www.ichibanbjj.com/",
   },
   {
     client: "MegaWatt",
