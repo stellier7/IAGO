@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { SITE_INTRO_LOCK_MS } from "@/lib/site-intro";
 
 const links = [
   { href: "/#servicios", label: "Servicios" },
@@ -18,6 +19,7 @@ interface NavProps {
 
 export default function Nav({ theme = "overlay" }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [introLocked, setIntroLocked] = useState(true);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
@@ -26,14 +28,28 @@ export default function Nav({ theme = "overlay" }: NavProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReducedMotion) {
+      setIntroLocked(false);
+      return;
+    }
+    const id = window.setTimeout(() => setIntroLocked(false), SITE_INTRO_LOCK_MS);
+    return () => window.clearTimeout(id);
+  }, []);
+
   const isSolid = theme === "solid" || scrolled;
 
   return (
     <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 overscroll-none transition-all duration-300 ${
+        introLocked ? "pointer-events-none" : ""
+      } ${
         isSolid
           ? "border-b border-ink-line/10 bg-bone/80 py-3 backdrop-blur-md"
           : "bg-transparent py-5"
