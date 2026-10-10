@@ -192,13 +192,13 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative z-10 min-h-screen touch-pan-y overflow-hidden bg-ink text-bone"
+      className="relative z-10 h-svh overflow-clip bg-ink text-bone"
     >
       <motion.div
         style={prefersReducedMotion ? {} : { y, opacity }}
-        className="sticky top-0 flex min-h-screen flex-col justify-center overflow-x-hidden px-6"
+        className="sticky top-0 flex h-full min-h-0 flex-col justify-center overflow-clip px-6"
       >
-        <div className="mx-auto w-full max-w-content overflow-x-hidden">
+        <div className="mx-auto w-full max-w-content overflow-x-clip">
           <motion.p
             variants={fadeUp}
             initial="hidden"
