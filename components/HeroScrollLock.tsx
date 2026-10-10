@@ -31,10 +31,16 @@ export default function HeroScrollLock() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (deepLinked || prefersReducedMotion) {
+    // Drops the lock for good, including anything the pre-hydration script
+    // left behind.
+    const standDown = () => {
       releasedRef.current = true;
       root.classList.remove(INTRO_LOCK_CLASS);
       window.__heroIntroScrollIntent = false;
+    };
+
+    if (deepLinked || prefersReducedMotion) {
+      standDown();
       return;
     }
 
@@ -44,9 +50,7 @@ export default function HeroScrollLock() {
 
     const remaining = deadlineRef.current - Date.now();
     if (remaining <= 0) {
-      releasedRef.current = true;
-      root.classList.remove(INTRO_LOCK_CLASS);
-      window.__heroIntroScrollIntent = false;
+      standDown();
       return;
     }
 
@@ -69,8 +73,7 @@ export default function HeroScrollLock() {
     };
 
     const release = () => {
-      releasedRef.current = true;
-      window.__heroIntroScrollIntent = false;
+      standDown();
       unlock();
     };
 
