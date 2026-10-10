@@ -6,6 +6,14 @@
   html {
     @apply scroll-smooth overflow-x-hidden;
     max-width: 100%;
+    /* Keeps the scrollbar gutter reserved so locking the hero intro doesn't
+       reflow the page. */
+    scrollbar-gutter: stable;
+  }
+
+  /* The hero entrance owns the viewport until it finishes; see HeroScrollLock. */
+  html.hero-intro-locked {
+    overflow: hidden;
   }
 
   body {
