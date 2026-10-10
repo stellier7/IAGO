@@ -17,27 +17,22 @@ import {
   staggerLettersLeft,
   staggerLettersRight,
 } from "@/lib/motion-variants";
+import {
+  BUTTON_DURATION,
+  BUTTON_ENTRANCE_DELAY,
+  BUTTON_STAGGER,
+  SUBHEAD_DELAY,
+  SUBHEAD_LINES,
+  SUBHEAD_LINE_DURATION,
+  SUBHEAD_STAGGER,
+  TAGLINE_DELAY,
+  TAGLINE_DURATION,
+} from "@/lib/hero-intro";
 
 const IAGO_LETTERS = ["i", "A", "G", "O"] as const;
 
 const DIGITAL_LETTERS = "Digital".split("");
 
-const SUBHEAD_LINES = [
-  "Diseñamos experiencias digitales que convierten,",
-  "posicionamos tu marca en Google y automatizamos lo repetitivo",
-  "para que te enfoques en crecer.",
-] as const;
-
-// Hero copy entrance chain: tagline → subhead → buttons
-const TAGLINE_DELAY = 0.4;
-const TAGLINE_DURATION = 0.65;
-const SUBHEAD_DELAY = TAGLINE_DELAY + TAGLINE_DURATION + 0.04;
-const SUBHEAD_STAGGER = 0.1;
-const SUBHEAD_LINE_DURATION = 0.5;
-const BUTTON_ENTRANCE_DELAY =
-  SUBHEAD_DELAY + SUBHEAD_STAGGER * (SUBHEAD_LINES.length - 1) + SUBHEAD_LINE_DURATION + 0.04;
-const BUTTON_STAGGER = 0.1;
-const BUTTON_DURATION = 0.55;
 const BUTTON_TRANSITION = {
   type: "tween" as const,
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
