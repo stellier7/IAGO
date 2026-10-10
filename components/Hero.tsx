@@ -38,6 +38,7 @@ const BUTTON_ENTRANCE_DELAY =
   SUBHEAD_DELAY + SUBHEAD_STAGGER * (SUBHEAD_LINES.length - 1) + SUBHEAD_LINE_DURATION + 0.04;
 const BUTTON_STAGGER = 0.1;
 const BUTTON_DURATION = 0.55;
+const INTRO_SCROLL_LOCK_MS = Math.round(BUTTON_ENTRANCE_DELAY * 1000);
 const BUTTON_TRANSITION = {
   type: "tween" as const,
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
@@ -181,6 +182,59 @@ function RotatingCountry({ paused }: { paused: boolean }) {
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
+
+  // Lock scroll during the hero entrance so the first wheel/touch
+  // goes to #servicios instead of parallaxing mid-header.
+  useEffect(() => {
+    if (prefersReducedMotion !== false) return;
+    if (window.location.hash) return;
+    if (window.scrollY > 8) return;
+
+    window.scrollTo(0, 0);
+    const prevDocOverflow = document.documentElement.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    const prevent = (event: Event) => event.preventDefault();
+    const preventKeys = (event: KeyboardEvent) => {
+      if (
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown" ||
+        event.key === "PageUp" ||
+        event.key === "PageDown" ||
+        event.key === "Home" ||
+        event.key === "End" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
+      }
+    };
+    const pinToTop = () => {
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+    };
+
+    window.addEventListener("wheel", prevent, { passive: false, capture: true });
+    window.addEventListener("touchmove", prevent, { passive: false, capture: true });
+    window.addEventListener("keydown", preventKeys);
+    window.addEventListener("scroll", pinToTop);
+
+    const unlock = () => {
+      window.removeEventListener("wheel", prevent, { capture: true });
+      window.removeEventListener("touchmove", prevent, { capture: true });
+      window.removeEventListener("keydown", preventKeys);
+      window.removeEventListener("scroll", pinToTop);
+      document.documentElement.style.overflow = prevDocOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+    };
+
+    const id = window.setTimeout(unlock, INTRO_SCROLL_LOCK_MS);
+    return () => {
+      window.clearTimeout(id);
+      unlock();
+    };
+  }, [prefersReducedMotion]);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
