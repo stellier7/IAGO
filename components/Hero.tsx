@@ -196,9 +196,9 @@ export default function Hero() {
     >
       <motion.div
         style={prefersReducedMotion ? {} : { y, opacity }}
-        className="sticky top-0 flex min-h-screen flex-col justify-center overflow-x-hidden px-6"
+        className="sticky top-0 flex min-h-screen flex-col justify-center px-6"
       >
-        <div className="mx-auto w-full max-w-content overflow-x-hidden">
+        <div className="mx-auto w-full max-w-content">
           <motion.p
             variants={fadeUp}
             initial="hidden"
