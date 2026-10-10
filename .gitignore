@@ -28,6 +28,7 @@ paddle-catalog-live-results.json
 
 # typescript
 next-env.d.ts
+*.tsbuildinfo
 
 # vercel
 .vercel
