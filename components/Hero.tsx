@@ -17,6 +17,7 @@ import {
   staggerLettersLeft,
   staggerLettersRight,
 } from "@/lib/motion-variants";
+import { useIntroScrollLock } from "@/lib/use-intro-scroll-lock";
 
 const IAGO_LETTERS = ["i", "A", "G", "O"] as const;
 
@@ -43,6 +44,11 @@ const BUTTON_TRANSITION = {
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
   duration: BUTTON_DURATION,
 };
+// Scrolling through the hero while it is still animating in looks broken, so
+// until the last button has landed a scroll gesture jumps to the next section.
+const INTRO_SCROLL_LOCK_MS =
+  (BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER + BUTTON_DURATION) * 1000;
+const INTRO_SCROLL_TARGET = "#servicios";
 
 const heroStaggerLines = {
   hidden: {},
@@ -188,6 +194,12 @@ export default function Hero() {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  useIntroScrollLock({
+    enabled: !prefersReducedMotion,
+    durationMs: INTRO_SCROLL_LOCK_MS,
+    target: INTRO_SCROLL_TARGET,
+  });
 
   return (
     <section

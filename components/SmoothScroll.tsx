@@ -1,14 +1,21 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
+
+const LenisContext = createContext<Lenis | null>(null);
+
+/** The active Lenis instance, or null when smooth scrolling is disabled (reduced motion) or not yet mounted. */
+export function useLenis() {
+  return useContext(LenisContext);
+}
 
 export default function SmoothScroll({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const [lenis, setLenis] = useState<Lenis | null>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -17,27 +24,30 @@ export default function SmoothScroll({
 
     if (prefersReducedMotion) return;
 
-    const lenis = new Lenis({
+    const instance = new Lenis({
       duration: 0.85,
       smoothWheel: true,
       lerp: 0.1,
       wheelMultiplier: 0.9,
     });
 
-    lenisRef.current = lenis;
+    setLenis(instance);
 
     let frame: number;
     const raf = (time: number) => {
-      lenis.raf(time);
+      instance.raf(time);
       frame = requestAnimationFrame(raf);
     };
     frame = requestAnimationFrame(raf);
 
     return () => {
       cancelAnimationFrame(frame);
-      lenis.destroy();
+      instance.destroy();
+      setLenis(null);
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>
+  );
 }
