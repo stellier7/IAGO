@@ -28,15 +28,50 @@ export const INTRO_LOCK_CLASS = "hero-intro-locked";
 
 export const SERVICES_SECTION_ID = "servicios";
 
+export const TOUCH_SKIP_THRESHOLD = 24;
+
+declare global {
+  interface Window {
+    // Set when someone tries to scroll down before React takes over; see below.
+    __heroIntroScrollIntent?: boolean;
+  }
+}
+
 // Locks scrolling before React hydrates, which is the window where dragging the
-// hero around feels broken. The timeout releases the lock on its own so the page
-// still works if hydration never happens.
+// hero around feels broken. It mirrors a slice of HeroScrollLock on purpose:
+// hydration can be a second away on a slow phone, and a scroll attempt in that
+// gap still has to send the visitor to servicios once the component mounts.
+// The timeout releases the lock on its own so the page keeps working even if
+// hydration never happens.
 export const heroIntroLockScript = `(function(){try{
 var entry=performance.getEntriesByType("navigation")[0];
 if(entry&&entry.type!=="navigate")return;
 if(window.scrollY>0||window.location.hash)return;
 if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+
 var root=document.documentElement;
 root.classList.add("${INTRO_LOCK_CLASS}");
-setTimeout(function(){root.classList.remove("${INTRO_LOCK_CLASS}")},${HERO_INTRO_MS});
+
+var touchStartY=0;
+function stopWatching(){
+window.removeEventListener("wheel",onWheel);
+window.removeEventListener("touchstart",onTouchStart);
+window.removeEventListener("touchmove",onTouchMove);
+}
+function markIntent(){window.__heroIntroScrollIntent=true;stopWatching()}
+function onWheel(event){if(event.deltaY>0)markIntent()}
+function onTouchStart(event){touchStartY=event.touches[0]?event.touches[0].clientY:0}
+function onTouchMove(event){
+var y=event.touches[0]?event.touches[0].clientY:0;
+if(touchStartY-y>${TOUCH_SKIP_THRESHOLD})markIntent()
+}
+
+window.addEventListener("wheel",onWheel,{passive:true});
+window.addEventListener("touchstart",onTouchStart,{passive:true});
+window.addEventListener("touchmove",onTouchMove,{passive:true});
+
+setTimeout(function(){
+stopWatching();
+root.classList.remove("${INTRO_LOCK_CLASS}")
+},${HERO_INTRO_MS});
 }catch(error){}})();`;
