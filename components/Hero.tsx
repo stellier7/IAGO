@@ -189,16 +189,18 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  // overflow-clip (not hidden): overflow-x:hidden computes the other axis to
+  // auto, so entrance transforms turn the hero into a scrollport for ~2s.
   return (
     <section
       ref={ref}
-      className="relative z-10 min-h-screen touch-pan-y overflow-hidden bg-ink text-bone"
+      className="relative z-10 min-h-screen touch-pan-y overflow-clip bg-ink text-bone"
     >
       <motion.div
         style={prefersReducedMotion ? {} : { y, opacity }}
-        className="sticky top-0 flex min-h-screen flex-col justify-center overflow-x-hidden px-6"
+        className="sticky top-0 flex min-h-screen flex-col justify-center overflow-x-clip px-6"
       >
-        <div className="mx-auto w-full max-w-content overflow-x-hidden">
+        <div className="mx-auto w-full max-w-content overflow-x-clip">
           <motion.p
             variants={fadeUp}
             initial="hidden"
@@ -220,7 +222,7 @@ export default function Hero() {
               </>
             ) : (
               <>
-                <div className="overflow-hidden">
+                <div className="overflow-clip">
                   <motion.span
                     className="block text-[clamp(2.75rem,8vw,6.5rem)]"
                     variants={staggerLettersLeft}
@@ -240,7 +242,7 @@ export default function Hero() {
                     ))}
                   </motion.span>
                 </div>
-                <div className="overflow-hidden">
+                <div className="overflow-clip">
                   <motion.span
                     className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral"
                     variants={staggerLettersRight}
@@ -267,7 +269,7 @@ export default function Hero() {
                 Desarrollo web, SEO y automatizaciones con IA
               </span>
             ) : (
-              <div className="mt-4 overflow-hidden">
+              <div className="mt-4 overflow-clip">
                 <motion.span
                   variants={slideFromLeftBlur}
                   initial="hidden"
@@ -293,7 +295,7 @@ export default function Hero() {
                 aria-label={SUBHEAD_LINES.join(" ")}
               >
                 {SUBHEAD_LINES.map((line) => (
-                  <div key={line} className="overflow-hidden">
+                  <div key={line} className="overflow-clip">
                     <motion.span
                       variants={lineSlideFromLeft}
                       transition={{ duration: SUBHEAD_LINE_DURATION }}
