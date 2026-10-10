@@ -49,7 +49,24 @@ export default function HeroScrollLock() {
     }
 
     const remaining = deadlineRef.current - Date.now();
+    const pendingSkip = window.__heroIntroScrollIntent === true;
+
+    // Prefer Lenis for the jump, but don't drop a pre-hydration scroll just
+    // because the smooth-scroller woke up after the intro clock ran out.
+    const jumpToServices = () => {
+      const services = document.getElementById(SERVICES_SECTION_ID);
+      if (!services) return;
+      if (lenis) lenis.scrollTo(services, { duration: 1.2, lock: true });
+      else services.scrollIntoView({ behavior: "smooth" });
+    };
+
     if (remaining <= 0) {
+      if (pendingSkip) {
+        standDown();
+        lenis?.start();
+        jumpToServices();
+        return;
+      }
       standDown();
       return;
     }
@@ -79,12 +96,9 @@ export default function HeroScrollLock() {
 
     const skipToServices = () => {
       release();
-      const services = document.getElementById(SERVICES_SECTION_ID);
-      if (!services) return;
       // `lock` keeps the tail of the gesture that triggered this from
       // derailing the jump halfway there.
-      if (lenis) lenis.scrollTo(services, { duration: 1.2, lock: true });
-      else services.scrollIntoView({ behavior: "smooth" });
+      jumpToServices();
     };
 
     function onWheel(event: WheelEvent) {
@@ -118,7 +132,12 @@ export default function HeroScrollLock() {
       if (target?.closest("a")) release();
     }
 
-    timer = window.setTimeout(release, remaining);
+    // If they scrolled before we mounted, honor that when the clock runs out
+    // instead of clearing the intent and leaving a queued native scroll.
+    timer = window.setTimeout(() => {
+      if (window.__heroIntroScrollIntent) skipToServices();
+      else release();
+    }, remaining);
     window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
@@ -128,7 +147,7 @@ export default function HeroScrollLock() {
     // Someone already tried to scroll before hydration. Lenis drives the jump,
     // so wait for it rather than fighting a native smooth scroll; this effect
     // re-runs as soon as the instance exists.
-    if (window.__heroIntroScrollIntent && lenis) skipToServices();
+    if (pendingSkip && lenis) skipToServices();
 
     return unlock;
   }, [lenis]);

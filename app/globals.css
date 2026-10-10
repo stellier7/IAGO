@@ -6,14 +6,6 @@
   html {
     @apply scroll-smooth overflow-x-hidden;
     max-width: 100%;
-    /* Keeps the scrollbar gutter reserved so locking the hero intro doesn't
-       reflow the page. */
-    scrollbar-gutter: stable;
-  }
-
-  /* The hero entrance owns the viewport until it finishes; see HeroScrollLock. */
-  html.hero-intro-locked {
-    overflow: hidden;
   }
 
   body {
@@ -26,6 +18,22 @@
   ::selection {
     @apply bg-coral text-white;
   }
+}
+
+/* Kept outside @layer so the bundler can't drop it: the class is toggled from
+   JS (HeroScrollLock + the pre-hydration script), not from JSX classNames.
+   Hide the scrollbar for that window so the hero reads edge-to-edge. */
+html.hero-intro-locked,
+html.hero-intro-locked body {
+  overflow: hidden !important;
+  scrollbar-width: none;
+}
+
+html.hero-intro-locked::-webkit-scrollbar,
+html.hero-intro-locked body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
