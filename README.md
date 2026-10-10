@@ -30,6 +30,8 @@ app/
 components/
   Nav.tsx           # blur + se compacta al hacer scroll
   Hero.tsx          # hero sticky con parallax; el resto del sitio se desliza encima como cortina
+  HeroScrollLock.tsx # bloquea el scroll mientras corre la intro del hero; si intentas
+                     # bajar en esos ~2.5 s te lleva directo a Servicios
   Marquee.tsx       # ticker infinito de servicios
   Services.tsx      # 3 pilares (Web / SEO / Automatizaciones con IA)
   Work.tsx          # casos de estudio — scroll horizontal pineado en desktop (estilo basement.studio), lista simple en mobile
@@ -41,6 +43,8 @@ components/
   CustomCursor.tsx  # cursor magnético (solo desktop, respeta touch/reduced-motion)
 lib/
   motion-variants.ts  # variantes de Framer Motion compartidas
+  hero-intro.ts       # tiempos de la intro del hero + script que bloquea el
+                      # scroll antes de que React hidrate
 ```
 
 ## Pendientes / notas
