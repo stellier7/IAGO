@@ -7,6 +7,12 @@ export type CaseItem = {
 
 export const recentCases: CaseItem[] = [
   {
+    client: "Bienes Raíces Altair",
+    type: "Web · Inmobiliaria",
+    result: "Compra y alquiler · Tegucigalpa",
+    href: "https://www.bienesraicesaltair.com",
+  },
+  {
     client: "Vulcanox",
     type: "Web corporativa",
     result: "Investment-driven general contracting · Florida",
