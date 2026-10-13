@@ -18,7 +18,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from fontTools.misc.transform import Transform
-from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
@@ -27,6 +26,7 @@ from fontTools.varLib.instancer import instantiateVariableFont
 INK = "#0A0A0A"
 CORAL = "#E8734A"
 BONE = "#F4F1EA"
+WHITE = "#FFFFFF"
 
 # Tailwind tracking-tightest on the site wordmark.
 TRACKING_EM = -0.045
@@ -71,60 +71,16 @@ def load_syne_bold(cache_dir: Path) -> TTFont:
     return TTFont(bold_path)
 
 
-def split_contours(recording: list) -> list[list]:
-    contours: list[list] = []
-    current: list = []
-    for op, args in recording:
-        current.append((op, args))
-        if op in ("closePath", "endPath"):
-            contours.append(current)
-            current = []
-    if current:
-        contours.append(current)
-    return contours
-
-
-def contour_ymax(contour: list) -> float:
-    ys = []
-    for _op, args in contour:
-        for point in args:
-            if isinstance(point, tuple) and len(point) >= 2:
-                ys.append(point[1])
-    return max(ys) if ys else float("-inf")
-
-
-def stem_recording(glyph_set, name: str, drop_tittle: bool) -> list:
-    rec = RecordingPen()
-    glyph_set[name].draw(rec)
-    if not drop_tittle:
-        return rec.value
-    contours = split_contours(rec.value)
-    if len(contours) < 2:
-        return rec.value
-    tittle = max(range(len(contours)), key=lambda i: contour_ymax(contours[i]))
-    kept = []
-    for index, contour in enumerate(contours):
-        if index != tittle:
-            kept.extend(contour)
-    return kept
-
-
-def recording_bounds(recording: list) -> tuple[float, float, float, float]:
-    xs: list[float] = []
-    ys: list[float] = []
-    for _op, args in recording:
-        for point in args:
-            if isinstance(point, tuple) and len(point) >= 2:
-                xs.append(point[0])
-                ys.append(point[1])
-    if not xs:
+def glyph_bounds(font: TTFont, name: str) -> tuple[float, float, float, float]:
+    glyph = font["glyf"][name]
+    if glyph.numberOfContours == 0 or glyph.xMin is None:
         return (0.0, 0.0, 0.0, 0.0)
-    return (min(xs), min(ys), max(xs), max(ys))
-
-
-def replay(recording: list, pen) -> None:
-    for op, args in recording:
-        getattr(pen, op)(*args)
+    return (
+        float(glyph.xMin),
+        float(glyph.yMin),
+        float(glyph.xMax),
+        float(glyph.yMax),
+    )
 
 
 def layout_word(
@@ -135,7 +91,6 @@ def layout_word(
     baseline_y: float,
     color_for,
     tracking_em: float = TRACKING_EM,
-    drop_i_tittle: bool = False,
 ) -> list[PlacedGlyph]:
     glyph_set = font.getGlyphSet()
     cmap = font.getBestCmap()
@@ -151,16 +106,14 @@ def layout_word(
             continue
         name = cmap[ord(char)]
         glyph = glyph_set[name]
-        drop_tittle = drop_i_tittle and char == "i"
-        recording = stem_recording(glyph_set, name, drop_tittle)
-        xmin, ymin, xmax, ymax = recording_bounds(recording)
+        xmin, ymin, xmax, ymax = glyph_bounds(font, name)
         advance = glyph.width * scale
-        if not recording:
+        if font["glyf"][name].numberOfContours == 0:
             x += advance
             continue
         pen = SVGPathPen(glyph_set)
         transform = Transform().translate(x, baseline_y).scale(scale, -scale)
-        replay(recording, TransformPen(pen, transform))
+        glyph.draw(TransformPen(pen, transform))
         placed.append(
             PlacedGlyph(
                 char=char,
@@ -240,9 +193,7 @@ def wordmark_glyphs(
     iago_color,
     digital_color: str,
 ) -> list[PlacedGlyph]:
-    iago = layout_word(
-        font, "iAGO", iago_size, 0, 0, iago_color, drop_i_tittle=True
-    )
+    iago = layout_word(font, "iAGO", iago_size, 0, 0, iago_color)
     digital_probe = layout_word(
         font, "Digital", digital_size, 0, 0, lambda _ch: digital_color
     )
@@ -372,6 +323,10 @@ def main() -> int:
         build_card_svg(font, BONE, INK, CORAL),
     )
     write_svg(
+        OUT_DIR / "iago-nfc-tarjeta-fondo-blanco.svg",
+        build_card_svg(font, WHITE, INK, CORAL),
+    )
+    write_svg(
         OUT_DIR / "nfc-card-front-dark-bleed.svg",
         build_card_svg(font, INK, BONE, CORAL, bleed=BLEED_MM),
     )
@@ -441,6 +396,16 @@ def main() -> int:
         OUT_DIR / "nfc-card-front-light.svg",
         OUT_DIR / "nfc-card-front-light-600dpi.png",
         mm_to_px(CARD_W_MM, 600),
+    )
+    rasterize(
+        OUT_DIR / "iago-nfc-tarjeta-fondo-blanco.svg",
+        OUT_DIR / "iago-nfc-tarjeta-fondo-blanco.png",
+        mm_to_px(CARD_W_MM, 600),
+    )
+    rasterize(
+        OUT_DIR / "iago-nfc-tarjeta-fondo-blanco.svg",
+        OUT_DIR / "iago-nfc-tarjeta-fondo-blanco-300dpi.png",
+        mm_to_px(CARD_W_MM, 300),
     )
     rasterize(
         OUT_DIR / "nfc-card-front-dark-bleed.svg",
