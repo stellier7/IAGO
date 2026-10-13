@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 import sys
 import urllib.request
@@ -352,6 +353,25 @@ def main() -> int:
         OUT_DIR / "logo-wordmark-on-light.png",
         2400,
     )
+    # Obvious filenames for overlay print: true RGBA, no background.
+    shutil.copy2(
+        OUT_DIR / "logo-wordmark-on-light.png",
+        OUT_DIR / "iago-logo-transparente.png",
+    )
+    shutil.copy2(
+        OUT_DIR / "logo-wordmark-on-light.svg",
+        OUT_DIR / "iago-logo-transparente.svg",
+    )
+    shutil.copy2(
+        OUT_DIR / "logo-wordmark-on-dark.png",
+        OUT_DIR / "iago-logo-transparente-letras-claras.png",
+    )
+    shutil.copy2(
+        OUT_DIR / "logo-wordmark-on-dark.svg",
+        OUT_DIR / "iago-logo-transparente-letras-claras.svg",
+    )
+    print(f"wrote {OUT_DIR / 'iago-logo-transparente.png'}")
+    print(f"wrote {OUT_DIR / 'iago-logo-transparente-letras-claras.png'}")
     rasterize(
         OUT_DIR / "nfc-card-front-dark.svg",
         OUT_DIR / "nfc-card-front-dark-300dpi.png",
