@@ -17,16 +17,17 @@ export default function TermsPage() {
           <h1 className="font-display text-4xl font-bold tracking-tightest text-ink">
             Términos y condiciones
           </h1>
-          <p className="mt-2 text-sm text-mute">Última actualización: agosto 2026</p>
+          <p className="mt-2 text-sm text-mute">Última actualización: octubre 2026</p>
 
           <section className="mt-10 space-y-4 text-ink">
             <h2 className="font-display text-2xl font-bold">1. Servicio</h2>
             <p className="text-mute">
               IAGO Digital ofrece diseño, desarrollo, hosting y mantenimiento de
               sitios web mediante planes de suscripción (Básico, SEO y
-              Automatizado con IA). Cada plan incluye una tarifa única de
-              desarrollo y una suscripción recurrente con periodo de prueba de
-              hosting antes del primer cobro de suscripción.
+              Automatizado con IA). El plan SEO incluye una tarjeta de
+              presentación NFC. Cada plan incluye una tarifa única de
+              desarrollo y una suscripción recurrente de hosting y
+              mantenimiento.
             </p>
 
             <h2 className="font-display text-2xl font-bold">2. Pagos</h2>

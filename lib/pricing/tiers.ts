@@ -49,6 +49,7 @@ const TIER_DEFINITIONS: Array<{
       "Optimización SEO on-page",
       "Google Search Console y Analytics",
       "Informe mensual de rendimiento",
+      "Tarjeta de presentación NFC",
     ],
     highlighted: true,
   },
@@ -100,9 +101,6 @@ export const CONTACT_TIER: ContactTier = {
 };
 
 export type BillingCycle = "month" | "year";
-
-/** Free hosting months before the first subscription charge (Paddle trial_period). */
-export const SUBSCRIPTION_TRIAL_MONTHS = 2;
 
 export function getPriceIdsForCycle(
   tiers: Tier[],

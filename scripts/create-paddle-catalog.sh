@@ -91,7 +91,6 @@ create_recurring_price() {
       description: $desc,
       unit_price: {amount: $amount, currency_code: "USD"},
       billing_cycle: {interval: $interval, frequency: 1},
-      trial_period: {interval: "month", frequency: 2},
       unit_price_overrides: $overrides
     }')"
 }

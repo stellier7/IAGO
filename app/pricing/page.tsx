@@ -35,8 +35,8 @@ export default async function PricingPage() {
             El plan perfecto para tu negocio
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-mute">
-            Pagas el desarrollo hoy. Te regalamos los primeros 2 meses de
-            hosting — la suscripción empieza a cobrarse después.
+            Pagas el desarrollo hoy y la suscripción de hosting del plan que
+            elijas.
           </p>
         </div>
 

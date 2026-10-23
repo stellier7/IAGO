@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Política de reembolsos y cancelación — IAGO Digital",
   description:
-    "Condiciones de reembolso, cancelación de suscripción y periodo de prueba de IAGO Digital.",
+    "Condiciones de reembolso y cancelación de suscripción de IAGO Digital.",
 };
 
 export default function RefundPage() {
@@ -17,7 +17,7 @@ export default function RefundPage() {
           <h1 className="font-display text-4xl font-bold tracking-tightest text-ink">
             Política de reembolsos y cancelación
           </h1>
-          <p className="mt-2 text-sm text-mute">Última actualización: agosto 2026</p>
+          <p className="mt-2 text-sm text-mute">Última actualización: octubre 2026</p>
 
           <section className="mt-10 space-y-4 text-mute">
             <h2 className="font-display text-2xl font-bold text-ink">
@@ -33,14 +33,15 @@ export default function RefundPage() {
             </p>
 
             <h2 className="font-display text-2xl font-bold text-ink">
-              2. Suscripción y periodo de prueba
+              2. Suscripción
             </h2>
             <p>
-              Los planes incluyen dos meses de hosting gratis antes del primer
-              cobro de suscripción. Puedes cancelar en cualquier momento desde el
-              portal de cliente de Paddle (enlace en /account) para evitar cargos
-              futuros. La cancelación surte efecto al final del periodo de
-              facturación vigente, salvo indicación contraria en Paddle.
+              La suscripción de hosting se cobra según el ciclo elegido (mensual
+              o anual), desde el primer periodo. Puedes cancelar en cualquier
+              momento desde el portal de cliente de Paddle (enlace en /account)
+              para evitar cargos futuros. La cancelación surte efecto al final
+              del periodo de facturación vigente, salvo indicación contraria en
+              Paddle.
             </p>
 
             <h2 className="font-display text-2xl font-bold text-ink">

@@ -27,7 +27,8 @@ const PLAN_DEFINITIONS: Array<{
     annualUsd: "55000",
     devUsd: "80000",
     tier: 2,
-    description: "Plan SEO — sitio optimizado para buscadores y visibilidad.",
+    description:
+      "Plan SEO — sitio optimizado para buscadores, visibilidad y tarjeta de presentación NFC.",
   },
   {
     key: "ia",
@@ -242,7 +243,6 @@ async function createRecurringPrice(
         description: `${definition.name} — ${interval}ly subscription`,
         unit_price: { amount, currency_code: "USD" },
         billing_cycle: { interval, frequency: 1 },
-        trial_period: { interval: "month", frequency: 2 },
         unit_price_overrides: buildOverrides(definition.key, kind),
       }),
     },
