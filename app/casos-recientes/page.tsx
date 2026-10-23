@@ -36,6 +36,17 @@ export default function CasosRecientesPage() {
             />
           ))}
         </div>
+
+        <div className="mx-auto mt-16 max-w-content px-6 text-center md:mt-20">
+          <a
+            href="https://wa.me/50496784674?text=Hola%20IAGO%2C%20me%20gustar%C3%ADa%20consultar%20m%C3%A1s%20casos."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold text-bone transition hover:border-coral hover:text-coral"
+          >
+            Consultar más casos →
+          </a>
+        </div>
       </main>
       <Footer />
     </>
