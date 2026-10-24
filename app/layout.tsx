@@ -3,6 +3,7 @@ import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const display = Syne({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body className="font-body">
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
+        <WhatsAppFloat />
       </body>
     </html>
   );
