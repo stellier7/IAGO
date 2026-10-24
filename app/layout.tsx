@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import JsonLd from "@/components/JsonLd";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const display = Syne({
@@ -41,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
+        <JsonLd />
         <GoogleAnalytics />
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
