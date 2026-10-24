@@ -46,7 +46,8 @@ html.hero-intro-locked body::-webkit-scrollbar {
     scroll-behavior: auto !important;
   }
 
-  .wa-pulse {
+  .wa-pulse,
+  .wa-float {
     animation: none !important;
   }
 }
@@ -54,6 +55,7 @@ html.hero-intro-locked body::-webkit-scrollbar {
 .wa-float {
   right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
+  animation: wa-breathe 2s ease-in-out infinite;
 }
 
 .wa-pulse {
@@ -73,5 +75,15 @@ html.hero-intro-locked body::-webkit-scrollbar {
   100% {
     transform: scale(1.45);
     opacity: 0;
+  }
+}
+
+@keyframes wa-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
   }
 }
