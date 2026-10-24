@@ -8,6 +8,12 @@ const structuredData = {
       "@id": `${siteUrl}/#organization`,
       name: "IAGO Digital",
       url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/icon.png`,
+        width: 512,
+        height: 512,
+      },
       email: "iagodigitalweb@gmail.com",
       telephone: "+50489809800",
       description:
