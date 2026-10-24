@@ -3,6 +3,7 @@ import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const display = Syne({
@@ -18,6 +19,7 @@ const body = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.iagodigital.com"),
   title: "IAGO Digital — Web, SEO y Automatizaciones con IA",
   description:
     "Agencia digital en Honduras. Diseñamos sitios web, optimizamos SEO y automatizamos procesos con inteligencia artificial.",
@@ -39,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
+        <GoogleAnalytics />
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
         <WhatsAppFloat />
