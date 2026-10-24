@@ -16,6 +16,7 @@ const services = [
     description:
       "Landing pages, sitios corporativos y e-commerce con diseño premium, performance y accesibilidad.",
     tags: ["Next.js", "Responsive", "CMS"],
+    href: "/servicios/web",
   },
   {
     title: "SEO",
@@ -23,6 +24,7 @@ const services = [
     description:
       "Auditorías técnicas, optimización on-page y estrategia de contenido para posicionarte en Google.",
     tags: ["Core Web Vitals", "Schema", "Contenido"],
+    href: "/servicios/seo",
   },
   {
     title: "Automatizaciones",
@@ -30,6 +32,7 @@ const services = [
     description:
       "Chatbots, flujos con IA, integraciones y dashboards que eliminan trabajo manual repetitivo.",
     tags: ["OpenAI", "Zapier", "APIs"],
+    href: "/servicios/automatizaciones",
   },
 ];
 
@@ -81,6 +84,9 @@ function ServiceCardContent({
           </span>
         ))}
       </div>
+      <span className="mt-6 inline-block text-sm font-semibold text-ink transition group-hover:text-coral">
+        Ver servicio →
+      </span>
     </>
   );
 }
@@ -98,9 +104,11 @@ export default function Services() {
   const cardGrid = (
     <div className="mt-16 grid gap-6 md:grid-cols-3">
       {services.map((service, i) => (
-        <article key={service.title} className={cardClassName}>
-          <ServiceCardContent service={service} index={i} />
-        </article>
+        <a key={service.title} href={service.href} className="block">
+          <article className={cardClassName}>
+            <ServiceCardContent service={service} index={i} />
+          </article>
+        </a>
       ))}
     </div>
   );
@@ -108,16 +116,19 @@ export default function Services() {
   const mobileCardGrid = (
     <div className="mt-16 grid gap-6 md:grid-cols-3">
       {services.map((service, i) => (
-        <motion.article
+        <motion.a
           key={service.title}
+          href={service.href}
           variants={pillarCardVariants[i]}
           initial="hidden"
           whileInView="visible"
           viewport={MOBILE_CARD_VIEWPORT}
-          className={cardClassName}
+          className="block"
         >
-          <ServiceCardContent service={service} index={i} />
-        </motion.article>
+          <article className={cardClassName}>
+            <ServiceCardContent service={service} index={i} />
+          </article>
+        </motion.a>
       ))}
     </div>
   );
@@ -130,13 +141,16 @@ export default function Services() {
       animate={pillarsInView ? "visible" : "hidden"}
     >
       {services.map((service, i) => (
-        <motion.article
+        <motion.a
           key={service.title}
+          href={service.href}
           variants={pillarCardVariants[i]}
-          className={cardClassName}
+          className="block"
         >
-          <ServiceCardContent service={service} index={i} />
-        </motion.article>
+          <article className={cardClassName}>
+            <ServiceCardContent service={service} index={i} />
+          </article>
+        </motion.a>
       ))}
     </motion.div>
   );
