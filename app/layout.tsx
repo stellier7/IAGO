@@ -17,6 +17,7 @@ const body = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.iagodigital.com"),
   title: "IAGO Digital — Web, SEO y Automatizaciones con IA",
   description:
     "Agencia digital en Honduras. Diseñamos sitios web, optimizamos SEO y automatizamos procesos con inteligencia artificial.",
