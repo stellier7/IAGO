@@ -96,7 +96,7 @@ export const CONTACT_TIER: ContactTier = {
     "Soporte prioritario",
     "Facturación flexible",
   ],
-  contactHref: "https://wa.me/50496784674?text=Hola%20IAGO%2C%20me%20interesa%20un%20plan%20a%20medida.",
+  contactHref: "https://wa.me/50489809800?text=Hola%20IAGO%2C%20me%20interesa%20un%20plan%20a%20medida.",
   contactLabel: "Contáctanos",
 };
 

@@ -71,7 +71,7 @@ export default function RefundPage() {
               </a>{" "}
               o por{" "}
               <a
-                href="https://wa.me/50496784674"
+                href="https://wa.me/50489809800"
                 className="text-coral underline"
                 target="_blank"
                 rel="noopener noreferrer"

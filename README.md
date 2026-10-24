@@ -50,7 +50,7 @@ lib/
 ## Pendientes / notas
 
 - Contacto actualizado: `iagodigitalweb@gmail.com` y WhatsApp
-  (`wa.me/50496784674`).
+  (`wa.me/50489809800`).
 - Agregar `public/og-image.png` (1200×630) y `public/favicon.ico` antes
   de lanzar — el layout ya los referencia.
 - El grid de `Services.tsx` está pensado para agregar un cuarto pilar

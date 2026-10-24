@@ -34,7 +34,7 @@ export default function CTA() {
               Email
             </a>
             <a
-              href="https://wa.me/50496784674"
+              href="https://wa.me/50489809800"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-white/40 px-8 py-3.5 text-sm font-semibold transition hover:bg-white/10"

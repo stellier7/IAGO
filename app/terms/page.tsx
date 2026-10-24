@@ -74,12 +74,12 @@ export default function TermsPage() {
               </a>
               {" · "}
               <a
-                href="https://wa.me/50496784674"
+                href="https://wa.me/50489809800"
                 className="text-coral underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                WhatsApp +504 9678 4674
+                WhatsApp +504 8980-9800
               </a>
             </p>
           </section>
