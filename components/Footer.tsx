@@ -29,6 +29,12 @@ export default function Footer() {
           <a href="/casos-recientes" className="transition hover:text-coral">
             Casos
           </a>
+          <a href="/honduras" className="transition hover:text-coral">
+            Honduras
+          </a>
+          <a href="/blog" className="transition hover:text-coral">
+            Blog
+          </a>
           <a href="/#contacto" className="transition hover:text-coral">
             Contacto
           </a>
