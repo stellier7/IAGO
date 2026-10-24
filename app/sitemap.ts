@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { recentCases } from "@/lib/cases/recent";
 import { servicePages } from "@/lib/services/pages";
 
 const baseUrl = "https://www.iagodigital.com";
@@ -11,6 +12,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.8,
+  }));
+
+  const caseEntries = recentCases.map((item) => ({
+    url: `${baseUrl}/casos/${item.slug}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
   }));
 
   return [
@@ -28,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     ...serviceEntries,
+    ...caseEntries,
     {
       url: `${baseUrl}/privacy`,
       lastModified,

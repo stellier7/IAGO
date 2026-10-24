@@ -66,12 +66,10 @@ export default function CaseCard({
           {item.result}
         </p>
         <a
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/casos/${item.slug}`}
           className="relative z-20 mt-2 inline-block text-sm font-semibold text-coral transition hover:text-coral-bright md:mt-3"
         >
-          Ver sitio →
+          Ver caso →
         </a>
       </div>
     </article>
