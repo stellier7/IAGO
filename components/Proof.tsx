@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerContainer } from "@/lib/motion-variants";
 
 const stats = [
-  { value: "40+", label: "Proyectos entregados" },
-  { value: "98%", label: "Clientes satisfechos" },
+  { value: "10+", label: "Proyectos entregados" },
+  { value: "100%", label: "Clientes satisfechos" },
   { value: "3×", label: "ROI promedio en SEO" },
-  { value: "<48h", label: "Tiempo de respuesta" },
+  { value: "<12h", label: "Tiempo de respuesta" },
 ];
 
 export default function Proof() {
