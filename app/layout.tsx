@@ -39,10 +39,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${display.variable} ${body.variable}`}>
-      <head>
-        <GoogleAnalytics />
-      </head>
       <body className="font-body">
+        <GoogleAnalytics />
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
