@@ -32,6 +32,15 @@ export const metadata: Metadata = {
     locale: "es_HN",
     images: ["/og-image.png"],
   },
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", sizes: "256x256" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" },
+    ],
+  },
 };
 
 export default function RootLayout({
