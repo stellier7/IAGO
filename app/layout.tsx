@@ -3,6 +3,7 @@ import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const display = Syne({
   subsets: ["latin"],
@@ -38,6 +39,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${display.variable} ${body.variable}`}>
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className="font-body">
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
