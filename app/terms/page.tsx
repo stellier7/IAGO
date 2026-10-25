@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Términos y condiciones — IAGO Digital",
+export const metadata = buildPageMetadata({
+  title: "Términos y condiciones — iAGO Digital",
   description:
-    "Términos y condiciones de uso de los servicios de diseño web, hosting y suscripción de IAGO Digital.",
-};
+    "Términos y condiciones de uso de los servicios de diseño web, hosting y suscripción de iAGO Digital.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
@@ -67,10 +68,10 @@ export default function TermsPage() {
             <p className="text-mute">
               IAGO Digital —{" "}
               <a
-                href="mailto:iagodigitalweb@gmail.com"
+                href="mailto:info@iagodigital.com"
                 className="text-coral underline"
               >
-                iagodigitalweb@gmail.com
+                info@iagodigital.com
               </a>
               {" · "}
               <a

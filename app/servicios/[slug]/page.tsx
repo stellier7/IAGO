@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ServicePageView from "@/components/services/ServicePageView";
 import { getServicePage, servicePages } from "@/lib/services/pages";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type ServiceRouteParams = {
   slug: string;
@@ -18,18 +19,19 @@ export function generateMetadata({
 }): Metadata {
   const page = getServicePage(params.slug);
   if (!page) {
-    return { title: "Servicio — IAGO Digital" };
+    return buildPageMetadata({
+      title: "Servicio — iAGO Digital",
+      description: "Servicios digitales de iAGO Digital.",
+      path: `/servicios/${params.slug}`,
+    });
   }
 
-  return {
-    title: `${page.title} — IAGO Digital`,
+  return buildPageMetadata({
+    title: `${page.title} — iAGO Digital`,
     description: page.description,
-    openGraph: {
-      title: page.title,
-      description: page.description,
-      images: ["/og-image.png"],
-    },
-  };
+    path: `/servicios/${page.slug}`,
+    openGraphTitle: page.title,
+  });
 }
 
 export default function ServiceSlugPage({

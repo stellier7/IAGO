@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogPostView from "@/components/blog/BlogPostView";
 import { blogPosts, getPostBySlug } from "@/lib/blog/posts";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type BlogRouteParams = {
   slug: string;
@@ -18,18 +19,19 @@ export function generateMetadata({
 }): Metadata {
   const post = getPostBySlug(params.slug);
   if (!post) {
-    return { title: "Blog — IAGO Digital" };
+    return buildPageMetadata({
+      title: "Blog — iAGO Digital",
+      description: "Artículos de iAGO Digital.",
+      path: `/blog/${params.slug}`,
+    });
   }
 
-  return {
-    title: `${post.title} — IAGO Digital`,
+  return buildPageMetadata({
+    title: `${post.title} — iAGO Digital`,
     description: post.description,
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      images: ["/og-image.png"],
-    },
-  };
+    path: `/blog/${post.slug}`,
+    openGraphTitle: post.title,
+  });
 }
 
 export default function BlogSlugPage({

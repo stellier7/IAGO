@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Política de reembolsos y cancelación — IAGO Digital",
+export const metadata = buildPageMetadata({
+  title: "Política de reembolsos y cancelación — iAGO Digital",
   description:
-    "Condiciones de reembolso y cancelación de suscripción de IAGO Digital.",
-};
+    "Condiciones de reembolso y cancelación de suscripción de iAGO Digital.",
+  path: "/refund",
+});
 
 export default function RefundPage() {
   return (
@@ -64,10 +65,10 @@ export default function RefundPage() {
               , abre el portal de Paddle y gestiona tu suscripción. También
               puedes escribirnos a{" "}
               <a
-                href="mailto:iagodigitalweb@gmail.com"
+                href="mailto:info@iagodigital.com"
                 className="text-coral underline"
               >
-                iagodigitalweb@gmail.com
+                info@iagodigital.com
               </a>{" "}
               o por{" "}
               <a
@@ -87,10 +88,10 @@ export default function RefundPage() {
             <p>
               Para solicitudes de reembolso o cancelación:{" "}
               <a
-                href="mailto:iagodigitalweb@gmail.com"
+                href="mailto:info@iagodigital.com"
                 className="text-coral underline"
               >
-                iagodigitalweb@gmail.com
+                info@iagodigital.com
               </a>
             </p>
           </section>

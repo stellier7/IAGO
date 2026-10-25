@@ -19,7 +19,7 @@ export const servicePages: ServicePage[] = [
     eyebrow: "Servicio · Web",
     headline: "Sitios web que convierten, no solo se ven bien",
     description:
-      "Diseño y desarrollo web en Honduras: landing pages, sitios corporativos y e-commerce con Next.js, performance y foco en conversión.",
+      "Diseño y desarrollo web: landing pages, sitios corporativos y e-commerce con Next.js, performance y foco en conversión para Centroamérica y Latam.",
     intro:
       "Construimos sitios rápidos, claros y listos para vender o captar leads. Diseño premium, código moderno y una base sólida para SEO.",
     outcomes: [
@@ -54,7 +54,7 @@ export const servicePages: ServicePage[] = [
     eyebrow: "Servicio · SEO",
     headline: "Visibilidad orgánica con trabajo técnico y contenido",
     description:
-      "SEO en Honduras: auditorías técnicas, Search Console, contenido y optimización on-page para que tu negocio aparezca en Google.",
+      "SEO técnico y de contenido: Search Console, on-page y estrategia para que tu negocio aparezca en Google — en Centroamérica, Latam y más.",
     intro:
       "No vendemos “primer lugar garantizado”. Montamos la base correcta (técnica + páginas útiles + medición) para que Google pueda entenderte y rankearte con el tiempo.",
     outcomes: [
@@ -79,7 +79,7 @@ export const servicePages: ServicePage[] = [
       {
         question: "¿SEO local o nacional?",
         answer:
-          "Ambos son posibles. En Honduras trabajamos búsquedas locales (ciudad / servicio) y de marca según tu mercado objetivo.",
+          "Ambos son posibles. Trabajamos búsquedas locales (ciudad / servicio), nacionales y de marca según tu mercado en Centroamérica o Latam.",
       },
     ],
   },
@@ -89,7 +89,7 @@ export const servicePages: ServicePage[] = [
     eyebrow: "Servicio · Automatizaciones",
     headline: "Menos trabajo repetitivo, más tiempo para vender",
     description:
-      "Automatizaciones con IA para negocios en Honduras: chatbots, flujos, integraciones y dashboards que eliminan tareas manuales.",
+      "Automatizaciones con IA: chatbots, flujos, integraciones y dashboards que eliminan tareas manuales para negocios en crecimiento.",
     intro:
       "Conectamos las herramientas que ya usas (WhatsApp, email, CRM, hojas de cálculo) y añadimos IA donde realmente ahorra tiempo: respuestas, clasificación, seguimiento y reportes.",
     outcomes: [

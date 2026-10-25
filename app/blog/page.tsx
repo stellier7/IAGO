@@ -1,17 +1,12 @@
-import type { Metadata } from "next";
 import BlogIndexView from "@/components/blog/BlogIndexView";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Blog — IAGO Digital",
+export const metadata = buildPageMetadata({
+  title: "Blog — iAGO Digital",
   description:
-    "NFC, leads, SEO, AI SEO y desarrollo web para negocios en Honduras.",
-  openGraph: {
-    title: "Blog — IAGO Digital",
-    description:
-      "Ideas prácticas para crecer: tarjeta NFC, leads, SEO local y AI SEO.",
-    images: ["/og-image.png"],
-  },
-};
+    "NFC, leads, SEO, AI SEO y desarrollo web para negocios en Centroamérica y Latam.",
+  path: "/blog",
+});
 
 export default function BlogPage() {
   return <BlogIndexView />;

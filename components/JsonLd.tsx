@@ -14,20 +14,21 @@ const structuredData = {
         width: 512,
         height: 512,
       },
-      email: "iagodigitalweb@gmail.com",
+      email: "info@iagodigital.com",
       telephone: "+50489809800",
       description:
-        "Agencia digital en Honduras. Diseñamos sitios web, optimizamos SEO y automatizamos procesos con inteligencia artificial.",
-      areaServed: {
-        "@type": "Country",
-        name: "Honduras",
-      },
+        "Agencia digital. Diseñamos sitios web, impulsamos SEO y automatizamos procesos con IA para negocios en Centroamérica y Latam.",
+      areaServed: [
+        { "@type": "Country", name: "Honduras" },
+        { "@type": "Place", name: "Central America" },
+        { "@type": "Place", name: "Latin America" },
+      ],
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer service",
-        email: "iagodigitalweb@gmail.com",
+        email: "info@iagodigital.com",
         telephone: "+50489809800",
-        availableLanguage: ["Spanish", "es"],
+        availableLanguage: ["Spanish", "English", "es", "en"],
       },
     },
     {
@@ -40,7 +41,7 @@ const structuredData = {
       publisher: {
         "@id": `${siteUrl}/#organization`,
       },
-      inLanguage: "es-HN",
+      inLanguage: "es",
     },
     {
       "@type": "ProfessionalService",
@@ -49,10 +50,11 @@ const structuredData = {
       url: siteUrl,
       image: `${siteUrl}/og-image.png`,
       priceRange: "$$",
-      areaServed: {
-        "@type": "Country",
-        name: "Honduras",
-      },
+      areaServed: [
+        { "@type": "Country", name: "Honduras" },
+        { "@type": "Place", name: "Central America" },
+        { "@type": "Place", name: "Latin America" },
+      ],
       parentOrganization: {
         "@id": `${siteUrl}/#organization`,
       },

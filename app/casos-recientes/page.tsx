@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CaseCard from "@/components/cases/CaseCard";
 import { recentCases } from "@/lib/cases/recent";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Casos recientes — IAGO Digital",
+export const metadata = buildPageMetadata({
+  title: "Casos recientes — iAGO Digital",
   description:
-    "Sitios web que hemos diseñado y lanzado para negocios en Honduras y más allá.",
-};
+    "Sitios web que hemos diseñado y lanzado para negocios en Centroamérica, Latam y más allá.",
+  path: "/casos-recientes",
+});
 
 export default function CasosRecientesPage() {
   return (

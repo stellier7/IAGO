@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Política de privacidad — IAGO Digital",
+export const metadata = buildPageMetadata({
+  title: "Política de privacidad — iAGO Digital",
   description:
-    "Cómo IAGO Digital recopila, usa y protege tus datos personales.",
-};
+    "Cómo iAGO Digital recopila, usa y protege tus datos personales.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (
@@ -64,10 +65,10 @@ export default function PrivacyPage() {
               Puedes solicitar acceso, corrección o eliminación de tus datos
               escribiendo a{" "}
               <a
-                href="mailto:iagodigitalweb@gmail.com"
+                href="mailto:info@iagodigital.com"
                 className="text-coral underline"
               >
-                iagodigitalweb@gmail.com
+                info@iagodigital.com
               </a>
               . Responderemos en un plazo razonable según la ley aplicable.
             </p>
@@ -78,10 +79,10 @@ export default function PrivacyPage() {
             <p>
               IAGO Digital —{" "}
               <a
-                href="mailto:iagodigitalweb@gmail.com"
+                href="mailto:info@iagodigital.com"
                 className="text-coral underline"
               >
-                iagodigitalweb@gmail.com
+                info@iagodigital.com
               </a>
             </p>
           </section>

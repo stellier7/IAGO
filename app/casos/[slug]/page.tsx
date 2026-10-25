@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CaseStudyView from "@/components/cases/CaseStudyView";
 import { getCaseBySlug, recentCases } from "@/lib/cases/recent";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type CaseRouteParams = {
   slug: string;
@@ -18,18 +19,18 @@ export function generateMetadata({
 }): Metadata {
   const item = getCaseBySlug(params.slug);
   if (!item) {
-    return { title: "Caso — IAGO Digital" };
+    return buildPageMetadata({
+      title: "Caso — iAGO Digital",
+      description: "Casos de iAGO Digital.",
+      path: `/casos/${params.slug}`,
+    });
   }
 
-  return {
-    title: `${item.client} — Caso IAGO Digital`,
+  return buildPageMetadata({
+    title: `${item.client} — Caso iAGO Digital`,
     description: item.summary,
-    openGraph: {
-      title: `${item.client} — Caso IAGO Digital`,
-      description: item.summary,
-      images: ["/og-image.png"],
-    },
-  };
+    path: `/casos/${item.slug}`,
+  });
 }
 
 export default function CaseSlugPage({

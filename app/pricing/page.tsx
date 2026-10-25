@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PricingCards from "@/components/pricing/PricingCards";
@@ -9,12 +8,14 @@ import {
   getPricingConfigIssue,
   getPricingTiersOrNull,
 } from "@/lib/pricing/validate-config";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Planes y precios — IAGO Digital",
+export const metadata = buildPageMetadata({
+  title: "Planes y precios — iAGO Digital",
   description:
     "Elige el plan Básico, SEO o Automatizado con IA. Precios localizados y suscripción segura con Paddle.",
-};
+  path: "/pricing",
+});
 
 export default async function PricingPage() {
   const countryCode = getCountryCodeFromHeaders();
