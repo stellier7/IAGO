@@ -6,7 +6,7 @@ import { fadeUp, staggerContainer } from "@/lib/motion-variants";
 const proofs = [
   {
     value: "6+",
-    label: "Proyectos publicados en el portfolio",
+    label: "Casos publicados que puedes abrir y verificar",
   },
   {
     value: "3",
@@ -14,11 +14,11 @@ const proofs = [
   },
   {
     value: "<48h",
-    label: "Tiempo de respuesta comprometido",
+    label: "Compromiso de primera respuesta",
   },
   {
-    value: "100%",
-    label: "Proyectos con foco en móvil y WhatsApp",
+    value: "Latam",
+    label: "Proyectos en la región y EE.UU.",
   },
 ];
 
