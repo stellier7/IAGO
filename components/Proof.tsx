@@ -3,11 +3,23 @@
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer } from "@/lib/motion-variants";
 
-const stats = [
-  { value: "10+", label: "Proyectos entregados" },
-  { value: "100%", label: "Clientes satisfechos" },
-  { value: "3×", label: "ROI promedio en SEO" },
-  { value: "<12h", label: "Tiempo de respuesta" },
+const proofs = [
+  {
+    value: "6+",
+    label: "Proyectos publicados en el portfolio",
+  },
+  {
+    value: "3",
+    label: "Pilares: web, SEO y automatización",
+  },
+  {
+    value: "<48h",
+    label: "Tiempo de respuesta comprometido",
+  },
+  {
+    value: "100%",
+    label: "Proyectos con foco en móvil y WhatsApp",
+  },
 ];
 
 export default function Proof() {
@@ -34,14 +46,14 @@ export default function Proof() {
               Un partner digital, no solo un proveedor
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-6 text-lg text-mute">
-              Combinamos diseño, estrategia y tecnología para que cada peso
-              invertido genere resultados medibles. Sin plantillas genéricas,
-              sin promesas vacías.
+              Combinamos diseño, estrategia y tecnología con alcance claro.
+              Preferimos casos documentados a cifras difíciles de verificar —
+              sin plantillas genéricas ni promesas vacías.
             </motion.p>
           </motion.div>
 
           <div className="grid grid-cols-2 gap-6">
-            {stats.map((stat, i) => (
+            {proofs.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, scale: 0.9 }}

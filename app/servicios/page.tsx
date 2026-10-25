@@ -36,13 +36,12 @@ export default function ServiciosIndexPage() {
                 className="block rounded-2xl border border-ink-line/15 bg-white px-6 py-5 transition hover:border-coral/40"
               >
                 <p className="text-xs uppercase tracking-wider text-coral">
-                  {page.searchIntent}
+                  {page.eyebrow}
                 </p>
                 <h2 className="mt-2 font-display text-2xl font-bold text-ink">
                   {page.title}
                 </h2>
                 <p className="mt-2 text-sm text-mute">{page.description}</p>
-                <p className="mt-3 text-xs text-mute">/{page.slug}</p>
               </a>
             ))}
           </div>

@@ -44,34 +44,39 @@ export default function CaseStudyView({ item }: CaseStudyViewProps) {
           </div>
 
           <section className="mt-14">
-            <h2 className="font-display text-2xl font-bold text-ink">Reto</h2>
+            <h2 className="font-display text-2xl font-bold text-ink">
+              1. El cliente
+            </h2>
+            <p className="mt-4 text-mute">{item.businessType}</p>
+          </section>
+
+          <section className="mt-12">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              2. El problema
+            </h2>
             <p className="mt-4 text-mute">{item.challenge}</p>
           </section>
 
           <section className="mt-12">
             <h2 className="font-display text-2xl font-bold text-ink">
-              Solución
+              3. La solución
             </h2>
             <p className="mt-4 text-mute">{item.solution}</p>
           </section>
 
           <section className="mt-12">
             <h2 className="font-display text-2xl font-bold text-ink">
-              Entregables
+              4. La implementación
             </h2>
             <ul className="mt-4 space-y-3 text-mute">
-              {item.deliverables.map((line) => (
+              {item.implementation.map((line) => (
                 <li key={line} className="flex gap-3">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" />
                   <span>{line}</span>
                 </li>
               ))}
             </ul>
-          </section>
-
-          <section className="mt-12">
-            <h2 className="font-display text-2xl font-bold text-ink">Stack</h2>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-6 flex flex-wrap gap-2">
               {item.stack.map((tag) => (
                 <span
                   key={tag}
@@ -83,16 +88,39 @@ export default function CaseStudyView({ item }: CaseStudyViewProps) {
             </div>
           </section>
 
+          <section className="mt-12">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              5. El resultado
+            </h2>
+            <p className="mt-4 text-mute">{item.outcome}</p>
+          </section>
+
+          <section className="mt-12">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              6. La evidencia
+            </h2>
+            <p className="mt-4 text-mute">{item.evidence}</p>
+            <ul className="mt-6 space-y-3 text-mute">
+              {item.deliverables.map((line) => (
+                <li key={line} className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           <section className="mt-16 rounded-2xl bg-ink px-8 py-10 text-bone">
             <h2 className="font-display text-2xl font-bold tracking-tightest">
               ¿Quieres un resultado así?
             </h2>
             <p className="mt-3 text-bone/70">
-              Cuéntanos tu proyecto y te proponemos el siguiente paso.
+              Cuéntanos tu proyecto y te proponemos el siguiente paso — con
+              alcance honesto.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="/#contacto"
+                href="/contact"
                 className="rounded-full bg-coral px-6 py-3 text-sm font-semibold text-white transition hover:bg-coral-bright"
               >
                 Contactar

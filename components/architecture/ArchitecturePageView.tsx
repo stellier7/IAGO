@@ -23,10 +23,6 @@ export default function ArchitecturePageView({
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tightest text-ink md:text-5xl">
             {page.headline}
           </h1>
-          <p className="mt-4 rounded-xl bg-white px-4 py-3 text-sm text-mute ring-1 ring-ink-line/10">
-            <span className="font-medium text-ink">Intención de búsqueda: </span>
-            {page.searchIntent}
-          </p>
           <p className="mt-6 text-lg text-mute">{page.intro}</p>
 
           <section className="mt-14">

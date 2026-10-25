@@ -1,20 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import CaseCard from "@/components/cases/CaseCard";
 import { recentCases } from "@/lib/cases/recent";
 
-const loopedCases = [...recentCases, ...recentCases];
-
 export default function Work() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const x = useTransform(scrollYProgress, [0, 1], ["2%", "-50%"]);
-
   return (
     <section
       id="trabajo"
@@ -25,30 +14,28 @@ export default function Work() {
         <h2 className="mt-4 font-display text-4xl font-bold tracking-tightest md:text-5xl">
           Casos recientes
         </h2>
+        <p className="mt-4 max-w-2xl text-mute">
+          Cada proyecto tiene una página de caso con el problema, la solución y
+          lo que entregamos — sin inventar métricas.
+        </p>
       </div>
 
-      <div
-        ref={containerRef}
-        className="relative mt-16 hidden h-[520px] overflow-hidden md:block"
-      >
-        <motion.div
-          style={{ x }}
-          className="absolute flex w-max gap-6 pl-6 will-change-transform"
-        >
-          {loopedCases.map((item, index) => (
+      <div className="mt-16 hidden md:block">
+        <div className="flex gap-6 overflow-x-auto px-6 pb-4 [scrollbar-width:thin]">
+          {recentCases.map((item) => (
             <CaseCard
-              key={`${item.client}-${index}`}
+              key={item.slug}
               item={item}
-              className="h-[460px] w-[340px]"
+              className="h-[460px] w-[340px] shrink-0"
             />
           ))}
-        </motion.div>
+        </div>
       </div>
 
       <div className="mt-12 space-y-6 px-6 md:hidden">
         {recentCases.map((item) => (
           <CaseCard
-            key={item.client}
+            key={item.slug}
             item={item}
             className="min-h-[420px] w-full"
           />
