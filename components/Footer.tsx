@@ -14,6 +14,9 @@ export default function Footer() {
           <a href="/pricing" className="transition hover:text-coral">
             Planes
           </a>
+          <a href="/servicios" className="transition hover:text-coral">
+            Servicios
+          </a>
           <a href="/servicios/web" className="transition hover:text-coral">
             Web
           </a>

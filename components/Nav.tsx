@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const links = [
-  { href: "/#servicios", label: "Servicios" },
+  { href: "/servicios", label: "Servicios" },
   { href: "/#trabajo", label: "Trabajo" },
   { href: "/honduras", label: "Honduras" },
   { href: "/blog", label: "Blog" },
