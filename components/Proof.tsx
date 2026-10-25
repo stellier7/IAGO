@@ -5,7 +5,7 @@ import { fadeUp, staggerContainer } from "@/lib/motion-variants";
 
 const proofs = [
   {
-    value: "6+",
+    value: "10+",
     label: "Casos publicados que puedes abrir y verificar",
   },
   {
@@ -13,12 +13,12 @@ const proofs = [
     label: "Pilares: web, SEO y automatización",
   },
   {
-    value: "<48h",
+    value: "<24h",
     label: "Compromiso de primera respuesta",
   },
   {
-    value: "Latam",
-    label: "Proyectos en la región y EE.UU.",
+    value: "America",
+    label: "Proyectos en Centroamérica, Latam y EE.UU.",
   },
 ];
 
