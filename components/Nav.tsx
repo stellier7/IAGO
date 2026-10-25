@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const links = [
+const linksEs = [
   { href: "/servicios", label: "Servicios" },
+  { href: "/industrias", label: "Industrias" },
   { href: "/case-studies", label: "Casos" },
   { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
@@ -12,12 +13,25 @@ const links = [
   { href: "/contact", label: "Contacto" },
 ];
 
+const linksEn = [
+  { href: "/en", label: "Home" },
+  { href: "/en/website-design", label: "Web" },
+  { href: "/en/seo", label: "SEO" },
+  { href: "/en/ai-automation", label: "AI" },
+  { href: "/en/whatsapp-automation", label: "WhatsApp" },
+  { href: "/case-studies", label: "Work" },
+  { href: "/en/contact", label: "Contact" },
+];
+
 interface NavProps {
   theme?: "overlay" | "solid";
+  locale?: "es" | "en";
 }
 
-export default function Nav({ theme = "overlay" }: NavProps) {
+export default function Nav({ theme = "overlay", locale = "es" }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
+  const isEn = locale === "en";
+  const links = isEn ? linksEn : linksEs;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
@@ -41,7 +55,7 @@ export default function Nav({ theme = "overlay" }: NavProps) {
     >
       <div className="mx-auto flex max-w-content items-center justify-between px-6">
         <a
-          href="/"
+          href={isEn ? "/en" : "/"}
           className={`font-display text-lg font-bold tracking-tightest transition-colors duration-300 ${
             isSolid ? "text-ink" : "text-bone"
           }`}
@@ -60,12 +74,23 @@ export default function Nav({ theme = "overlay" }: NavProps) {
             </a>
           ))}
         </nav>
-        <a
-          href="/contact"
-          className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone transition hover:bg-coral"
-        >
-          Hablemos
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href={isEn ? "/" : "/en"}
+            className={`text-xs font-semibold uppercase tracking-wider transition ${
+              isSolid ? "text-mute hover:text-ink" : "text-bone/70 hover:text-bone"
+            }`}
+            hrefLang={isEn ? "es" : "en"}
+          >
+            {isEn ? "ES" : "EN"}
+          </a>
+          <a
+            href={isEn ? "/en/contact" : "/contact"}
+            className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone transition hover:bg-coral"
+          >
+            {isEn ? "Talk to us" : "Hablemos"}
+          </a>
+        </div>
       </div>
     </motion.header>
   );

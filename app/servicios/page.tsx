@@ -6,8 +6,13 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata = buildPageMetadata({
   title: "Servicios — iAGO Digital",
   description:
-    "Arquitectura de servicios: diseño web, SEO, AI SEO, automatización con IA, WhatsApp y mantenimiento — cada uno con su página de intención.",
+    "Arquitectura de servicios en español: diseño web, SEO, AI SEO, automatización con IA, WhatsApp y mantenimiento. English hub en /en.",
   path: "/servicios",
+  languages: {
+    es: "/servicios",
+    en: "/en",
+    "x-default": "/servicios",
+  },
 });
 
 export default function ServiciosIndexPage() {
@@ -23,9 +28,13 @@ export default function ServiciosIndexPage() {
             Páginas pensadas para búsquedas reales
           </h1>
           <p className="mt-6 text-lg text-mute">
-            Cada servicio tiene URL propia, intención clara y contenido que
-            explica para quién es y qué problema resuelve — no solo una mención
-            en el home.
+            Priorizamos intención en español (Honduras y la región). Cada
+            servicio tiene URL propia y explica para quién es. Para clientes
+            internacionales, el hub en inglés está en{" "}
+            <a href="/en" className="text-coral hover:underline">
+              /en
+            </a>{" "}
+            — contenido reescrito, no traducción mecánica.
           </p>
 
           <div className="mt-12 space-y-4">
@@ -48,16 +57,22 @@ export default function ServiciosIndexPage() {
 
           <div className="mt-12 flex flex-wrap gap-3">
             <a
+              href="/industrias"
+              className="rounded-full border border-ink-line/20 px-5 py-2.5 text-sm transition hover:border-coral hover:text-coral"
+            >
+              Industrias
+            </a>
+            <a
+              href="/en"
+              className="rounded-full border border-ink-line/20 px-5 py-2.5 text-sm transition hover:border-coral hover:text-coral"
+            >
+              English
+            </a>
+            <a
               href="/case-studies"
               className="rounded-full border border-ink-line/20 px-5 py-2.5 text-sm transition hover:border-coral hover:text-coral"
             >
               Case studies
-            </a>
-            <a
-              href="/about"
-              className="rounded-full border border-ink-line/20 px-5 py-2.5 text-sm transition hover:border-coral hover:text-coral"
-            >
-              About
             </a>
             <a
               href="/contact"

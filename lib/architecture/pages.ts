@@ -97,7 +97,9 @@ export const architecturePages: ArchitecturePage[] = [
     ],
     related: [
       { label: "SEO services", href: "/seo-services-honduras" },
-      { label: "Mantenimiento web", href: "/website-maintenance" },
+      { label: "Web inmobiliarias", href: "/diseno-web-inmobiliarias" },
+      { label: "Web belleza", href: "/diseno-web-estudios-belleza" },
+      { label: "English", href: "/en/website-design" },
       { label: "Casos", href: "/case-studies" },
     ],
   },
@@ -250,7 +252,11 @@ export const architecturePages: ArchitecturePage[] = [
     ],
     related: [
       { label: "AI automation", href: "/ai-automation-honduras" },
-      { label: "Tarjeta NFC", href: "/blog/tarjeta-nfc-presentacion-negocios" },
+      {
+        label: "WhatsApp para citas",
+        href: "/whatsapp-automatizacion-citas",
+      },
+      { label: "English", href: "/en/whatsapp-automation" },
       { label: "Contacto", href: "/contact" },
     ],
   },

@@ -26,6 +26,11 @@ export const metadata: Metadata = {
     "Agencia digital para negocios en Centroamérica y Latam: sitios que convierten, SEO con reportes claros y automatizaciones con IA para no perder leads.",
   alternates: {
     canonical: "/",
+    languages: {
+      es: "/",
+      en: "/en",
+      "x-default": "/",
+    },
   },
   openGraph: {
     title: "iAGO Digital | Web, SEO & Automatizaciones con IA",

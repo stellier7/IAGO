@@ -2,7 +2,9 @@ import type { MetadataRoute } from "next";
 import { architecturePages } from "@/lib/architecture/pages";
 import { blogPosts } from "@/lib/blog/posts";
 import { recentCases } from "@/lib/cases/recent";
+import { englishPages } from "@/lib/en/pages";
 import { cityPages } from "@/lib/locations/honduras";
+import { nichePages } from "@/lib/niches/pages";
 
 const baseUrl = "https://www.iagodigital.com";
 
@@ -14,6 +16,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.9,
+  }));
+
+  const nicheEntries = nichePages.map((page) => ({
+    url: `${baseUrl}/${page.slug}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
+
+  const englishEntries = englishPages.map((page) => ({
+    url: `${baseUrl}${page.path}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: page.slug === "home" ? 0.9 : 0.8,
   }));
 
   const cityEntries = cityPages.map((page) => ({
@@ -45,7 +61,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/industrias`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
     ...architectureEntries,
+    ...nicheEntries,
+    ...englishEntries,
     {
       url: `${baseUrl}/case-studies`,
       lastModified,
