@@ -261,7 +261,7 @@ export default function Hero() {
             )}
             {prefersReducedMotion ? (
               <span className="mt-4 block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone">
-                Desarrollo web, SEO y automatizaciones con IA
+                Web, SEO e IA para convertir visitas en clientes
               </span>
             ) : (
               <div className="mt-4 overflow-clip">
@@ -272,7 +272,7 @@ export default function Hero() {
                   transition={{ delay: TAGLINE_DELAY, duration: TAGLINE_DURATION }}
                   className="block max-w-2xl font-body text-[clamp(1rem,2.2vw,1.35rem)] font-normal leading-snug tracking-normal text-bone"
                 >
-                  Desarrollo web, SEO y automatizaciones con IA
+                  Web, SEO e IA para convertir visitas en clientes
                 </motion.span>
               </div>
             )}

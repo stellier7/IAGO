@@ -1,9 +1,9 @@
 // Hero copy entrance chain: tagline → subhead → buttons. The subhead lines live
 // here too because the button delay depends on how many there are.
 export const SUBHEAD_LINES = [
-  "Diseñamos experiencias digitales que convierten,",
-  "posicionamos tu marca en Google y automatizamos lo repetitivo",
-  "para que te enfoques en crecer.",
+  "Para negocios que venden por WhatsApp o Instagram",
+  "y necesitan una web que genere consultas reales,",
+  "aparezca en Google y automatice lo repetitivo.",
 ] as const;
 
 export const TAGLINE_DELAY = 0.4;

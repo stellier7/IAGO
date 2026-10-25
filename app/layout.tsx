@@ -23,14 +23,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.iagodigital.com"),
   title: "iAGO Digital | Web, SEO & Automatizaciones con IA",
   description:
-    "Agencia digital: diseño web, SEO y automatizaciones con IA para negocios en Centroamérica, Latam y más allá. Si nos buscas desde Honduras u otra ciudad, también te ayudamos.",
+    "Agencia digital para negocios en Centroamérica y Latam: sitios que convierten, SEO con reportes claros y automatizaciones con IA para no perder leads.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "iAGO Digital | Web, SEO & Automatizaciones con IA",
     description:
-      "Web, SEO y automatizaciones con IA para marcas que quieren crecer en Centroamérica y Latam.",
+      "Web, SEO e IA para negocios que quieren más consultas — no solo “tener página”.",
     type: "website",
     locale: "es_LA",
     url: "/",

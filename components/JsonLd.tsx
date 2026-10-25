@@ -17,7 +17,7 @@ const structuredData = {
       email: "info@iagodigital.com",
       telephone: "+50489809800",
       description:
-        "Agencia digital. Diseñamos sitios web, impulsamos SEO y automatizamos procesos con IA para negocios en Centroamérica y Latam.",
+        "Agencia digital para negocios en Centroamérica y Latam: sitios que convierten, SEO con reportes y automatizaciones con IA para no perder leads.",
       areaServed: [
         { "@type": "Country", name: "Honduras" },
         { "@type": "Place", name: "Central America" },
@@ -37,7 +37,7 @@ const structuredData = {
       url: siteUrl,
       name: "IAGO Digital",
       description:
-        "Web, SEO y automatizaciones con IA para marcas que quieren crecer.",
+        "Web, SEO e IA para negocios que quieren más consultas — no solo tener página.",
       publisher: {
         "@id": `${siteUrl}/#organization`,
       },

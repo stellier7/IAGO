@@ -343,8 +343,14 @@ export default function PricingCards({
       </div>
 
       <p className="mt-10 text-center text-xs text-mute">
-        El checkout incluye la tarifa de desarrollo (pago único) y la
-        suscripción de hosting. Impuestos estimados según tu ubicación.
+        Al suscribirte pagas hoy la tarifa de desarrollo (única) y el primer
+        ciclo de suscripción (mensual o anual). La suscripción se renueva sola
+        hasta que la canceles. Impuestos estimados según tu ubicación. Detalle
+        de reembolsos en{" "}
+        <a href="/refund" className="underline underline-offset-2 hover:text-ink">
+          política de reembolso
+        </a>
+        .
       </p>
     </div>
   );

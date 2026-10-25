@@ -13,7 +13,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata = buildPageMetadata({
   title: "Planes y precios — iAGO Digital",
   description:
-    "Elige el plan Básico, SEO o Automatizado con IA. Precios localizados y suscripción segura con Paddle.",
+    "Precios claros: tarifa única de desarrollo + suscripción de hosting (y, en SEO/IA, reportes u operación del plan). Básico, SEO o Automatizado con IA.",
   path: "/pricing",
 });
 
@@ -33,11 +33,15 @@ export default async function PricingPage() {
             Planes
           </p>
           <h1 className="font-display text-4xl font-bold tracking-tightest text-ink md:text-5xl">
-            El plan perfecto para tu negocio
+            Precios claros: desarrollo + suscripción
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-mute">
-            Pagas el desarrollo hoy y la suscripción de hosting del plan que
-            elijas.
+            Cada plan tiene dos cargos:{" "}
+            <span className="text-ink">pago único de desarrollo</span> (diseño y
+            setup) y una{" "}
+            <span className="text-ink">suscripción recurrente</span> (hosting,
+            SSL y lo que el plan liste como mensual — p. ej. informe SEO). Los
+            montos se muestran abajo según tu país.
           </p>
         </div>
 

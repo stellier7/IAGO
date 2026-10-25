@@ -12,26 +12,26 @@ import {
 const services = [
   {
     title: "Web",
-    subtitle: "Sitios que convierten",
+    subtitle: "Sitios de negocio que convierten",
     description:
-      "Landing pages, sitios corporativos y e-commerce con diseño premium, performance y accesibilidad.",
-    tags: ["Next.js", "Responsive", "CMS"],
+      "Webs para empresas: mensaje claro, móvil rápido, WhatsApp/leads y entregables listos para vender — no plantillas genéricas.",
+    tags: ["Next.js", "Conversión", "Móvil"],
     href: "/website-design-honduras",
   },
   {
     title: "SEO",
-    subtitle: "Visibilidad orgánica",
+    subtitle: "Proceso, no promesas",
     description:
-      "Auditorías técnicas, optimización on-page y estrategia de contenido para posicionarte en Google.",
-    tags: ["Core Web Vitals", "Schema", "Contenido"],
+      "Arreglos técnicos, contenido útil e informes mensuales. Separamos el setup puntual del SEO continuo.",
+    tags: ["Técnico", "Contenido", "Reportes"],
     href: "/seo-services-honduras",
   },
   {
     title: "Automatizaciones",
-    subtitle: "IA que trabaja por ti",
+    subtitle: "Flujos que resuelven un dolor",
     description:
-      "Chatbots, flujos con IA, integraciones y dashboards que eliminan trabajo manual repetitivo.",
-    tags: ["OpenAI", "Zapier", "APIs"],
+      "WhatsApp, leads y tareas repetitivas: automatizamos el cuello de botella concreto de tu operación.",
+    tags: ["WhatsApp", "Leads", "IA"],
     href: "/ai-automation-honduras",
   },
 ];
@@ -175,7 +175,7 @@ export default function Services() {
             variants={fadeUp}
             className="mt-4 font-display text-4xl font-bold tracking-tightest md:text-5xl"
           >
-            Tres pilares, un solo equipo
+            Web, SEO e IA — enfocados en consultas
           </motion.h2>
         </motion.div>
 

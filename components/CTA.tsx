@@ -17,11 +17,11 @@ export default function CTA() {
           viewport={{ once: true }}
         >
           <h2 className="font-display text-4xl font-bold tracking-tightest md:text-6xl">
-            ¿Listo para crecer?
+            ¿Listo para más consultas?
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg text-white/80">
-            Cuéntanos tu proyecto y te respondemos en menos de 48 horas con
-            una propuesta clara.
+            Cuéntanos tu negocio y el canal que más te duele (web, Google o
+            WhatsApp). Respondemos en menos de 48 horas con un alcance claro.
           </p>
           <p className="mt-10 text-sm font-semibold uppercase tracking-[0.2em] text-white/90">
             Contáctanos
