@@ -16,7 +16,7 @@ const services = [
     description:
       "Landing pages, sitios corporativos y e-commerce con diseño premium, performance y accesibilidad.",
     tags: ["Next.js", "Responsive", "CMS"],
-    href: "/servicios/web",
+    href: "/website-design-honduras",
   },
   {
     title: "SEO",
@@ -24,7 +24,7 @@ const services = [
     description:
       "Auditorías técnicas, optimización on-page y estrategia de contenido para posicionarte en Google.",
     tags: ["Core Web Vitals", "Schema", "Contenido"],
-    href: "/servicios/seo",
+    href: "/seo-services-honduras",
   },
   {
     title: "Automatizaciones",
@@ -32,7 +32,7 @@ const services = [
     description:
       "Chatbots, flujos con IA, integraciones y dashboards que eliminan trabajo manual repetitivo.",
     tags: ["OpenAI", "Zapier", "APIs"],
-    href: "/servicios/automatizaciones",
+    href: "/ai-automation-honduras",
   },
 ];
 

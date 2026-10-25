@@ -36,7 +36,7 @@ export default function CaseStudyView({ item }: CaseStudyViewProps) {
               Ver sitio en vivo →
             </a>
             <a
-              href="/casos-recientes"
+              href="/case-studies"
               className="rounded-full border border-ink-line/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-coral hover:text-coral"
             >
               Todos los casos

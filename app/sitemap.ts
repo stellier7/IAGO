@@ -1,34 +1,19 @@
 import type { MetadataRoute } from "next";
+import { architecturePages } from "@/lib/architecture/pages";
 import { blogPosts } from "@/lib/blog/posts";
 import { recentCases } from "@/lib/cases/recent";
 import { cityPages } from "@/lib/locations/honduras";
-import { servicePages } from "@/lib/services/pages";
 
 const baseUrl = "https://www.iagodigital.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  const serviceEntries = [
-    {
-      url: `${baseUrl}/servicios`,
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    ...servicePages.map((page) => ({
-      url: `${baseUrl}/servicios/${page.slug}`,
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
-  ];
-
-  const caseEntries = recentCases.map((item) => ({
-    url: `${baseUrl}/casos/${item.slug}`,
+  const architectureEntries = architecturePages.map((page) => ({
+    url: `${baseUrl}/${page.slug}`,
     lastModified,
     changeFrequency: "monthly" as const,
-    priority: 0.7,
+    priority: 0.9,
   }));
 
   const cityEntries = cityPages.map((page) => ({
@@ -45,13 +30,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  const caseEntries = recentCases.map((item) => ({
+    url: `${baseUrl}/casos/${item.slug}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   return [
     { url: `${baseUrl}/`, lastModified, changeFrequency: "weekly", priority: 1 },
+    {
+      url: `${baseUrl}/servicios`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    ...architectureEntries,
+    {
+      url: `${baseUrl}/case-studies`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     {
       url: `${baseUrl}/honduras`,
       lastModified,
       changeFrequency: "monthly",
-      priority: 0.9,
+      priority: 0.85,
     },
     ...cityEntries,
     {
@@ -62,18 +79,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...blogEntries,
     {
-      url: `${baseUrl}/casos-recientes`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/pricing`,
       lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
     },
-    ...serviceEntries,
     ...caseEntries,
     {
       url: `${baseUrl}/privacy`,

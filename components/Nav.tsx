@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 
 const links = [
   { href: "/servicios", label: "Servicios" },
-  { href: "/#trabajo", label: "Trabajo" },
-  { href: "/honduras", label: "Honduras" },
+  { href: "/case-studies", label: "Casos" },
+  { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
   { href: "/pricing", label: "Planes" },
-  { href: "/login?next=/account", label: "Cuenta" },
-  { href: "/#contacto", label: "Contacto" },
+  { href: "/contact", label: "Contacto" },
 ];
 
 interface NavProps {
@@ -62,7 +61,7 @@ export default function Nav({ theme = "overlay" }: NavProps) {
           ))}
         </nav>
         <a
-          href="/#contacto"
+          href="/contact"
           className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone transition hover:bg-coral"
         >
           Hablemos

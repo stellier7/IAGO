@@ -104,7 +104,7 @@ export const servicePages: ServicePage[] = [
     ],
     relatedLinks: [
       { label: "Ver planes", href: "/pricing" },
-      { label: "Casos recientes", href: "/casos-recientes" },
+      { label: "Case studies", href: "/case-studies" },
       { label: "Guía: páginas web", href: "/blog/paginas-web-y-desarrollo-web-honduras" },
     ],
   },

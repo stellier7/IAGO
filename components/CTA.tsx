@@ -28,10 +28,10 @@ export default function CTA() {
           </p>
           <div className="mt-4 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="mailto:info@iagodigital.com"
+              href="/contact"
               className="rounded-full bg-ink px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-ink-raised"
             >
-              Email
+              Contacto
             </a>
             <a
               href="https://wa.me/50489809800"

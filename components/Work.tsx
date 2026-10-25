@@ -57,7 +57,7 @@ export default function Work() {
 
       <div className="mt-12 flex justify-center px-6 md:mt-16">
         <a
-          href="/casos-recientes"
+          href="/case-studies"
           className="inline-flex rounded-full border border-bone/20 px-8 py-3.5 text-sm font-semibold text-bone transition hover:border-coral hover:text-coral"
         >
           Ver todos los casos →

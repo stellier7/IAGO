@@ -11,44 +11,41 @@ export default function Footer() {
           © {year} IAGO Digital. Todos los derechos reservados.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-mute">
-          <a href="/pricing" className="transition hover:text-coral">
-            Planes
-          </a>
           <a href="/servicios" className="transition hover:text-coral">
             Servicios
           </a>
-          <a href="/servicios/web" className="transition hover:text-coral">
-            Web
-          </a>
-          <a href="/servicios/seo" className="transition hover:text-coral">
-            SEO
-          </a>
           <a
-            href="/servicios/automatizaciones"
+            href="/website-design-honduras"
             className="transition hover:text-coral"
           >
-            IA
+            Web
           </a>
-          <a href="/casos-recientes" className="transition hover:text-coral">
+          <a href="/seo-services-honduras" className="transition hover:text-coral">
+            SEO
+          </a>
+          <a href="/whatsapp-automation" className="transition hover:text-coral">
+            WhatsApp
+          </a>
+          <a href="/case-studies" className="transition hover:text-coral">
             Casos
           </a>
-          <a href="/honduras" className="transition hover:text-coral">
-            Honduras
+          <a href="/about" className="transition hover:text-coral">
+            About
           </a>
           <a href="/blog" className="transition hover:text-coral">
             Blog
           </a>
-          <a href="/#contacto" className="transition hover:text-coral">
+          <a href="/contact" className="transition hover:text-coral">
             Contacto
+          </a>
+          <a href="/pricing" className="transition hover:text-coral">
+            Planes
           </a>
           <a href="/terms" className="transition hover:text-coral">
             Términos
           </a>
           <a href="/privacy" className="transition hover:text-coral">
             Privacidad
-          </a>
-          <a href="/refund" className="transition hover:text-coral">
-            Reembolsos
           </a>
         </div>
       </div>

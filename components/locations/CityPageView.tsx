@@ -53,19 +53,19 @@ export default function CityPageView({ page }: CityPageViewProps) {
             </h2>
             <div className="mt-4 flex flex-wrap gap-3">
               <a
-                href="/servicios/web"
+                href="/website-design-honduras"
                 className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
               >
                 Páginas web / desarrollo web
               </a>
               <a
-                href="/servicios/seo"
+                href="/seo-services-honduras"
                 className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
               >
                 SEO / AI SEO
               </a>
               <a
-                href="/servicios/automatizaciones"
+                href="/ai-automation-honduras"
                 className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
               >
                 Automatizaciones con IA
