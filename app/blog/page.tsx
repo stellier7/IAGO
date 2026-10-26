@@ -4,7 +4,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata = buildPageMetadata({
   title: "Blog — iAGO Digital",
   description:
-    "NFC, leads, SEO, AI SEO y desarrollo web para negocios en Centroamérica y Latam.",
+    "Biblioteca de guías para negocios en Honduras: precios, industrias, IA, SEO local e investigación — calidad sobre volumen.",
   path: "/blog",
 });
 

@@ -2,8 +2,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLdScript from "@/components/seo/JsonLdScript";
+import { getBlogCategory } from "@/lib/blog/categories";
 import type { BlogPost } from "@/lib/blog/posts";
-import { blogPosts } from "@/lib/blog/posts";
+import { getRelatedPosts } from "@/lib/blog/posts";
 import { buildArticleJsonLd } from "@/lib/seo/jsonld";
 
 type BlogPostViewProps = {
@@ -11,7 +12,8 @@ type BlogPostViewProps = {
 };
 
 export default function BlogPostView({ post }: BlogPostViewProps) {
-  const related = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const related = getRelatedPosts(post, 3);
+  const category = getBlogCategory(post.categoryId);
   const path = `/blog/${post.slug}`;
 
   return (
@@ -36,7 +38,10 @@ export default function BlogPostView({ post }: BlogPostViewProps) {
             ]}
           />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
-            Blog · {post.tags.join(" · ")}
+            {category
+              ? `Categoría ${category.letter} · ${category.title}`
+              : "Blog"}{" "}
+            · {post.tags.join(" · ")}
           </p>
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tightest text-ink md:text-5xl">
             {post.title}
@@ -84,7 +89,9 @@ export default function BlogPostView({ post }: BlogPostViewProps) {
 
           <section className="mt-16">
             <h2 className="font-display text-xl font-bold text-ink">
-              Más artículos
+              {category
+                ? `Más en ${category.title}`
+                : "Más artículos"}
             </h2>
             <div className="mt-4 space-y-3">
               {related.map((item) => (
