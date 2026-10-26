@@ -121,6 +121,17 @@ export function buildServiceJsonLd(input: {
   };
 }
 
+/**
+ * Service-area business: country + locality only.
+ * Do not invent a street/storefront address for schema.
+ */
+const BUSINESS_ADDRESS = {
+  "@type": "PostalAddress",
+  addressCountry: "HN",
+  addressLocality: "Tegucigalpa",
+  addressRegion: "Francisco Morazán",
+} as const;
+
 export function buildSiteGraph() {
   const services = CORE_SERVICES.map((service) =>
     buildServiceJsonLd({
@@ -131,6 +142,13 @@ export function buildSiteGraph() {
     }),
   );
 
+  const logoImage = {
+    "@type": "ImageObject",
+    url: absoluteUrl("/icon.png"),
+    width: 512,
+    height: 512,
+  };
+
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -140,14 +158,11 @@ export function buildSiteGraph() {
         name: "IAGO Digital",
         legalName: "iAGO Digital",
         url: SITE_URL,
-        logo: {
-          "@type": "ImageObject",
-          url: absoluteUrl("/icon.png"),
-          width: 512,
-          height: 512,
-        },
+        logo: logoImage,
+        image: [logoImage, absoluteUrl("/og-image.png")],
         email: "info@iagodigital.com",
         telephone: "+50489809800",
+        address: BUSINESS_ADDRESS,
         description:
           "Agencia digital para negocios en Centroamérica y Latam: sitios que convierten, SEO con reportes y automatizaciones con IA para no perder leads.",
         sameAs: organizationSameAs,
@@ -196,7 +211,10 @@ export function buildSiteGraph() {
         "@id": BUSINESS_ID,
         name: "IAGO Digital",
         url: SITE_URL,
-        image: absoluteUrl("/og-image.png"),
+        image: [absoluteUrl("/og-image.png"), absoluteUrl("/icon.png")],
+        telephone: "+50489809800",
+        email: "info@iagodigital.com",
+        address: BUSINESS_ADDRESS,
         priceRange: "$$",
         sameAs: organizationSameAs,
         provider: { "@id": ORG_ID },
