@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { FOUNDER, footerSocialLinks } from "@/lib/social/profiles";
 
@@ -16,6 +17,12 @@ export default function AboutPage() {
       <Nav theme="solid" />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <article className="mx-auto max-w-3xl px-6">
+          <Breadcrumbs
+            items={[
+              { name: "Inicio", path: "/" },
+              { name: "About", path: "/about" },
+            ]}
+          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             About
           </p>

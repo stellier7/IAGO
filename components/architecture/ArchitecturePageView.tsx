@@ -1,7 +1,10 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLdScript from "@/components/seo/JsonLdScript";
 import type { ArchitecturePage } from "@/lib/architecture/pages";
 import { architecturePages } from "@/lib/architecture/pages";
+import { buildServiceJsonLd } from "@/lib/seo/jsonld";
 
 type ArchitecturePageViewProps = {
   page: ArchitecturePage;
@@ -11,12 +14,27 @@ export default function ArchitecturePageView({
   page,
 }: ArchitecturePageViewProps) {
   const others = architecturePages.filter((item) => item.slug !== page.slug);
+  const path = `/${page.slug}`;
 
   return (
     <>
       <Nav theme="solid" />
+      <JsonLdScript
+        data={buildServiceJsonLd({
+          name: page.title,
+          description: page.description,
+          path,
+        })}
+      />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <article className="mx-auto max-w-3xl px-6">
+          <Breadcrumbs
+            items={[
+              { name: "Inicio", path: "/" },
+              { name: "Servicios", path: "/servicios" },
+              { name: page.navLabel, path },
+            ]}
+          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             {page.eyebrow}
           </p>

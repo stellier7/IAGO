@@ -1,7 +1,10 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLdScript from "@/components/seo/JsonLdScript";
 import type { BlogPost } from "@/lib/blog/posts";
 import { blogPosts } from "@/lib/blog/posts";
+import { buildArticleJsonLd } from "@/lib/seo/jsonld";
 
 type BlogPostViewProps = {
   post: BlogPost;
@@ -9,12 +12,29 @@ type BlogPostViewProps = {
 
 export default function BlogPostView({ post }: BlogPostViewProps) {
   const related = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const path = `/blog/${post.slug}`;
 
   return (
     <>
       <Nav theme="solid" />
+      <JsonLdScript
+        data={buildArticleJsonLd({
+          title: post.title,
+          description: post.description,
+          path,
+          datePublished: post.date,
+          tags: post.tags,
+        })}
+      />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <article className="mx-auto max-w-3xl px-6">
+          <Breadcrumbs
+            items={[
+              { name: "Inicio", path: "/" },
+              { name: "Blog", path: "/blog" },
+              { name: post.title, path },
+            ]}
+          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             Blog · {post.tags.join(" · ")}
           </p>

@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { architecturePages } from "@/lib/architecture/pages";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -21,6 +22,12 @@ export default function ServiciosIndexPage() {
       <Nav theme="solid" />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <div className="mx-auto max-w-3xl px-6">
+          <Breadcrumbs
+            items={[
+              { name: "Inicio", path: "/" },
+              { name: "Servicios", path: "/servicios" },
+            ]}
+          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             Servicios
           </p>
