@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { blogPosts } from "@/lib/blog/posts";
 
 export default function BlogIndexView() {
@@ -8,6 +9,12 @@ export default function BlogIndexView() {
       <Nav theme="solid" />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <div className="mx-auto max-w-3xl px-6">
+          <Breadcrumbs
+            items={[
+              { name: "Inicio", path: "/" },
+              { name: "Blog", path: "/blog" },
+            ]}
+          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             Blog
           </p>
