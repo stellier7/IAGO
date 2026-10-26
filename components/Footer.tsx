@@ -1,3 +1,5 @@
+import { footerSocialLinks } from "@/lib/social/profiles";
+
 type FooterProps = {
   locale?: "es" | "en";
 };
@@ -97,6 +99,17 @@ export default function Footer({ locale = "es" }: FooterProps) {
               </a>
             </>
           )}
+          {footerSocialLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer me"
+              className="transition hover:text-coral"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
     </footer>

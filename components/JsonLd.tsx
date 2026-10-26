@@ -1,3 +1,5 @@
+import { FOUNDER, organizationSameAs } from "@/lib/social/profiles";
+
 const siteUrl = "https://www.iagodigital.com";
 
 const structuredData = {
@@ -7,6 +9,7 @@ const structuredData = {
       "@type": "Organization",
       "@id": `${siteUrl}/#organization`,
       name: "IAGO Digital",
+      legalName: "iAGO Digital",
       url: siteUrl,
       logo: {
         "@type": "ImageObject",
@@ -18,6 +21,10 @@ const structuredData = {
       telephone: "+50489809800",
       description:
         "Agencia digital para negocios en Centroamérica y Latam: sitios que convierten, SEO con reportes y automatizaciones con IA para no perder leads.",
+      sameAs: organizationSameAs,
+      founder: {
+        "@id": `${siteUrl}/#founder`,
+      },
       areaServed: [
         { "@type": "Country", name: "Honduras" },
         { "@type": "Place", name: "Central America" },
@@ -29,6 +36,17 @@ const structuredData = {
         email: "info@iagodigital.com",
         telephone: "+50489809800",
         availableLanguage: ["Spanish", "English", "es", "en"],
+      },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#founder`,
+      name: FOUNDER.name,
+      jobTitle: FOUNDER.jobTitle,
+      url: FOUNDER.linkedIn,
+      sameAs: [FOUNDER.linkedIn],
+      worksFor: {
+        "@id": `${siteUrl}/#organization`,
       },
     },
     {
@@ -50,6 +68,7 @@ const structuredData = {
       url: siteUrl,
       image: `${siteUrl}/og-image.png`,
       priceRange: "$$",
+      sameAs: organizationSameAs,
       areaServed: [
         { "@type": "Country", name: "Honduras" },
         { "@type": "Place", name: "Central America" },

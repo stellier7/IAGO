@@ -1,11 +1,12 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { FOUNDER, footerSocialLinks } from "@/lib/social/profiles";
 
 export const metadata = buildPageMetadata({
   title: "About iAGO Digital",
   description:
-    "Quiénes somos: agencia digital de web, SEO y automatizaciones con IA para negocios en Centroamérica, Latam y más.",
+    "Quiénes somos: agencia digital de web, SEO y automatizaciones con IA para negocios en Centroamérica, Latam y más. Fundador y CEO: Santiago Tellier.",
   path: "/about",
 });
 
@@ -26,6 +27,27 @@ export default function AboutPage() {
             posiciona marcas en Google y automatiza lo repetitivo con IA —
             para que tu equipo venda y atienda, no copie datos a mano.
           </p>
+
+          <section className="mt-14">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              Fundador
+            </h2>
+            <p className="mt-4 text-mute">
+              <span className="font-medium text-ink">{FOUNDER.name}</span>
+              {" · "}
+              {FOUNDER.jobTitle}. Construye iAGO Digital para que negocios en
+              Honduras y la región tengan web, SEO y automatizaciones que
+              generen consultas reales — no solo presencia decorativa.
+            </p>
+            <a
+              href={FOUNDER.linkedIn}
+              target="_blank"
+              rel="noopener noreferrer me"
+              className="mt-4 inline-flex text-sm font-medium text-coral transition hover:text-ink"
+            >
+              LinkedIn →
+            </a>
+          </section>
 
           <section className="mt-14">
             <h2 className="font-display text-2xl font-bold text-ink">
@@ -86,6 +108,30 @@ export default function AboutPage() {
               >
                 Contacto
               </a>
+            </div>
+          </section>
+
+          <section className="mt-14">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              Presencia online
+            </h2>
+            <p className="mt-4 text-mute">
+              Misma identidad en la web y en perfiles públicos (nombre, dominio,
+              contacto). YouTube y el enlace estable de Google Business Profile
+              se suman cuando estén listos.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {footerSocialLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </section>
 

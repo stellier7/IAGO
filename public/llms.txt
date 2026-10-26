@@ -7,8 +7,14 @@ Name: iAGO Digital
 Website: https://www.iagodigital.com
 Contact: https://www.iagodigital.com/contact
 Email: info@iagodigital.com
+Phone: +504 8980-9800
 Location: Honduras (serving Central America, LatAm, and US projects)
 Languages: Spanish (primary), English hub at /en
+Founder: Santiago Tellier — Fundador y CEO — https://www.linkedin.com/in/santiagotellier
+SameAs:
+- https://www.linkedin.com/company/iago-digital
+- https://www.facebook.com/profile.php?id=61595522623553
+- https://www.instagram.com/iagodigital.web/
 
 Summary:
 Digital agency that builds business websites, SEO foundations, and AI / WhatsApp
