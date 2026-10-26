@@ -97,10 +97,11 @@ export const architecturePages: ArchitecturePage[] = [
     ],
     related: [
       { label: "SEO services", href: "/seo-services-honduras" },
-      { label: "Web inmobiliarias", href: "/diseno-web-inmobiliarias" },
-      { label: "Web belleza", href: "/diseno-web-estudios-belleza" },
+      { label: "Inmobiliarias y construcción", href: "/diseno-web-inmobiliarias" },
+      { label: "Clínicas y salud", href: "/diseno-web-clinicas-salud" },
+      { label: "Servicios locales", href: "/diseno-web-servicios-locales" },
+      { label: "Industrias", href: "/industrias" },
       { label: "English", href: "/en/website-design" },
-      { label: "Casos", href: "/case-studies" },
     ],
   },
   {

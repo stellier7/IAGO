@@ -1,10 +1,58 @@
 export type NicheSlug =
   | "diseno-web-inmobiliarias"
+  | "diseno-web-clinicas-salud"
   | "diseno-web-estudios-belleza"
+  | "diseno-web-servicios-locales"
   | "whatsapp-automatizacion-citas";
+
+export type NicheCategoryId =
+  | "propiedad-construccion"
+  | "salud"
+  | "belleza"
+  | "servicios-locales"
+  | "citas";
+
+export type NicheCategory = {
+  id: NicheCategoryId;
+  title: string;
+  summary: string;
+};
+
+export const nicheCategories: NicheCategory[] = [
+  {
+    id: "propiedad-construccion",
+    title: "Propiedad y construcción",
+    summary:
+      "Inmobiliarias, constructoras, contractors y negocios que venden proyectos o inventario.",
+  },
+  {
+    id: "salud",
+    title: "Salud y estética clínica",
+    summary:
+      "Dentistas, clínicas médicas, esteticistas y centros que viven de citas y confianza.",
+  },
+  {
+    id: "belleza",
+    title: "Belleza y cuidado personal",
+    summary: "Salones, barberías y estudios orientados a reserva por WhatsApp.",
+  },
+  {
+    id: "servicios-locales",
+    title: "Servicios locales",
+    summary:
+      "Limpieza, car wash, mantenimiento y oficios que cotizan rápido por chat.",
+  },
+  {
+    id: "citas",
+    title: "Automatización de citas",
+    summary:
+      "WhatsApp para calificar consultas cuando el inbox es el canal de ventas.",
+  },
+];
 
 export type NichePage = {
   slug: NicheSlug;
+  categoryId: NicheCategoryId;
   navLabel: string;
   title: string;
   eyebrow: string;
@@ -31,53 +79,55 @@ export type NichePage = {
 export const nichePages: NichePage[] = [
   {
     slug: "diseno-web-inmobiliarias",
-    navLabel: "Web inmobiliarias",
-    title: "Diseño web para inmobiliarias",
-    eyebrow: "Industria · Inmobiliarias",
+    categoryId: "propiedad-construccion",
+    navLabel: "Inmobiliarias y construcción",
+    title: "Diseño web para inmobiliarias, constructoras y contractors",
+    eyebrow: "Industria · Propiedad y construcción",
     headline:
-      "Sitios web para inmobiliarias: inventario claro y contacto sin fricción",
+      "Web para inmobiliarias y constructoras: proyectos claros y consultas serias",
     description:
-      "Diseño web para inmobiliarias y bienes raíces en Honduras: propiedades organizadas, confianza de marca y WhatsApp/consulta listos — no plantillas genéricas.",
+      "Diseño web para inmobiliarias, bienes raíces, constructoras y contractors: inventario o proyectos organizados, confianza B2B/B2C y WhatsApp/consulta listos.",
     intro:
-      "Una inmobiliaria no necesita “una página bonita”. Necesita que quien busca comprar o alquilar entienda la oferta, filtre por intención y pueda contactar ya. Construimos sitios con estructura de inventario, servicios y CTAs pensados para ese recorrido — con prueba en un caso real en Tegucigalpa.",
+      "Inmobiliarias, constructoras y contractors comparten un problema: el cliente necesita ver oferta (propiedades, proyectos, capacidades) y un camino claro a cotizar. No basta un Instagram. Diseñamos sitios con estructura de inventario o servicios de obra, prueba de confianza y CTAs — con casos en bienes raíces (Tegucigalpa) y contracting (Florida).",
     keywordHypotheses: [
       "diseño web inmobiliaria",
-      "página web bienes raíces Honduras",
-      "sitio web inmobiliaria Tegucigalpa",
-      "desarrollo web para agentes inmobiliarios",
+      "página web constructora Honduras",
+      "sitio web contractor",
+      "desarrollo web bienes raíces Tegucigalpa",
+      "web para empresa de construcción",
     ],
     whoFor: [
-      "Inmobiliarias locales con inventario de compra y alquiler",
-      "Agentes que hoy dependen solo de Instagram o Facebook",
-      "Equipos que quieren un canal propio para compartir propiedades",
-      "Negocios en Tegucigalpa y otras ciudades de Honduras",
+      "Inmobiliarias y agentes con compra / alquiler",
+      "Constructoras y desarrolladoras con proyectos que mostrar",
+      "Contractors y general contractors (incl. equipos bilingües / EE.UU.)",
+      "Negocios de remodelación o ingeniería que cotizan por WhatsApp o propuesta",
     ],
     problems: [
       {
-        title: "Las propiedades viven en el feed y se pierden",
+        title: "Propiedades o proyectos viven en el feed y se pierden",
         detail:
-          "Organizamos compra/alquiler (o categorías que uses) en un destino estable que puedes compartir en WhatsApp o Google.",
+          "Organizamos compra/alquiler, fichas de proyecto o capacidades de obra en un destino estable para compartir en WhatsApp, Google o propuestas.",
       },
       {
-        title: "El visitante no confía ni sabe cómo contactar",
+        title: "Poca confianza frente a un competidor serio",
         detail:
-          "Diseño, prueba social y CTAs a WhatsApp/formulario en los momentos clave del recorrido.",
+          "Diseño, casos/proyectos y CTAs en los momentos clave — especialmente crítico en construcción y B2B.",
       },
       {
         title: "La web genérica no habla el idioma del rubro",
         detail:
-          "Mensaje, secciones y SEO on-page orientados a búsquedas de bienes raíces — no a un template de “agencia creativa”.",
+          "Mensaje y SEO on-page orientados a inmobiliaria, constructora o contractor — no a un template de “agencia creativa”.",
       },
     ],
     process: [
-      "Entendemos cómo vendes hoy (compra, alquiler, zonas, WhatsApp).",
-      "Definimos arquitectura: home, listados, servicios, contacto.",
-      "Diseño y desarrollo mobile-first con CTAs claros.",
-      "Go-live, Analytics y base SEO on-page.",
+      "Entendemos si vendes inventario, proyectos o capacidad de obra.",
+      "Arquitectura: home, listados/proyectos, servicios, contacto.",
+      "Diseño mobile-first con CTAs a WhatsApp, formulario o propuesta.",
+      "Go-live, Analytics y base SEO on-page del rubro.",
     ],
     includes: [
       "UX/UI y desarrollo (Next.js)",
-      "Estructura para propiedades / servicios",
+      "Estructura para propiedades, proyectos o servicios de obra",
       "Integración WhatsApp o formulario",
       "SEO on-page inicial del rubro",
       "Lanzamiento y handoff",
@@ -86,32 +136,142 @@ export const nichePages: NichePage[] = [
       {
         title: "Caso: Bienes Raíces Altair",
         detail:
-          "Sitio inmobiliario en Tegucigalpa para organizar compra y alquiler, presentar servicios y facilitar contacto. En producción y revisable en vivo.",
+          "Sitio inmobiliario en Tegucigalpa para compra y alquiler, servicios y contacto. En producción.",
         caseHref: "/casos/bienes-raices-altair",
         caseLabel: "Ver caso Altair",
         liveHref: "https://www.bienesraicesaltair.com",
       },
+      {
+        title: "Caso: Vulcanox (contractor / EE.UU.)",
+        detail:
+          "Web corporativa para general contractor en Florida: credibilidad B2B, capacidades y narrativa de proyecto. Útil como referencia de tono para constructoras y contractors.",
+        caseHref: "/casos/vulcanox",
+        caseLabel: "Ver caso Vulcanox",
+        liveHref: "https://vulcanox.vercel.app",
+      },
     ],
     faqs: [
       {
-        question: "¿Incluye CRM o MLS?",
+        question: "¿Es lo mismo una web de inmobiliaria que de constructora?",
         answer:
-          "El alcance base es web + contacto. Integraciones con CRM o portales se cotizan según tus herramientas. Empezamos con lo que ya usas.",
+          "Comparten base (confianza + contacto), pero el contenido cambia: inventario vs proyectos/capacidades. Ajustamos la arquitectura a tu modelo.",
       },
       {
-        question: "¿Sirve si solo tengo pocas propiedades?",
+        question: "¿Incluye CRM, MLS o software de obra?",
         answer:
-          "Sí. Aun con inventario pequeño, un sitio claro supera un perfil de Instagram para generar confianza y consultas.",
+          "El alcance base es web + contacto. Integraciones se cotizan según tus herramientas.",
+      },
+      {
+        question: "¿Trabajan contractors en inglés?",
+        answer:
+          "Sí. Vulcanox es un ejemplo en inglés. También puedes ver el hub /en.",
       },
     ],
     related: [
       { label: "Diseño web", href: "/website-design-honduras" },
-      { label: "WhatsApp para citas", href: "/whatsapp-automatizacion-citas" },
+      { label: "Servicios locales", href: "/diseno-web-servicios-locales" },
+      { label: "English web", href: "/en/website-design" },
       { label: "Casos", href: "/case-studies" },
     ],
   },
   {
+    slug: "diseno-web-clinicas-salud",
+    categoryId: "salud",
+    navLabel: "Clínicas y salud",
+    title: "Diseño web para clínicas, dentistas y estética",
+    eyebrow: "Industria · Salud",
+    headline:
+      "Web para dentistas, clínicas y esteticistas: confianza y agenda clara",
+    description:
+      "Diseño web para dentistas, clínicas médicas, esteticistas y centros de salud/estética: servicios claros, confianza y camino a WhatsApp o cita — con límites serios en automatización clínica.",
+    intro:
+      "En salud y estética clínica la web tiene un trabajo concreto: explicar tratamientos o especialidades, generar confianza y facilitar la agenda sin fricción. Diseñamos sitios mobile-first para dentistas, consultorios, clínicas y esteticistas. La automatización de WhatsApp, si aplica, califica y agenda — nunca sustituye criterio médico.",
+    keywordHypotheses: [
+      "página web dentista",
+      "diseño web clínica Honduras",
+      "sitio web consultorio médico",
+      "página web estética / esteticista",
+      "web clínica dental Tegucigalpa",
+    ],
+    whoFor: [
+      "Clínicas dentales y odontólogos",
+      "Consultorios y centros médicos",
+      "Esteticistas y estética médica / facial",
+      "Equipos que agendan por WhatsApp o Instagram y pierden mensajes",
+    ],
+    problems: [
+      {
+        title: "Nadie entiende qué tratamientos ofreces",
+        detail:
+          "Servicios, especialidades y FAQs en lenguaje claro — sin promesas médicas irresponsables.",
+      },
+      {
+        title: "La cita se negocia a ciegas en el chat",
+        detail:
+          "CTA a WhatsApp o formulario con contexto (servicio, zona, horario preferido) para acortar idas y vueltas.",
+      },
+      {
+        title: "Poca confianza vs. la clínica de al lado",
+        detail:
+          "Diseño serio, ubicación/área, equipo si aplica, y velocidad en móvil — donde decide la mayoría.",
+      },
+    ],
+    process: [
+      "Alineamos servicios, tono (confianza, no hype) y cómo agendan hoy.",
+      "Arquitectura corta: home, servicios/tratamientos, FAQ, contacto.",
+      "Diseño mobile-first + CTAs de agenda.",
+      "Go-live, base SEO local del rubro; WhatsApp automation opcional con handoff humano.",
+    ],
+    includes: [
+      "Diseño y desarrollo del sitio",
+      "Páginas de servicios / especialidades",
+      "CTA WhatsApp o formulario de cita",
+      "SEO on-page inicial",
+      "Opcional: flujo WhatsApp de calificación (sin consejo clínico automatizado)",
+    ],
+    proof: [
+      {
+        title: "Recorrido de citas (casos adyacentes)",
+        detail:
+          "Hemos lanzado webs para negocios en Tegucigalpa cuyo cierre es agenda/contacto (estudio de belleza y academia). El mismo patrón — servicios claros + WhatsApp — se adapta a clínicas y dentistas; el tono y los límites de contenido son específicos de salud.",
+        caseHref: "/casos/vanessa-pacheco-studio",
+        caseLabel: "Ver caso de agenda / contacto",
+      },
+      {
+        title: "WhatsApp para negocios con citas",
+        detail:
+          "Si el dolor es el inbox, combinamos la web con automatización de calificación. No automatizamos diagnósticos ni consejo médico.",
+        caseHref: "/whatsapp-automatizacion-citas",
+        caseLabel: "Ver WhatsApp para citas",
+      },
+    ],
+    faqs: [
+      {
+        question: "¿Puede un bot dar información de tratamientos?",
+        answer:
+          "Solo FAQs generales que tú apruebes (horarios, ubicación, “cómo agendar”). Nada de diagnóstico, dosis ni promesas de resultado. Handoff a humano siempre disponible.",
+      },
+      {
+        question: "¿Esteticista va aquí o en belleza?",
+        answer:
+          "Estética clínica / tratamientos van aquí. Salón, barbería o maquillaje social → página de belleza. Si haces ambos, lo resolvemos en el alcance.",
+      },
+      {
+        question: "¿Tienen un caso dental publicado?",
+        answer:
+          "Aún no un caso dental público con métricas. Sí proceso, estructura y límites claros — y prueba de sitios orientados a cita. Podemos mostrarte demos y referencias al cotizar.",
+      },
+    ],
+    related: [
+      { label: "WhatsApp para citas", href: "/whatsapp-automatizacion-citas" },
+      { label: "Web belleza", href: "/diseno-web-estudios-belleza" },
+      { label: "Diseño web", href: "/website-design-honduras" },
+      { label: "Contacto", href: "/contact" },
+    ],
+  },
+  {
     slug: "diseno-web-estudios-belleza",
+    categoryId: "belleza",
     navLabel: "Web belleza",
     title: "Diseño web para salones y estudios de belleza",
     eyebrow: "Industria · Belleza",
@@ -180,31 +340,126 @@ export const nichePages: NichePage[] = [
           "El alcance típico es web + WhatsApp. Si quieres agenda (Calendly, Booksy, etc.), lo integramos como fase o add-on.",
       },
       {
-        question: "¿Y si también quiero automatizar WhatsApp?",
+        question: "¿Estética médica o dentista?",
         answer:
-          "Sí — ve la página de WhatsApp para negocios con citas. Muchos estudios combinan web + flujo de calificación.",
+          "Eso va en la página de clínicas y salud. Aquí nos enfocamos en salón / estudio / barbería.",
+      },
+    ],
+    related: [
+      { label: "Clínicas y salud", href: "/diseno-web-clinicas-salud" },
+      {
+        label: "WhatsApp para citas",
+        href: "/whatsapp-automatizacion-citas",
+      },
+      { label: "Diseño web", href: "/website-design-honduras" },
+    ],
+  },
+  {
+    slug: "diseno-web-servicios-locales",
+    categoryId: "servicios-locales",
+    navLabel: "Servicios locales",
+    title: "Diseño web para servicios locales (limpieza, car wash y más)",
+    eyebrow: "Industria · Servicios locales",
+    headline:
+      "Web para limpieza, car wash y oficios: cotiza más, explica menos",
+    description:
+      "Diseño web para negocios de servicios: limpieza, car wash, mantenimiento, oficios. Oferta clara, zonas, precios base o paquetes, y WhatsApp para cotizar.",
+    intro:
+      "Quien busca limpieza, car wash o un oficio no quiere un brochure largo: quiere saber si atiendes su zona, qué incluye el servicio y cómo pedir cotización hoy. Diseñamos landing o sitios cortos orientados a WhatsApp, con SEO local del rubro — sin inventar decenas de páginas de ciudad vacías.",
+    keywordHypotheses: [
+      "página web empresa de limpieza",
+      "diseño web car wash",
+      "sitio web servicios de limpieza Honduras",
+      "web lavado de autos",
+      "página web mantenimiento / oficios",
+    ],
+    whoFor: [
+      "Empresas de limpieza del hogar u oficinas",
+      "Car wash, detailing y lavado de autos",
+      "Mantenimiento, jardinería, plomería y oficios similares",
+      "Negocios que hoy cotizan solo por Instagram o referidos",
+    ],
+    problems: [
+      {
+        title: "“¿Dan servicio en mi colonia?” no tiene respuesta clara",
+        detail:
+          "Zonas, horarios y tipos de servicio visibles desde el celular.",
+      },
+      {
+        title: "Cada cotización empieza de cero en el chat",
+        detail:
+          "Paquetes o preguntas guía + CTA a WhatsApp con contexto para acelerar la cotización.",
+      },
+      {
+        title: "No apareces cuando buscan el servicio + ciudad",
+        detail:
+          "Base SEO local útil (una página fuerte del rubro). No spameamos 30 URLs de colonia casi iguales.",
+      },
+    ],
+    process: [
+      "Listamos servicios, zonas y cómo cotizas hoy.",
+      "Landing o sitio corto: oferta, zonas, FAQ, WhatsApp.",
+      "Diseño claro y rápido en móvil.",
+      "Go-live + on-page local; automatización de chat opcional.",
+    ],
+    includes: [
+      "Diseño y desarrollo (landing o sitio corto)",
+      "Secciones de servicios / paquetes / zonas",
+      "CTA WhatsApp o formulario",
+      "SEO on-page inicial del rubro",
+      "Handoff y medición básica",
+    ],
+    proof: [
+      {
+        title: "Patrón de catálogo + cotización",
+        detail:
+          "En MegaWatt organizamos oferta de producto con ruta a cotización por WhatsApp. Para limpieza o car wash aplicamos el mismo principio: oferta escaneable + contacto inmediato (contenido del rubro distinto).",
+        caseHref: "/casos/megawatt",
+        caseLabel: "Ver caso MegaWatt",
+        liveHref: "https://megawatt-eljordan.vercel.app",
+      },
+      {
+        title: "WhatsApp que califica pedidos",
+        detail:
+          "Si el volumen de chat es alto, sumamos flujo de primera respuesta y datos mínimos (zona, tipo de servicio, horario).",
+        caseHref: "/whatsapp-automatizacion-citas",
+        caseLabel: "Ver automatización WhatsApp",
+      },
+    ],
+    faqs: [
+      {
+        question: "¿Hacen una página por cada colonia?",
+        answer:
+          "No por defecto. Preferimos una página de servicio sólida y, solo si hay demanda real y contenido distinto, ampliar. Más páginas no es automáticamente mejor SEO.",
+      },
+      {
+        question: "¿Sirve para un solo servicio (solo car wash)?",
+        answer:
+          "Sí. A menudo una landing fuerte convierte mejor que un sitio de 10 páginas vacías.",
       },
     ],
     related: [
       { label: "Diseño web", href: "/website-design-honduras" },
       {
-        label: "WhatsApp para citas",
-        href: "/whatsapp-automatizacion-citas",
+        label: "Inmobiliarias y construcción",
+        href: "/diseno-web-inmobiliarias",
       },
-      { label: "Casos", href: "/case-studies" },
+      { label: "WhatsApp", href: "/whatsapp-automation" },
+      { label: "Contacto", href: "/contact" },
     ],
   },
   {
     slug: "whatsapp-automatizacion-citas",
+    categoryId: "citas",
     navLabel: "WhatsApp citas",
     title: "WhatsApp automation para negocios con citas",
     eyebrow: "Industria · Citas / agenda",
     headline:
       "Automatiza WhatsApp cuando tu negocio vive de citas y consultas",
     description:
-      "WhatsApp automation para clínicas, estudios, academias y comercios con agenda: primera respuesta, calificación y aviso al humano — con límites claros.",
+      "WhatsApp automation para clínicas, estudios, academias y servicios con agenda: primera respuesta, calificación y aviso al humano — con límites claros.",
     intro:
-      "Si tu ingreso depende de citas o clases de prueba, cada mensaje sin respuesta es dinero perdido. Diseñamos flujos de WhatsApp para calificar (servicio, horario, zona) y pasar un resumen a tu equipo — no un bot que improvisa diagnósticos o cierra ventas complejas solo.",
+      "Si tu ingreso depende de citas, clases de prueba o cotizaciones rápidas, cada mensaje sin respuesta es dinero perdido. Diseñamos flujos de WhatsApp para calificar (servicio, horario, zona) y pasar un resumen a tu equipo — no un bot que improvisa diagnósticos o cierra ventas complejas solo.",
     keywordHypotheses: [
       "automatizar WhatsApp citas",
       "bot WhatsApp clínica",
@@ -212,16 +467,16 @@ export const nichePages: NichePage[] = [
       "automatización WhatsApp salón",
     ],
     whoFor: [
-      "Clínicas, estudios de belleza y academias con alto volumen de chat",
-      "Negocios que agendan por WhatsApp y responden tarde",
-      "Equipos que quieren filtrar curiosos vs listos para reservar",
+      "Clínicas, dentistas, estética y academias con alto volumen de chat",
+      "Salones y estudios que agendan por WhatsApp",
+      "Servicios locales que cotizan todo el día por mensaje",
       "Quienes ya tienen web y quieren cerrar en el chat",
     ],
     problems: [
       {
         title: "“¿Tienen espacio?” se pierde en el inbox",
         detail:
-          "Primera respuesta + preguntas mínimas (servicio, día preferido) + aviso a recepción o coach.",
+          "Primera respuesta + preguntas mínimas (servicio, día preferido) + aviso a recepción o ventas.",
       },
       {
         title: "Las mismas FAQs una y otra vez",
@@ -231,26 +486,26 @@ export const nichePages: NichePage[] = [
       {
         title: "Miedo a un bot que daña la marca",
         detail:
-          "Guion con tu tono, límites (qué no responde) y handoff humano obligatorio en temas sensibles.",
+          "Guion con tu tono, límites (qué no responde) y handoff humano — obligatorio en temas de salud.",
       },
     ],
     process: [
-      "Mapeamos cómo llega una cita hoy (web, IG, referido → WhatsApp).",
+      "Mapeamos cómo llega una cita o cotización hoy.",
       "Escribimos guion de calificación y reglas de handoff.",
-      "Implementamos con la herramienta mínima según volumen (app vs API).",
+      "Implementamos con la herramienta mínima según volumen.",
       "Probamos escenarios reales y capacitamos al equipo.",
     ],
     includes: [
       "Diseño del flujo / guion",
       "Implementación e integración al número",
-      "Pruebas con escenarios de cita",
+      "Pruebas con escenarios de cita o cotización",
       "Documentación breve para el equipo",
     ],
     proof: [
       {
         title: "Contexto de clientes con agenda",
         detail:
-          "Hemos construido webs para estudios y academias en Tegucigalpa donde el contacto/WhatsApp es el cierre (belleza y artes marciales). La automatización de chat se diseña encima de ese mismo recorrido de citas.",
+          "Webs para estudios y academias en Tegucigalpa donde el contacto/WhatsApp es el cierre. La automatización se diseña encima de ese recorrido.",
         caseHref: "/casos/vanessa-pacheco-studio",
         caseLabel: "Caso estudio de belleza",
       },
@@ -272,19 +527,24 @@ export const nichePages: NichePage[] = [
       {
         question: "¿Qué no hacemos?",
         answer:
-          "Spam masivo, promesas de cierre 100% sin humano, ni atención médica/legal sin supervisión. Te lo decimos antes de cotizar.",
+          "Spam masivo, promesas de cierre 100% sin humano, ni atención médica/legal sin supervisión.",
       },
     ],
     related: [
+      { label: "Clínicas y salud", href: "/diseno-web-clinicas-salud" },
+      { label: "Servicios locales", href: "/diseno-web-servicios-locales" },
       { label: "WhatsApp automation", href: "/whatsapp-automation" },
       { label: "AI automation", href: "/ai-automation-honduras" },
-      { label: "Web belleza", href: "/diseno-web-estudios-belleza" },
     ],
   },
 ];
 
 export function getNichePage(slug: string): NichePage | undefined {
   return nichePages.find((page) => page.slug === slug);
+}
+
+export function getNichesByCategory(categoryId: NicheCategoryId): NichePage[] {
+  return nichePages.filter((page) => page.categoryId === categoryId);
 }
 
 export const nicheSlugs: NicheSlug[] = nichePages.map((page) => page.slug);
