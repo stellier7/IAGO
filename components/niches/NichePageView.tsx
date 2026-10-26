@@ -8,7 +8,11 @@ type NichePageViewProps = {
 };
 
 export default function NichePageView({ page }: NichePageViewProps) {
-  const others = nichePages.filter((item) => item.slug !== page.slug);
+  const others = nichePages.filter(
+    (item) =>
+      item.slug !== page.slug && item.categoryId === page.categoryId,
+  );
+  const moreCount = nichePages.length - 1 - others.length;
 
   return (
     <>
@@ -181,24 +185,30 @@ export default function NichePageView({ page }: NichePageViewProps) {
             </div>
           </section>
 
-          {others.length > 0 ? (
-            <section className="mt-16">
-              <h2 className="font-display text-xl font-bold text-ink">
-                Otras industrias
-              </h2>
-              <div className="mt-4 flex flex-wrap gap-3">
-                {others.map((item) => (
-                  <a
-                    key={item.slug}
-                    href={`/${item.slug}`}
-                    className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
-                  >
-                    {item.navLabel}
-                  </a>
-                ))}
-              </div>
-            </section>
-          ) : null}
+          <section className="mt-16">
+            <h2 className="font-display text-xl font-bold text-ink">
+              Más industrias
+            </h2>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {others.map((item) => (
+                <a
+                  key={item.slug}
+                  href={`/${item.slug}`}
+                  className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
+                >
+                  {item.navLabel}
+                </a>
+              ))}
+              <a
+                href="/industrias"
+                className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
+              >
+                {moreCount > 0
+                  ? `Ver todas (${moreCount + others.length + 1})`
+                  : "Ver industrias"}
+              </a>
+            </div>
+          </section>
         </article>
       </main>
       <Footer />

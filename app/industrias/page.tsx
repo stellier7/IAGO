@@ -9,7 +9,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata = buildPageMetadata({
   title: "Industrias — iAGO Digital",
   description:
-    "Páginas por industria: salud (dentistas, clínicas, estética), inmobiliarias y constructoras, barberías y salones, servicios locales (limpieza, car wash) y WhatsApp para citas.",
+    "Industrias: salud, inmobiliarias y constructoras, barberías, academias/gym, restaurantes, retail/e-commerce, hoteles/turismo, profesionales, automotriz, servicios locales y WhatsApp para citas.",
   path: "/industrias",
 });
 
@@ -26,9 +26,10 @@ export default function IndustriasPage() {
             Páginas por necesidad de negocio — no por keyword genérica
           </h1>
           <p className="mt-6 text-lg text-mute">
-            Salud, propiedad y construcción, belleza, servicios locales y citas
-            por WhatsApp. Cada página explica problemas del rubro, proceso y
-            prueba cuando existe — español primero. English en{" "}
+            Desde clínicas y barberías hasta academias, restaurantes, retail,
+            turismo, profesionales y automotriz. Cada página explica problemas
+            del rubro, proceso y prueba cuando existe — español primero. English
+            en{" "}
             <a href="/en" className="text-coral hover:underline">
               /en
             </a>
@@ -82,9 +83,9 @@ export default function IndustriasPage() {
               ¿Otro rubro?
             </h2>
             <p className="mt-2 text-mute">
-              Restaurantes u otras verticales solo cuando tengamos contenido
-              específico — no clones. Mientras tanto: servicios generales y
-              Honduras local.
+              Si tu rubro no está, escríbenos: preferimos una página con
+              contenido real antes que un clon genérico. Mientras tanto:
+              servicios generales y Honduras local.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a
