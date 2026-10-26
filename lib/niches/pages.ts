@@ -34,7 +34,8 @@ export const nicheCategories: NicheCategory[] = [
   {
     id: "belleza",
     title: "Belleza y cuidado personal",
-    summary: "Salones, barberías y estudios orientados a reserva por WhatsApp.",
+    summary:
+      "Barberías, salones y estudios orientados a reserva por WhatsApp.",
   },
   {
     id: "servicios-locales",
@@ -264,7 +265,10 @@ export const nichePages: NichePage[] = [
     ],
     related: [
       { label: "WhatsApp para citas", href: "/whatsapp-automatizacion-citas" },
-      { label: "Web belleza", href: "/diseno-web-estudios-belleza" },
+      {
+        label: "Barberías y belleza",
+        href: "/diseno-web-estudios-belleza",
+      },
       { label: "Diseño web", href: "/website-design-honduras" },
       { label: "Contacto", href: "/contact" },
     ],
@@ -272,68 +276,74 @@ export const nichePages: NichePage[] = [
   {
     slug: "diseno-web-estudios-belleza",
     categoryId: "belleza",
-    navLabel: "Web belleza",
-    title: "Diseño web para salones y estudios de belleza",
-    eyebrow: "Industria · Belleza",
+    navLabel: "Barberías y belleza",
+    title: "Diseño web para barberías, salones y estudios",
+    eyebrow: "Industria · Belleza y cuidado personal",
     headline:
-      "Web para salones y estudios: servicios claros y reserva por WhatsApp",
+      "Web para barberías y salones: cortes, servicios y reserva por WhatsApp",
     description:
-      "Diseño web para salones, barberías y estudios de belleza: servicios, confianza visual y camino rápido a WhatsApp o cita — pensado para móvil.",
+      "Diseño web para barberías, salones y estudios de belleza: servicios (corte, barba, color, etc.), confianza visual y camino rápido a WhatsApp o cita — pensado para móvil.",
     intro:
-      "Quien busca un salón o estudio en Google o Instagram quiere ver servicios, estilo y cómo agendar — no un menú de 12 páginas. Diseñamos sitios cortos, visuales y orientados a contacto, con un caso real de estudio de belleza en Tegucigalpa.",
+      "Una barbería o salón que vive de Instagram pierde citas cuando el DM se satura. Quien busca “barbería cerca” o un salón quiere ver estilo, servicios (corte, barba, combo, color) y cómo agendar — en el celular, en segundos. Diseñamos sitios cortos y orientados a reserva, con un caso real de estudio de belleza en Tegucigalpa; el mismo patrón aplica a barberías con tono y oferta propios.",
     keywordHypotheses: [
-      "página web salón de belleza",
-      "diseño web barbería",
-      "sitio web estudio de maquillaje",
-      "página web salón Tegucigalpa",
+      "página web barbería",
+      "diseño web barbería Honduras",
+      "sitio web salón de belleza",
+      "página web barbería Tegucigalpa",
+      "diseño web salón / estudio de maquillaje",
     ],
     whoFor: [
-      "Salones, barberías y estudios de maquillaje / cabello",
+      "Barberías y barbershops (corte, barba, combos)",
+      "Salones de belleza y color",
+      "Estudios de maquillaje y cuidado capilar",
       "Negocios que agendan por Instagram DM y pierden mensajes",
-      "Marcas de belleza que quieren un enlace propio serio",
-      "Estudios en Tegucigalpa y Centroamérica",
     ],
     problems: [
       {
+        title: "La barra o el sillón se llenan por DM… hasta que no",
+        detail:
+          "Servicios, precios base o combos (corte + barba, etc.) y CTA a WhatsApp con contexto para agendar sin 20 mensajes.",
+      },
+      {
         title: "Instagram no explica bien la oferta",
         detail:
-          "Servicios, precios base o paquetes, y tono de marca en un solo lugar compartible.",
+          "Estilo de la barbería o del salón, servicios y tono de marca en un enlace propio compartible.",
       },
       {
-        title: "Reservar es un ida y vuelta eterno",
-        detail:
-          "CTA a WhatsApp con contexto (servicio, zona) para acortar la conversación.",
-      },
-      {
-        title: "Se ve amateur en el celular",
+        title: "Se ve amateur o lento en el celular",
         detail:
           "Mobile-first: fotos, tipografía y velocidad pensadas para quien decide desde el teléfono.",
       },
     ],
     process: [
-      "Alineamos servicios, fotos y cómo agendan hoy.",
-      "Estructura corta: home, servicios, contacto/reserva.",
-      "Diseño con presencia visual fuerte sin saturar.",
-      "Publicación + base SEO local del rubro.",
+      "Alineamos servicios (corte, barba, color…), fotos y cómo agendan hoy.",
+      "Estructura corta: home, servicios/menú, contacto/reserva.",
+      "Diseño con presencia visual fuerte (barbería o salón) sin saturar.",
+      "Publicación + base SEO local (“barbería / salón” + ciudad cuando aplica).",
     ],
     includes: [
       "Diseño y desarrollo del sitio",
-      "Páginas de servicios",
+      "Páginas o secciones de servicios / menú",
       "CTA WhatsApp / contacto",
-      "SEO on-page inicial",
+      "SEO on-page inicial del rubro",
       "Go-live",
     ],
     proof: [
       {
         title: "Caso: Vanessa Pacheco Studio",
         detail:
-          "Web de estudio de maquillaje y cuidado capilar en Tegucigalpa: servicios claros y contacto rápido. Sitio público para evaluar.",
+          "Web de estudio de maquillaje y cuidado capilar en Tegucigalpa: servicios claros y contacto rápido. Misma lógica de agenda para una barbería (menú de servicios + WhatsApp), con estética distinta.",
         caseHref: "/casos/vanessa-pacheco-studio",
         caseLabel: "Ver caso Vanessa Pacheco",
         liveHref: "https://www.vanessapachecostudio.com",
       },
     ],
     faqs: [
+      {
+        question: "¿Hacen webs específicas para barberías?",
+        answer:
+          "Sí. Misma base (móvil, servicios, WhatsApp), tono y menú pensados para barbería — no un template de salón genérico con el logo cambiado.",
+      },
       {
         question: "¿Incluye sistema de citas online?",
         answer:
@@ -342,7 +352,7 @@ export const nichePages: NichePage[] = [
       {
         question: "¿Estética médica o dentista?",
         answer:
-          "Eso va en la página de clínicas y salud. Aquí nos enfocamos en salón / estudio / barbería.",
+          "Eso va en clínicas y salud. Aquí: barbería, salón y estudio de belleza.",
       },
     ],
     related: [

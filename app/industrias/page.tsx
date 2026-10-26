@@ -9,7 +9,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata = buildPageMetadata({
   title: "Industrias — iAGO Digital",
   description:
-    "Páginas por industria: salud (dentistas, clínicas, estética), inmobiliarias y constructoras, belleza, servicios locales (limpieza, car wash) y WhatsApp para citas.",
+    "Páginas por industria: salud (dentistas, clínicas, estética), inmobiliarias y constructoras, barberías y salones, servicios locales (limpieza, car wash) y WhatsApp para citas.",
   path: "/industrias",
 });
 
