@@ -17,7 +17,7 @@ const proofs = [
     label: "Compromiso de primera respuesta",
   },
   {
-    value: "America",
+    value: "Latam",
     label: "Proyectos en Centroamérica, Latam y EE.UU.",
   },
 ];
@@ -52,7 +52,7 @@ export default function Proof() {
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {proofs.map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -60,9 +60,9 @@ export default function Proof() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="rounded-2xl border border-ink/10 bg-white p-6"
+                className="min-w-0 rounded-2xl border border-ink/10 bg-white p-5 sm:p-6"
               >
-                <p className="font-display text-4xl font-bold text-coral">
+                <p className="font-display text-3xl font-bold leading-none tracking-tightest text-coral sm:text-4xl">
                   {stat.value}
                 </p>
                 <p className="mt-2 text-sm text-mute">{stat.label}</p>
