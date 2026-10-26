@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "cadence": "monthly",
+  "platforms": ["ChatGPT", "Gemini", "Perplexity"],
+  "notes": [
+    "Use the exact query text every month.",
+    "Prefer logged-out / low-personalization sessions; enable web search when available.",
+    "A single miss is not evidence of a technical site failure."
+  ],
+  "queries": [
+    "Who are some web development agencies in Honduras?",
+    "Who offers affordable website development in Tegucigalpa?",
+    "Which companies in Honduras provide AI automation services?",
+    "What are some agencies that offer WhatsApp automation for small businesses in Honduras?",
+    "Which providers can help a real estate company improve its online visibility?",
+    "Who offers SEO services for small businesses in Honduras?",
+    "What should I look for when hiring a company for AI SEO?"
+  ],
+  "logFields": [
+    "date",
+    "query",
+    "platform",
+    "iago_mentioned",
+    "website_cited",
+    "competitors_mentioned",
+    "supporting_sources",
+    "notes"
+  ]
+}
