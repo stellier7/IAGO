@@ -1,23 +1,44 @@
 {
-  "version": 1,
+  "version": 2,
   "cadence": "monthly",
-  "platforms": ["ChatGPT", "Gemini", "Perplexity"],
+  "platforms": [
+    "ChatGPT",
+    "Gemini",
+    "Perplexity"
+  ],
+  "primaryLanguage": "es",
   "notes": [
-    "Use the exact query text every month.",
-    "Prefer logged-out / low-personalization sessions; enable web search when available.",
+    "Primary monthly probe: Spanish (how Honduran clients ask).",
+    "Optional: also run English once per quarter for international intent.",
+    "Language matters: answers and citations often differ by query language.",
+    "Prefer logged-out / low-personalization; enable web search when available.",
     "A single miss is not evidence of a technical site failure."
   ],
-  "queries": [
-    "Who are some web development agencies in Honduras?",
-    "Who offers affordable website development in Tegucigalpa?",
-    "Which companies in Honduras provide AI automation services?",
-    "What are some agencies that offer WhatsApp automation for small businesses in Honduras?",
-    "Which providers can help a real estate company improve its online visibility?",
-    "Who offers SEO services for small businesses in Honduras?",
-    "What should I look for when hiring a company for AI SEO?"
-  ],
+  "queries": {
+    "es": [
+      "¿Cuáles son algunas agencias de desarrollo web en Honduras?",
+      "¿Quién ofrece desarrollo de páginas web a buen precio en Tegucigalpa?",
+      "¿Qué empresas en Honduras ofrecen servicios de automatización con IA?",
+      "¿Qué agencias ofrecen automatización de WhatsApp para pequeños negocios en Honduras?",
+      "¿Qué proveedores pueden ayudar a una inmobiliaria a mejorar su visibilidad online?",
+      "¿Quién ofrece servicios SEO para pequeños negocios en Honduras?",
+      "¿Qué debo buscar al contratar una empresa de AI SEO?"
+    ],
+    "en": [
+      "Who are some web development agencies in Honduras?",
+      "Who offers affordable website development in Tegucigalpa?",
+      "Which companies in Honduras provide AI automation services?",
+      "What are some agencies that offer WhatsApp automation for small businesses in Honduras?",
+      "Which providers can help a real estate company improve its online visibility?",
+      "Who offers SEO services for small businesses in Honduras?",
+      "What should I look for when hiring a company for AI SEO?"
+    ]
+  },
   "logFields": [
     "date",
+    "month",
+    "language",
+    "query_id",
     "query",
     "platform",
     "iago_mentioned",
@@ -25,5 +46,9 @@
     "competitors_mentioned",
     "supporting_sources",
     "notes"
+  ],
+  "sheetFiles": [
+    "ops/visibility/ai-probe-sheet.csv",
+    "ops/visibility/ai-probe-sheet.tsv"
   ]
 }
