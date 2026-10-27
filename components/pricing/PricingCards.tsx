@@ -7,6 +7,7 @@ import {
   type BillingCycle,
   type Tier,
   getPriceIdsForCycle,
+  getSubscribeWhatsAppHref,
   getSubscriptionPriceId,
 } from "@/lib/pricing/tiers";
 import { getPaddleClientConfig } from "@/lib/paddle/config";
@@ -14,8 +15,6 @@ import { getPaddleClientConfig } from "@/lib/paddle/config";
 interface PricingCardsProps {
   tiers: Tier[];
   countryCode?: string;
-  customerEmail?: string | null;
-  paddleCustomerId?: string | null;
 }
 
 type PriceMap = Record<string, string>;
@@ -45,18 +44,12 @@ function PriceSkeleton({ highlighted }: { highlighted?: boolean }) {
   );
 }
 
-export default function PricingCards({
-  tiers,
-  countryCode,
-  customerEmail,
-  paddleCustomerId,
-}: PricingCardsProps) {
+export default function PricingCards({ tiers, countryCode }: PricingCardsProps) {
   const [paddle, setPaddle] = useState<Paddle>();
   const [billingCycle, setBillingCycle] = useState<BillingCycle>("month");
   const [prices, setPrices] = useState<PriceMap>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [checkoutTier, setCheckoutTier] = useState<Tier | null>(null);
 
   const paddleConfig = useMemo(() => getPaddleClientConfig(), []);
 
@@ -66,7 +59,6 @@ export default function PricingCards({
     initializePaddle({
       environment: paddleConfig.environment,
       token: paddleConfig.token,
-      ...(paddleCustomerId ? { pwCustomer: { id: paddleCustomerId } } : {}),
     }).then((instance) => {
       if (!cancelled && instance) {
         setPaddle(instance);
@@ -76,7 +68,7 @@ export default function PricingCards({
     return () => {
       cancelled = true;
     };
-  }, [paddleConfig.environment, paddleConfig.token, paddleCustomerId]);
+  }, [paddleConfig.environment, paddleConfig.token]);
 
   const fetchPrices = useCallback(
     async (cycle: BillingCycle) => {
@@ -111,7 +103,7 @@ export default function PricingCards({
         setLoading(false);
       }
     },
-    [countryCode, paddle, tiers],
+    [countryCode, paddle, paddleConfig.environment, tiers],
   );
 
   useEffect(() => {
@@ -119,31 +111,6 @@ export default function PricingCards({
       fetchPrices(billingCycle);
     }
   }, [billingCycle, fetchPrices, paddle]);
-
-  const handleSubscribe = (tier: Tier) => {
-    if (!paddle?.Checkout) {
-      return;
-    }
-
-    const subscriptionPriceId = getSubscriptionPriceId(tier, billingCycle);
-
-    setCheckoutTier(tier);
-
-    paddle.Checkout.open({
-      settings: {
-        displayMode: "overlay",
-        variant: "one-page",
-        successUrl: `${window.location.origin}/welcome`,
-      },
-      items: [
-        { priceId: subscriptionPriceId, quantity: 1 },
-        { priceId: tier.developmentFeePriceId, quantity: 1 },
-      ],
-      customer: customerEmail ? { email: customerEmail } : undefined,
-    });
-
-    setCheckoutTier(null);
-  };
 
   return (
     <div className="mx-auto max-w-content px-6">
@@ -193,6 +160,7 @@ export default function PricingCards({
           const subscriptionPrice = prices[subscriptionPriceId];
           const pricesReady = Boolean(developmentPrice && subscriptionPrice);
           const isHighlighted = tier.highlighted;
+          const subscribeHref = getSubscribeWhatsAppHref(tier, billingCycle);
 
           return (
             <article
@@ -285,18 +253,18 @@ export default function PricingCards({
                 ))}
               </ul>
 
-              <button
-                type="button"
-                onClick={() => handleSubscribe(tier)}
-                disabled={loading || !pricesReady || !paddle}
-                className={`w-full rounded-full px-6 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50 ${
+              <a
+                href={subscribeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`w-full rounded-full px-6 py-3 text-center text-sm font-medium transition ${
                   isHighlighted
                     ? "bg-coral text-white hover:bg-coral-bright"
                     : "bg-ink text-bone hover:bg-coral"
                 }`}
               >
-                {checkoutTier?.name === tier.name ? "Abriendo…" : "Suscribirse"}
-              </button>
+                Suscribirse
+              </a>
             </article>
           );
         })}
@@ -343,10 +311,8 @@ export default function PricingCards({
       </div>
 
       <p className="mt-10 text-center text-xs text-mute">
-        Al suscribirte pagas hoy la tarifa de desarrollo (única) y el primer
-        ciclo de suscripción (mensual o anual). La suscripción se renueva sola
-        hasta que la canceles. Impuestos estimados según tu ubicación. Detalle
-        de reembolsos en{" "}
+        Por ahora las suscripciones se coordinan por WhatsApp: te confirmamos
+        alcance, montos y método de pago. Detalle de reembolsos en{" "}
         <a href="/refund" className="underline underline-offset-2 hover:text-ink">
           política de reembolso
         </a>

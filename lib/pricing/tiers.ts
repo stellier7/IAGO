@@ -88,6 +88,8 @@ export function getPricingTiers(): Tier[] {
   });
 }
 
+export const WHATSAPP_NUMBER = "50489809800";
+
 export const CONTACT_TIER: ContactTier = {
   name: "A medida",
   displayName: "A medida",
@@ -99,11 +101,23 @@ export const CONTACT_TIER: ContactTier = {
     "Soporte prioritario",
     "Facturación flexible (proyecto y/o mensual)",
   ],
-  contactHref: "https://wa.me/50489809800?text=Hola%20IAGO%2C%20me%20interesa%20un%20plan%20a%20medida.",
+  contactHref: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    "Hola IAGO, me interesa un plan a medida.",
+  )}`,
   contactLabel: "Contáctanos",
 };
 
 export type BillingCycle = "month" | "year";
+
+/** Temporary CTA until self-serve checkout is ready. */
+export function getSubscribeWhatsAppHref(
+  tier: Tier,
+  cycle: BillingCycle,
+): string {
+  const cycleLabel = cycle === "month" ? "mensual" : "anual";
+  const text = `Hola IAGO, me interesa suscribirme al plan ${tier.displayName} (${cycleLabel}).`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+}
 
 export function getPriceIdsForCycle(
   tiers: Tier[],
