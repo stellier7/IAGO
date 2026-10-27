@@ -5,17 +5,18 @@ import { useReducedMotion } from "framer-motion";
 import CaseCard from "@/components/cases/CaseCard";
 import { recentCases } from "@/lib/cases/recent";
 
-/** ~45px/s — visible without feeling rushed */
+/** Sub-pixel speed kept in a float accumulator — browsers truncate scrollLeft. */
 const AUTO_SCROLL_PX_PER_FRAME = 0.75;
 const RESUME_DELAY_MS = 1600;
 
 function CasesCarousel() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
+  const offsetRef = useRef(0);
   const resumeTimerRef = useRef<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Two copies so we can wrap seamlessly when scrollLeft crosses the midpoint.
+  // Two copies so we can wrap seamlessly when offset crosses the midpoint.
   const track = useMemo(() => [...recentCases, ...recentCases], []);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function CasesCarousel() {
 
     let frame = 0;
     let visible = true;
+    offsetRef.current = el.scrollLeft;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -37,11 +39,13 @@ function CasesCarousel() {
 
     const tick = () => {
       if (visible && !pausedRef.current) {
-        el.scrollLeft += AUTO_SCROLL_PX_PER_FRAME;
+        offsetRef.current += AUTO_SCROLL_PX_PER_FRAME;
         const loopAt = el.scrollWidth / 2;
-        if (loopAt > 0 && el.scrollLeft >= loopAt) {
-          el.scrollLeft -= loopAt;
+        if (loopAt > 0 && offsetRef.current >= loopAt) {
+          offsetRef.current -= loopAt;
         }
+        // Assign floored value; keep fractional remainder in offsetRef.
+        el.scrollLeft = offsetRef.current;
       }
       frame = window.requestAnimationFrame(tick);
     };
@@ -69,15 +73,23 @@ function CasesCarousel() {
     }
   };
 
+  const syncOffsetFromDom = () => {
+    const el = scrollerRef.current;
+    if (el) offsetRef.current = el.scrollLeft;
+  };
+
   const pause = () => {
     pausedRef.current = true;
+    syncOffsetFromDom();
     clearResumeTimer();
   };
 
   const scheduleResume = () => {
     if (prefersReducedMotion) return;
+    syncOffsetFromDom();
     clearResumeTimer();
     resumeTimerRef.current = window.setTimeout(() => {
+      syncOffsetFromDom();
       pausedRef.current = false;
       resumeTimerRef.current = null;
     }, RESUME_DELAY_MS);
@@ -91,8 +103,6 @@ function CasesCarousel() {
         data-lenis-prevent
         className="cases-carousel flex gap-6 overflow-x-auto overscroll-x-contain px-6"
         aria-label="Carrusel de casos recientes"
-        // Pause only on real interaction — NOT on hover (hover was killing autoplay
-        // the moment you looked at the cards).
         onPointerDown={pause}
         onPointerUp={scheduleResume}
         onPointerCancel={scheduleResume}
@@ -101,9 +111,10 @@ function CasesCarousel() {
         onTouchCancel={scheduleResume}
         onScroll={() => {
           if (!pausedRef.current) return;
-          // Keep paused through swipe momentum, then resume.
+          syncOffsetFromDom();
           clearResumeTimer();
           resumeTimerRef.current = window.setTimeout(() => {
+            syncOffsetFromDom();
             pausedRef.current = false;
             resumeTimerRef.current = null;
           }, RESUME_DELAY_MS);
