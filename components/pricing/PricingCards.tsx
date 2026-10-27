@@ -160,7 +160,7 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
           const subscriptionPrice = prices[subscriptionPriceId];
           const pricesReady = Boolean(developmentPrice && subscriptionPrice);
           const isHighlighted = tier.highlighted;
-          const subscribeHref = getSubscribeWhatsAppHref(tier, billingCycle);
+          const subscribeHref = getSubscribeWhatsAppHref(tier);
 
           return (
             <article

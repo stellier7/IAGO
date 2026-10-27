@@ -110,12 +110,8 @@ export const CONTACT_TIER: ContactTier = {
 export type BillingCycle = "month" | "year";
 
 /** Temporary CTA until self-serve checkout is ready. */
-export function getSubscribeWhatsAppHref(
-  tier: Tier,
-  cycle: BillingCycle,
-): string {
-  const cycleLabel = cycle === "month" ? "mensual" : "anual";
-  const text = `Hola IAGO, me interesa suscribirme al plan ${tier.displayName} (${cycleLabel}).`;
+export function getSubscribeWhatsAppHref(tier: Tier): string {
+  const text = `Quiero suscribirme al ${tier.displayName}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
