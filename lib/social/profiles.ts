@@ -31,3 +31,10 @@ export const footerSocialLinks = [
   { label: "Facebook", href: SOCIAL_PROFILES.facebook },
   { label: "Instagram", href: SOCIAL_PROFILES.instagram },
 ] as const;
+
+/** Hero order; add entries here (and URLs above) when new networks go live. */
+export const heroSocialLinks = [
+  { label: "Instagram", href: SOCIAL_PROFILES.instagram },
+  { label: "Facebook", href: SOCIAL_PROFILES.facebook },
+  { label: "LinkedIn", href: SOCIAL_PROFILES.linkedInCompany },
+] as const;
