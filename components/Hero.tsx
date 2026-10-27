@@ -82,7 +82,7 @@ function HeroSocialLinks({ paused }: { paused: boolean }) {
 
   if (paused) {
     return (
-      <nav aria-label="Redes sociales" className="mt-4 flex items-center gap-5">
+      <nav aria-label="Redes sociales" className="mt-6 flex items-center gap-5">
         {heroSocialLinks.map((link) => (
           <a
             key={link.href}
@@ -102,12 +102,12 @@ function HeroSocialLinks({ paused }: { paused: boolean }) {
   return (
     <motion.nav
       aria-label="Redes sociales"
-      className="mt-4 flex items-center gap-5"
+      className="mt-6 flex items-center gap-5"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
         ...BUTTON_TRANSITION,
-        delay: BUTTON_ENTRANCE_DELAY,
+        delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
       }}
     >
       {heroSocialLinks.map((link) => (
@@ -391,8 +391,8 @@ export default function Hero() {
               </motion.div>
             )}
           </div>
-          <HeroSocialLinks paused={!!prefersReducedMotion} />
           <HeroButtons paused={!!prefersReducedMotion} />
+          <HeroSocialLinks paused={!!prefersReducedMotion} />
         </div>
       </motion.div>
     </section>
