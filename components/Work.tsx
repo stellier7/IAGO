@@ -94,7 +94,7 @@ function CasesCarousel() {
       onMouseLeave={scheduleResume}
       onFocusCapture={pause}
       onBlurCapture={scheduleResume}
-      className="flex gap-6 overflow-x-auto overscroll-x-contain px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="cases-carousel flex gap-6 overflow-x-auto overscroll-x-contain px-6"
       style={{ WebkitOverflowScrolling: "touch" }}
       aria-label="Carrusel de casos recientes"
     >
