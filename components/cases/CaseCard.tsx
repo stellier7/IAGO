@@ -23,22 +23,23 @@ function MobileCardPreview({ href, label }: { href: string; label: string }) {
   return (
     <div
       ref={rootRef}
-      className="absolute inset-0 overflow-hidden rounded-2xl bg-ink-raised"
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl bg-ink-raised"
       data-lenis-prevent
-      onWheel={(e) => e.stopPropagation()}
+      aria-hidden
     >
       {active ? (
         <iframe
           src={href}
           title={`Vista móvil de ${label}`}
           loading="lazy"
-          className="h-full w-full border-0 bg-white"
+          tabIndex={-1}
+          className="pointer-events-none h-full w-full border-0 bg-white"
         />
       ) : (
-        <div className="h-full w-full animate-pulse bg-ink-line/40" aria-hidden />
+        <div className="h-full w-full animate-pulse bg-ink-line/40" />
       )}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/5 transition duration-300 group-hover:from-black/85 group-hover:via-black/30" />
-      <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 transition duration-300 group-hover:ring-white/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/5 transition duration-300 group-hover:from-black/85 group-hover:via-black/30" />
+      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 transition duration-300 group-hover:ring-white/25" />
     </div>
   );
 }
@@ -55,7 +56,7 @@ export default function CaseCard({
       className={`group relative flex shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white transition-[transform,box-shadow] duration-300 hover:scale-[1.02] hover:shadow-2xl md:p-6 ${className}`}
     >
       <MobileCardPreview href={item.href} label={item.client} />
-      <div className="relative z-10">
+      <div className="pointer-events-none relative z-10">
         <p className="text-xs uppercase tracking-wider text-white/70 md:text-sm">
           {item.type}
         </p>
@@ -67,7 +68,7 @@ export default function CaseCard({
         </p>
         <a
           href={`/casos/${item.slug}`}
-          className="relative z-20 mt-2 inline-block text-sm font-semibold text-coral transition hover:text-coral-bright md:mt-3"
+          className="pointer-events-auto relative z-20 mt-2 inline-block text-sm font-semibold text-coral transition hover:text-coral-bright md:mt-3"
         >
           Ver caso →
         </a>

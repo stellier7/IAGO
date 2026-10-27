@@ -1,83 +1,46 @@
 "use client";
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  type MouseEvent,
-  type PointerEvent,
-} from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import CaseCard from "@/components/cases/CaseCard";
 import { recentCases } from "@/lib/cases/recent";
 
 const AUTO_SCROLL_PX_PER_FRAME = 0.55;
-const RESUME_DELAY_MS = 2200;
-const DRAG_CLICK_THRESHOLD_PX = 8;
+const RESUME_DELAY_MS = 1800;
 
 function CasesCarousel() {
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const offsetRef = useRef(0);
-  const loopWidthRef = useRef(0);
+  const scrollerRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
-  const draggingRef = useRef(false);
-  const dragStartXRef = useRef(0);
-  const dragStartOffsetRef = useRef(0);
-  const dragDistanceRef = useRef(0);
   const resumeTimerRef = useRef<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Two copies so we can wrap seamlessly when offset crosses the midpoint.
+  // Two copies so we can wrap seamlessly when scrollLeft crosses the midpoint.
   const track = useMemo(() => [...recentCases, ...recentCases], []);
-
-  const applyOffset = (value: number) => {
-    const loop = loopWidthRef.current;
-    let next = value;
-    if (loop > 0) {
-      next = ((next % loop) + loop) % loop;
-    }
-    offsetRef.current = next;
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translate3d(${-next}px, 0, 0)`;
-    }
-  };
-
-  useEffect(() => {
-    const trackEl = trackRef.current;
-    if (!trackEl) return;
-
-    const measure = () => {
-      loopWidthRef.current = trackEl.scrollWidth / 2;
-      applyOffset(offsetRef.current);
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(trackEl);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (prefersReducedMotion) return;
 
-    const viewport = viewportRef.current;
-    if (!viewport) return;
+    const el = scrollerRef.current;
+    if (!el) return;
 
     let frame = 0;
     let visible = true;
 
-    const visibility = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
       },
       { threshold: 0.05 },
     );
-    visibility.observe(viewport);
+    observer.observe(el);
 
     const tick = () => {
-      if (visible && !pausedRef.current && !draggingRef.current) {
-        applyOffset(offsetRef.current + AUTO_SCROLL_PX_PER_FRAME);
+      if (visible && !pausedRef.current) {
+        el.scrollLeft += AUTO_SCROLL_PX_PER_FRAME;
+        const loopAt = el.scrollWidth / 2;
+        if (loopAt > 0 && el.scrollLeft >= loopAt) {
+          el.scrollLeft -= loopAt;
+        }
       }
       frame = window.requestAnimationFrame(tick);
     };
@@ -86,7 +49,7 @@ function CasesCarousel() {
 
     return () => {
       window.cancelAnimationFrame(frame);
-      visibility.disconnect();
+      observer.disconnect();
     };
   }, [prefersReducedMotion]);
 
@@ -119,68 +82,34 @@ function CasesCarousel() {
     }, RESUME_DELAY_MS);
   };
 
-  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0 && event.pointerType === "mouse") return;
-
-    pause();
-    draggingRef.current = true;
-    dragDistanceRef.current = 0;
-    dragStartXRef.current = event.clientX;
-    dragStartOffsetRef.current = offsetRef.current;
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) return;
-
-    const deltaX = event.clientX - dragStartXRef.current;
-    dragDistanceRef.current = Math.max(
-      dragDistanceRef.current,
-      Math.abs(deltaX),
-    );
-    applyOffset(dragStartOffsetRef.current - deltaX);
-  };
-
-  const endDrag = (event: PointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) return;
-
-    draggingRef.current = false;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-    scheduleResume();
-  };
-
-  const onClickCapture = (event: MouseEvent<HTMLDivElement>) => {
-    // Prefer drag over accidental link navigation after a swipe.
-    if (dragDistanceRef.current > DRAG_CLICK_THRESHOLD_PX) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
-
   return (
-    <div
-      ref={viewportRef}
-      data-lenis-prevent
-      className="cases-carousel overflow-hidden"
-      aria-label="Carrusel de casos recientes"
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
-      onMouseEnter={pause}
-      onMouseLeave={() => {
-        draggingRef.current = false;
-        scheduleResume();
-      }}
-      onFocusCapture={pause}
-      onBlurCapture={scheduleResume}
-      onClickCapture={onClickCapture}
-    >
+    // Outer clips the native scrollbar gutter; inner keeps smooth OS swipe.
+    <div className="cases-carousel-viewport overflow-hidden">
       <div
-        ref={trackRef}
-        className="cases-carousel-track flex w-max gap-6 px-6 will-change-transform"
+        ref={scrollerRef}
+        data-lenis-prevent
+        className="cases-carousel flex gap-6 overflow-x-auto overscroll-x-contain px-6"
+        aria-label="Carrusel de casos recientes"
+        onPointerDown={pause}
+        onPointerUp={scheduleResume}
+        onPointerCancel={scheduleResume}
+        onTouchStart={pause}
+        onTouchEnd={scheduleResume}
+        onTouchCancel={scheduleResume}
+        onWheel={pause}
+        onScroll={() => {
+          // Keep auto paused while the user (or momentum) is still scrolling.
+          if (!pausedRef.current) return;
+          clearResumeTimer();
+          resumeTimerRef.current = window.setTimeout(() => {
+            pausedRef.current = false;
+            resumeTimerRef.current = null;
+          }, RESUME_DELAY_MS);
+        }}
+        onMouseEnter={pause}
+        onMouseLeave={scheduleResume}
+        onFocusCapture={pause}
+        onBlurCapture={scheduleResume}
       >
         {track.map((item, index) => (
           <CaseCard
