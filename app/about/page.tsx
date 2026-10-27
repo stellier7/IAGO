@@ -2,12 +2,16 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { buildPageMetadata } from "@/lib/seo/metadata";
-import { FOUNDER, footerSocialLinks } from "@/lib/social/profiles";
+import {
+  FOUNDER,
+  SOCIAL_PROFILES,
+  footerSocialLinks,
+} from "@/lib/social/profiles";
 
 export const metadata = buildPageMetadata({
-  title: "About iAGO Digital",
+  title: "iAGO Digital Honduras — Quiénes somos",
   description:
-    "Quiénes somos: agencia digital de web, SEO y automatizaciones con IA para negocios en Centroamérica, Latam y más. Fundador y CEO: Santiago Tellier.",
+    "iAGO Digital (iagodigital.com) es la agencia de Santiago Tellier en Honduras: web, SEO y automatizaciones con IA. No somos iagoapp ni iago.digital.",
   path: "/about",
 });
 
@@ -30,10 +34,50 @@ export default function AboutPage() {
             iAGO Digital: web, SEO e IA con resultados medibles
           </h1>
           <p className="mt-6 text-lg text-mute">
-            Somos una agencia digital que diseña sitios que convierten,
-            posiciona marcas en Google y automatiza lo repetitivo con IA —
-            para que tu equipo venda y atienda, no copie datos a mano.
+            Somos una agencia digital en Honduras que diseña sitios que
+            convierten, posiciona marcas en Google y automatiza lo repetitivo
+            con IA — para que tu equipo venda y atienda, no copie datos a mano.
+            Sitio oficial:{" "}
+            <a
+              href="https://www.iagodigital.com"
+              className="text-coral transition hover:text-ink"
+            >
+              www.iagodigital.com
+            </a>
+            .
           </p>
+
+          <section className="mt-14">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              Cómo encontrarnos (y qué no somos)
+            </h2>
+            <p className="mt-4 text-mute">
+              Si buscas <span className="text-ink">iAGO Digital</span> /
+              agencia web en Honduras, esta es la entidad correcta: fundador{" "}
+              {FOUNDER.name}, dominio{" "}
+              <span className="text-ink">iagodigital.com</span>, Instagram{" "}
+              <a
+                href={SOCIAL_PROFILES.instagram}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className="text-coral transition hover:text-ink"
+              >
+                @iagodigital.web
+              </a>
+              , LinkedIn company{" "}
+              <a
+                href={SOCIAL_PROFILES.linkedInCompany}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className="text-coral transition hover:text-ink"
+              >
+                iago-digital
+              </a>
+              . No somos la app de contenidos “iago / iagoapp”, ni el dominio
+              aparcado <span className="text-ink">iago.digital</span>, ni otras
+              marcas con nombre parecido.
+            </p>
+          </section>
 
           <section className="mt-14">
             <h2 className="font-display text-2xl font-bold text-ink">
