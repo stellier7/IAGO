@@ -1,8 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PricingCards from "@/components/pricing/PricingCards";
-import { getSignedInCustomerEmail } from "@/lib/auth/get-customer-email";
-import { getSignedInPaddleCustomerId } from "@/lib/auth/get-paddle-customer-id";
 import { getCountryCodeFromHeaders } from "@/lib/geo/country-code";
 import {
   getPricingConfigIssue,
@@ -19,8 +17,6 @@ export const metadata = buildPageMetadata({
 
 export default async function PricingPage() {
   const countryCode = getCountryCodeFromHeaders();
-  const customerEmail = await getSignedInCustomerEmail();
-  const paddleCustomerId = await getSignedInPaddleCustomerId();
   const configIssue = getPricingConfigIssue();
   const tiers = getPricingTiersOrNull();
 
@@ -41,7 +37,8 @@ export default async function PricingPage() {
             setup) y una{" "}
             <span className="text-ink">suscripción recurrente</span> (hosting,
             SSL y lo que el plan liste como mensual — p. ej. informe SEO). Los
-            montos se muestran abajo según tu país.
+            montos se muestran abajo según tu país. Para suscribirte te
+            atendemos por WhatsApp.
           </p>
         </div>
 
@@ -62,12 +59,7 @@ export default async function PricingPage() {
             </div>
           </div>
         ) : tiers ? (
-          <PricingCards
-            tiers={tiers}
-            countryCode={countryCode}
-            customerEmail={customerEmail}
-            paddleCustomerId={paddleCustomerId}
-          />
+          <PricingCards tiers={tiers} countryCode={countryCode} />
         ) : null}
       </main>
       <Footer />
