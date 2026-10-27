@@ -52,16 +52,20 @@ html.hero-intro-locked body::-webkit-scrollbar {
   }
 }
 
-/* Horizontal cases track: keep swipe, hide the native scrollbar chrome. */
+/* Transform-based cases track: no native overflow scrollbar at all. */
 .cases-carousel {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.cases-carousel::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
+.cases-carousel:active {
+  cursor: grabbing;
+}
+
+.cases-carousel-track {
+  touch-action: pan-y;
 }
 
 .wa-float {
