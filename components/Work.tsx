@@ -5,8 +5,9 @@ import { useReducedMotion } from "framer-motion";
 import CaseCard from "@/components/cases/CaseCard";
 import { recentCases } from "@/lib/cases/recent";
 
-const AUTO_SCROLL_PX_PER_FRAME = 0.55;
-const RESUME_DELAY_MS = 1800;
+/** ~45px/s — visible without feeling rushed */
+const AUTO_SCROLL_PX_PER_FRAME = 0.75;
+const RESUME_DELAY_MS = 1600;
 
 function CasesCarousel() {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -90,24 +91,23 @@ function CasesCarousel() {
         data-lenis-prevent
         className="cases-carousel flex gap-6 overflow-x-auto overscroll-x-contain px-6"
         aria-label="Carrusel de casos recientes"
+        // Pause only on real interaction — NOT on hover (hover was killing autoplay
+        // the moment you looked at the cards).
         onPointerDown={pause}
         onPointerUp={scheduleResume}
         onPointerCancel={scheduleResume}
         onTouchStart={pause}
         onTouchEnd={scheduleResume}
         onTouchCancel={scheduleResume}
-        onWheel={pause}
         onScroll={() => {
-          // Keep auto paused while the user (or momentum) is still scrolling.
           if (!pausedRef.current) return;
+          // Keep paused through swipe momentum, then resume.
           clearResumeTimer();
           resumeTimerRef.current = window.setTimeout(() => {
             pausedRef.current = false;
             resumeTimerRef.current = null;
           }, RESUME_DELAY_MS);
         }}
-        onMouseEnter={pause}
-        onMouseLeave={scheduleResume}
         onFocusCapture={pause}
         onBlurCapture={scheduleResume}
       >
