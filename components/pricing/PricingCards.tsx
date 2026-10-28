@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { initializePaddle, type Paddle } from "@paddle/paddle-js";
+import {
+  initializePaddle,
+  type Paddle,
+  type PricePreviewResponse,
+} from "@paddle/paddle-js";
 import {
   CONTACT_TIER,
   type BillingCycle,
@@ -11,19 +15,67 @@ import {
   getSubscriptionPriceId,
 } from "@/lib/pricing/tiers";
 import { getPaddleClientConfig } from "@/lib/paddle/config";
+import {
+  HALLOWEEN_DISCOUNT_PERCENT,
+  quoteDiscountedPrice,
+  type DiscountQuote,
+} from "@/lib/pricing/halloween-discount";
 
 interface PricingCardsProps {
   tiers: Tier[];
   countryCode?: string;
 }
 
-type PriceMap = Record<string, string>;
+type PreviewLineItem = PricePreviewResponse["data"]["details"]["lineItems"][number];
+
+type PriceMap = Record<string, DiscountQuote>;
 
 function buildPriceMap(
-  lineItems: Array<{ price: { id: string }; formattedTotals: { subtotal: string } }>,
+  lineItems: PreviewLineItem[],
+  currencyCode?: string,
 ): PriceMap {
   return Object.fromEntries(
-    lineItems.map((item) => [item.price.id, item.formattedTotals.subtotal]),
+    lineItems.map((item) => [
+      item.price.id,
+      quoteDiscountedPrice({
+        formatted: item.formattedTotals.subtotal,
+        amountMinor: item.totals?.subtotal,
+        currencyCode,
+      }),
+    ]),
+  );
+}
+
+function QuotedPrice({
+  label,
+  quote,
+  suffix,
+}: {
+  label: string;
+  quote: DiscountQuote;
+  suffix?: string;
+}) {
+  return (
+    <div>
+      <p className="text-xs font-medium uppercase tracking-wider text-halloween-mist/60">
+        {label}
+      </p>
+      <p className="text-sm text-bone/60 line-through decoration-halloween-pumpkin/80">
+        <span className="sr-only">Precio de lista: </span>
+        {quote.original}
+      </p>
+      <p className="font-display text-3xl font-bold tracking-tightest text-halloween-glow">
+        <span className="sr-only">
+          Con {HALLOWEEN_DISCOUNT_PERCENT}% de descuento Halloween:{" "}
+        </span>
+        {quote.discounted}
+        {suffix ? (
+          <span className="ml-1 text-sm font-normal text-halloween-mist/70">
+            {suffix}
+          </span>
+        ) : null}
+      </p>
+    </div>
   );
 }
 
@@ -32,12 +84,12 @@ function PriceSkeleton({ highlighted }: { highlighted?: boolean }) {
     <div className="space-y-3" aria-hidden="true">
       <div
         className={`h-5 w-40 animate-pulse rounded ${
-          highlighted ? "bg-bone/20" : "bg-bone"
+          highlighted ? "bg-halloween-pumpkin/30" : "bg-bone/15"
         }`}
       />
       <div
         className={`h-10 w-32 animate-pulse rounded-lg ${
-          highlighted ? "bg-bone/20" : "bg-bone"
+          highlighted ? "bg-halloween-pumpkin/30" : "bg-bone/15"
         }`}
       />
     </div>
@@ -90,7 +142,12 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
 
       try {
         const result = await paddle.PricePreview(request);
-        setPrices(buildPriceMap(result.data.details.lineItems));
+        setPrices(
+          buildPriceMap(
+            result.data.details.lineItems,
+            result.data.currencyCode,
+          ),
+        );
       } catch (err) {
         console.error("Paddle PricePreview failed:", err);
         const detail =
@@ -115,14 +172,14 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
   return (
     <div className="mx-auto max-w-content px-6">
       <div className="mb-12 flex flex-col items-center gap-4">
-        <div className="inline-flex rounded-full border border-ink-line/20 bg-white p-1">
+        <div className="inline-flex rounded-full border border-halloween-pumpkin/30 bg-halloween-card/80 p-1">
           <button
             type="button"
             onClick={() => setBillingCycle("month")}
             className={`rounded-full px-5 py-2 text-sm font-medium transition ${
               billingCycle === "month"
-                ? "bg-ink text-bone"
-                : "text-mute hover:text-ink"
+                ? "bg-halloween-pumpkin text-halloween-night"
+                : "text-halloween-mist/70 hover:text-bone"
             }`}
           >
             Mensual
@@ -132,20 +189,23 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
             onClick={() => setBillingCycle("year")}
             className={`rounded-full px-5 py-2 text-sm font-medium transition ${
               billingCycle === "year"
-                ? "bg-ink text-bone"
-                : "text-mute hover:text-ink"
+                ? "bg-halloween-pumpkin text-halloween-night"
+                : "text-halloween-mist/70 hover:text-bone"
             }`}
           >
             Anual
           </button>
         </div>
-        {billingCycle === "year" && (
-          <p className="text-sm text-coral">Ahorra con facturación anual</p>
-        )}
+        <p className="text-sm text-halloween-glow">
+          −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween en desarrollo y suscripción
+          {billingCycle === "year"
+            ? " · el plan anual ya cuesta menos que doce meses"
+            : ""}
+        </p>
       </div>
 
       {error && (
-        <p className="mb-8 text-center text-sm text-coral" role="alert">
+        <p className="mb-8 text-center text-sm text-halloween-glow" role="alert">
           {error}
         </p>
       )}
@@ -158,7 +218,6 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
           );
           const developmentPrice = prices[tier.developmentFeePriceId];
           const subscriptionPrice = prices[subscriptionPriceId];
-          const pricesReady = Boolean(developmentPrice && subscriptionPrice);
           const isHighlighted = tier.highlighted;
           const subscribeHref = getSubscribeWhatsAppHref(tier);
 
@@ -167,67 +226,42 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
               key={tier.name}
               className={`flex flex-col rounded-2xl border p-8 transition ${
                 isHighlighted
-                  ? "border-coral bg-ink text-bone shadow-xl shadow-coral/10"
-                  : "border-ink-line/15 bg-white"
+                  ? "border-halloween-pumpkin bg-halloween-card text-bone shadow-xl shadow-halloween-pumpkin/20"
+                  : "border-halloween-pumpkin/25 bg-halloween-night/70 text-bone"
               }`}
             >
-              {isHighlighted && (
-                <span className="mb-4 inline-flex w-fit rounded-full bg-coral px-3 py-1 text-xs font-medium text-white">
-                  Más popular
+              <div className="mb-4 flex flex-wrap gap-2">
+                <span className="inline-flex w-fit rounded-full bg-halloween-pumpkin px-3 py-1 text-xs font-medium text-halloween-night">
+                  −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween
                 </span>
-              )}
+                {isHighlighted && (
+                  <span className="inline-flex w-fit rounded-full border border-halloween-glow/40 px-3 py-1 text-xs font-medium text-halloween-glow">
+                    Más popular
+                  </span>
+                )}
+              </div>
 
-              <h2
-                className={`font-display text-2xl font-bold tracking-tightest ${
-                  isHighlighted ? "text-bone" : "text-ink"
-                }`}
-              >
+              <h2 className="font-display text-2xl font-bold tracking-tightest text-bone">
                 {tier.displayName}
               </h2>
-              <p
-                className={`mt-2 text-sm ${
-                  isHighlighted ? "text-bone/70" : "text-mute"
-                }`}
-              >
+              <p className="mt-2 text-sm text-halloween-mist/75">
                 {tier.description}
               </p>
 
-              <div className="my-8 min-h-[5.5rem]">
-                {loading || !pricesReady ? (
+              <div className="my-8 min-h-[8.5rem]">
+                {loading || !developmentPrice || !subscriptionPrice ? (
                   <PriceSkeleton highlighted={isHighlighted} />
                 ) : (
                   <div className="space-y-4">
-                    <div>
-                      <p
-                        className={`text-xs font-medium uppercase tracking-wider ${
-                          isHighlighted ? "text-bone/50" : "text-mute"
-                        }`}
-                      >
-                        Desarrollo (pago único)
-                      </p>
-                      <p className="font-display text-2xl font-bold tracking-tightest">
-                        {developmentPrice}
-                      </p>
-                    </div>
-                    <div>
-                      <p
-                        className={`text-xs font-medium uppercase tracking-wider ${
-                          isHighlighted ? "text-bone/50" : "text-mute"
-                        }`}
-                      >
-                        Suscripción
-                      </p>
-                      <p className="font-display text-2xl font-bold tracking-tightest">
-                        {subscriptionPrice}
-                        <span
-                          className={`ml-1 text-sm font-normal ${
-                            isHighlighted ? "text-bone/60" : "text-mute"
-                          }`}
-                        >
-                          /{billingCycle === "month" ? "mes" : "año"}
-                        </span>
-                      </p>
-                    </div>
+                    <QuotedPrice
+                      label="Desarrollo (pago único)"
+                      quote={developmentPrice}
+                    />
+                    <QuotedPrice
+                      label="Suscripción"
+                      quote={subscriptionPrice}
+                      suffix={`/${billingCycle === "month" ? "mes" : "año"}`}
+                    />
                   </div>
                 )}
               </div>
@@ -236,14 +270,10 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
                 {tier.features.map((feature) => (
                   <li
                     key={feature}
-                    className={`flex items-start gap-2 text-sm ${
-                      isHighlighted ? "text-bone/80" : "text-ink"
-                    }`}
+                    className="flex items-start gap-2 text-sm text-bone/85"
                   >
                     <span
-                      className={`mt-0.5 shrink-0 ${
-                        isHighlighted ? "text-coral-bright" : "text-coral"
-                      }`}
+                      className="mt-0.5 shrink-0 text-halloween-pumpkin"
                       aria-hidden="true"
                     >
                       ✓
@@ -259,29 +289,39 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
                 rel="noopener noreferrer"
                 className={`w-full rounded-full px-6 py-3 text-center text-sm font-medium transition ${
                   isHighlighted
-                    ? "bg-coral text-white hover:bg-coral-bright"
-                    : "bg-ink text-bone hover:bg-coral"
+                    ? "bg-halloween-pumpkin text-halloween-night hover:bg-halloween-glow"
+                    : "bg-bone text-halloween-night hover:bg-halloween-pumpkin"
                 }`}
               >
-                Suscribirse
+                Suscribirse · −{HALLOWEEN_DISCOUNT_PERCENT}%
               </a>
             </article>
           );
         })}
 
-        <article className="flex flex-col rounded-2xl border border-dashed border-ink-line/30 bg-bone p-8">
-          <span className="mb-4 inline-flex w-fit rounded-full border border-ink-line/20 px-3 py-1 text-xs font-medium text-mute">
-            Negociable
-          </span>
+        <article className="flex flex-col rounded-2xl border border-dashed border-halloween-pumpkin/40 bg-halloween-card/50 p-8 text-bone">
+          <div className="mb-4 flex flex-wrap gap-2">
+            <span className="inline-flex w-fit rounded-full bg-halloween-pumpkin px-3 py-1 text-xs font-medium text-halloween-night">
+              −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween
+            </span>
+            <span className="inline-flex w-fit rounded-full border border-halloween-mist/30 px-3 py-1 text-xs font-medium text-halloween-mist">
+              Negociable
+            </span>
+          </div>
 
-          <h2 className="font-display text-2xl font-bold tracking-tightest text-ink">
+          <h2 className="font-display text-2xl font-bold tracking-tightest text-bone">
             {CONTACT_TIER.displayName}
           </h2>
-          <p className="mt-2 text-sm text-mute">{CONTACT_TIER.description}</p>
+          <p className="mt-2 text-sm text-halloween-mist/75">
+            {CONTACT_TIER.description}
+          </p>
 
-          <div className="my-8 min-h-[5.5rem] flex items-center">
-            <p className="font-display text-2xl font-bold tracking-tightest text-ink">
+          <div className="my-8 flex min-h-[5.5rem] flex-col justify-center">
+            <p className="font-display text-2xl font-bold tracking-tightest text-bone">
               Precio personalizado
+            </p>
+            <p className="mt-2 text-sm text-halloween-glow">
+              {HALLOWEEN_DISCOUNT_PERCENT}% de descuento sobre la cotización
             </p>
           </div>
 
@@ -289,9 +329,12 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
             {CONTACT_TIER.features.map((feature) => (
               <li
                 key={feature}
-                className="flex items-start gap-2 text-sm text-ink"
+                className="flex items-start gap-2 text-sm text-bone/85"
               >
-                <span className="mt-0.5 shrink-0 text-coral" aria-hidden="true">
+                <span
+                  className="mt-0.5 shrink-0 text-halloween-pumpkin"
+                  aria-hidden="true"
+                >
                   ✓
                 </span>
                 {feature}
@@ -303,17 +346,21 @@ export default function PricingCards({ tiers, countryCode }: PricingCardsProps) 
             href={CONTACT_TIER.contactHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full rounded-full border border-ink px-6 py-3 text-center text-sm font-medium text-ink transition hover:bg-ink hover:text-bone"
+            className="w-full rounded-full border border-halloween-pumpkin px-6 py-3 text-center text-sm font-medium text-halloween-glow transition hover:bg-halloween-pumpkin hover:text-halloween-night"
           >
-            {CONTACT_TIER.contactLabel}
+            {CONTACT_TIER.contactLabel} · −{HALLOWEEN_DISCOUNT_PERCENT}%
           </a>
         </article>
       </div>
 
-      <p className="mt-10 text-center text-xs text-mute">
+      <p className="mt-10 text-center text-xs text-halloween-mist/70">
         Por ahora las suscripciones se coordinan por WhatsApp: te confirmamos
-        alcance, montos y método de pago. Detalle de reembolsos en{" "}
-        <a href="/refund" className="underline underline-offset-2 hover:text-ink">
+        alcance, el {HALLOWEEN_DISCOUNT_PERCENT}% de Halloween y el método de
+        pago. Detalle de reembolsos en{" "}
+        <a
+          href="/refund"
+          className="underline underline-offset-2 hover:text-bone"
+        >
           política de reembolso
         </a>
         .

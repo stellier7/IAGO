@@ -1,3 +1,4 @@
+import { HALLOWEEN_DISCOUNT_PERCENT } from "@/lib/pricing/halloween-discount";
 import { getPlanPriceIds, type PlanKey } from "@/lib/pricing/price-ids";
 
 export interface Tier {
@@ -102,7 +103,7 @@ export const CONTACT_TIER: ContactTier = {
     "Facturación flexible (proyecto y/o mensual)",
   ],
   contactHref: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hola IAGO, me interesa un plan a medida.",
+    `Hola IAGO, me interesa un plan a medida con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween.`,
   )}`,
   contactLabel: "Contáctanos",
 };
@@ -111,7 +112,7 @@ export type BillingCycle = "month" | "year";
 
 /** Temporary CTA until self-serve checkout is ready. */
 export function getSubscribeWhatsAppHref(tier: Tier): string {
-  const text = `Quiero suscribirme al ${tier.displayName}`;
+  const text = `Quiero suscribirme al plan ${tier.displayName} con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween (desarrollo y suscripción).`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
