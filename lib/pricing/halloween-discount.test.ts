@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { quoteDiscountedPrice } from "./halloween-discount.ts";
+import {
+  isHalloweenPromoActive,
+  quoteDiscountedPrice,
+} from "./halloween-discount.ts";
 
 describe("quoteDiscountedPrice", () => {
   it("takes 20% off USD list prices from minor units", () => {
@@ -96,5 +99,30 @@ describe("quoteDiscountedPrice", () => {
       original: "Precio personalizado",
       discounted: "Precio personalizado",
     });
+  });
+});
+
+describe("isHalloweenPromoActive", () => {
+  it("ends at midnight on 4 Nov 2026 in Tegucigalpa", () => {
+    assert.equal(
+      isHalloweenPromoActive(new Date("2026-10-29T18:00:00-06:00")),
+      true,
+    );
+    assert.equal(
+      isHalloweenPromoActive(new Date("2026-11-03T23:59:59-06:00")),
+      true,
+    );
+    assert.equal(
+      isHalloweenPromoActive(new Date("2026-11-04T05:59:59.999Z")),
+      true,
+    );
+    assert.equal(
+      isHalloweenPromoActive(new Date("2026-11-04T00:00:00-06:00")),
+      false,
+    );
+    assert.equal(
+      isHalloweenPromoActive(new Date("2026-11-04T06:00:00.000Z")),
+      false,
+    );
   });
 });

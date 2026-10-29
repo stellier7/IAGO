@@ -103,7 +103,7 @@ export const CONTACT_TIER: ContactTier = {
     "Facturación flexible (proyecto y/o mensual)",
   ],
   contactHref: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `Hola IAGO, me interesa un plan a medida con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween.`,
+    "Hola IAGO, me interesa un plan a medida.",
   )}`,
   contactLabel: "Contáctanos",
 };
@@ -111,8 +111,20 @@ export const CONTACT_TIER: ContactTier = {
 export type BillingCycle = "month" | "year";
 
 /** Temporary CTA until self-serve checkout is ready. */
-export function getSubscribeWhatsAppHref(tier: Tier): string {
-  const text = `Quiero suscribirme al plan ${tier.displayName} con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween (desarrollo y suscripción).`;
+export function getSubscribeWhatsAppHref(
+  tier: Tier,
+  options?: { halloweenPromo?: boolean },
+): string {
+  const text = options?.halloweenPromo
+    ? `Quiero suscribirme al plan ${tier.displayName} con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween (desarrollo y suscripción).`
+    : `Quiero suscribirme al ${tier.displayName}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+}
+
+export function getCustomPlanWhatsAppHref(halloweenPromo = false): string {
+  const text = halloweenPromo
+    ? `Hola IAGO, me interesa un plan a medida con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween.`
+    : "Hola IAGO, me interesa un plan a medida.";
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 

@@ -1,5 +1,15 @@
 export const HALLOWEEN_DISCOUNT_PERCENT = 20;
 
+/**
+ * The offer ends at midnight on 4 Nov 2026 in America/Tegucigalpa (UTC−6).
+ * After that instant the pricing page renders the regular plans again.
+ */
+export const HALLOWEEN_PROMO_ENDS_AT_MS = Date.parse("2026-11-04T00:00:00-06:00");
+
+export function isHalloweenPromoActive(now: Date = new Date()): boolean {
+  return now.getTime() < HALLOWEEN_PROMO_ENDS_AT_MS;
+}
+
 export interface DiscountQuoteInput {
   formatted: string;
   amountMinor?: string | number;
