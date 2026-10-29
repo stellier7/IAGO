@@ -20,7 +20,7 @@ export async function generateMetadata() {
     return buildPageMetadata({
       title: "Planes Halloween — 20% de descuento — iAGO Digital",
       description:
-        "Oferta Halloween: 20% de descuento en desarrollo y suscripción de los planes Básico, SEO, Automatizado con IA y a medida. Termina el 4 de noviembre.",
+        "Oferta Halloween: 20% de descuento en el pago único de desarrollo de los planes Básico, SEO, Automatizado con IA y a medida. La suscripción queda a precio de lista. Termina el 4 de noviembre.",
       path: "/pricing",
     });
   }
@@ -103,17 +103,16 @@ export default async function PricingPage() {
               Halloween
             </p>
             <h1 className="font-display text-4xl font-bold tracking-tightest text-bone md:text-5xl">
-              {HALLOWEEN_DISCOUNT_PERCENT}% de descuento en todos los planes
+              {HALLOWEEN_DISCOUNT_PERCENT}% de descuento en el desarrollo
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-halloween-mist/80">
-              El precio tachado es la tarifa de lista. El precio grande ya
-              incluye el {HALLOWEEN_DISCOUNT_PERCENT}% de Halloween, tanto en el{" "}
-              <span className="text-bone">pago único de desarrollo</span> como
-              en la{" "}
-              <span className="text-bone">suscripción mensual o anual</span>.
-              El plan a medida lleva el mismo descuento sobre la cotización.
-              La oferta termina el 4 de noviembre a medianoche (hora de
-              Honduras). Confirmamos el monto por WhatsApp.
+              El {HALLOWEEN_DISCOUNT_PERCENT}% de Halloween aplica solo al{" "}
+              <span className="text-bone">pago único de desarrollo</span>. La{" "}
+              <span className="text-bone">suscripción mensual o anual</span> se
+              queda en su precio de lista. En el plan a medida, el descuento
+              cubre el desarrollo de la cotización, no el retainer. La oferta
+              termina el 4 de noviembre a medianoche (hora de Honduras).
+              Confirmamos el monto por WhatsApp.
             </p>
           </div>
 

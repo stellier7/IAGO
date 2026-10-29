@@ -33,17 +33,21 @@ type PriceMap = Record<string, DiscountQuote>;
 
 function buildPriceMap(
   lineItems: PreviewLineItem[],
-  currencyCode?: string,
+  currencyCode: string | undefined,
+  developmentFeeIds: ReadonlySet<string>,
 ): PriceMap {
   return Object.fromEntries(
-    lineItems.map((item) => [
-      item.price.id,
-      quoteDiscountedPrice({
-        formatted: item.formattedTotals.subtotal,
-        amountMinor: item.totals?.subtotal,
-        currencyCode,
-      }),
-    ]),
+    lineItems.map((item) => {
+      const formatted = item.formattedTotals.subtotal;
+      const quote = developmentFeeIds.has(item.price.id)
+        ? quoteDiscountedPrice({
+            formatted,
+            amountMinor: item.totals?.subtotal,
+            currencyCode,
+          })
+        : { original: formatted, discounted: formatted };
+      return [item.price.id, quote];
+    }),
   );
 }
 
@@ -51,25 +55,35 @@ function QuotedPrice({
   label,
   quote,
   suffix,
+  onSale,
 }: {
   label: string;
   quote: DiscountQuote;
   suffix?: string;
+  onSale?: boolean;
 }) {
   return (
     <div>
       <p className="text-xs font-medium uppercase tracking-wider text-halloween-mist/60">
         {label}
       </p>
-      <p className="text-sm text-bone/60 line-through decoration-halloween-pumpkin/80">
-        <span className="sr-only">Precio de lista: </span>
-        {quote.original}
-      </p>
-      <p className="font-display text-3xl font-bold tracking-tightest text-halloween-glow">
-        <span className="sr-only">
-          Con {HALLOWEEN_DISCOUNT_PERCENT}% de descuento Halloween:{" "}
-        </span>
-        {quote.discounted}
+      {onSale ? (
+        <p className="text-sm text-bone/60 line-through decoration-halloween-pumpkin/80">
+          <span className="sr-only">Precio de lista: </span>
+          {quote.original}
+        </p>
+      ) : null}
+      <p
+        className={`font-display text-3xl font-bold tracking-tightest ${
+          onSale ? "text-halloween-glow" : "text-bone"
+        }`}
+      >
+        {onSale ? (
+          <span className="sr-only">
+            Con {HALLOWEEN_DISCOUNT_PERCENT}% de descuento Halloween:{" "}
+          </span>
+        ) : null}
+        {onSale ? quote.discounted : quote.original}
         {suffix ? (
           <span className="ml-1 text-sm font-normal text-halloween-mist/70">
             {suffix}
@@ -147,6 +161,7 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
           buildPriceMap(
             result.data.details.lineItems,
             result.data.currencyCode,
+            new Set(tiers.map((tier) => tier.developmentFeePriceId)),
           ),
         );
       } catch (err) {
@@ -198,7 +213,8 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
           </button>
         </div>
         <p className="text-sm text-halloween-glow">
-          −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween en desarrollo y suscripción
+          −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween solo en el desarrollo. La
+          suscripción queda a precio de lista
           {billingCycle === "year"
             ? " · el plan anual ya cuesta menos que doce meses"
             : ""}
@@ -235,7 +251,7 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
             >
               <div className="mb-4 flex flex-wrap gap-2">
                 <span className="inline-flex w-fit rounded-full bg-halloween-pumpkin px-3 py-1 text-xs font-medium text-halloween-night">
-                  −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween
+                  −{HALLOWEEN_DISCOUNT_PERCENT}% desarrollo
                 </span>
                 {isHighlighted && (
                   <span className="inline-flex w-fit rounded-full border border-halloween-glow/40 px-3 py-1 text-xs font-medium text-halloween-glow">
@@ -259,6 +275,7 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
                     <QuotedPrice
                       label="Desarrollo (pago único)"
                       quote={developmentPrice}
+                      onSale
                     />
                     <QuotedPrice
                       label="Suscripción"
@@ -296,7 +313,7 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
                     : "bg-bone text-halloween-night hover:bg-halloween-pumpkin"
                 }`}
               >
-                Suscribirse · −{HALLOWEEN_DISCOUNT_PERCENT}%
+                Suscribirse
               </a>
             </article>
           );
@@ -305,7 +322,7 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
         <article className="flex flex-col rounded-2xl border border-dashed border-halloween-pumpkin/40 bg-halloween-card/50 p-8 text-bone">
           <div className="mb-4 flex flex-wrap gap-2">
             <span className="inline-flex w-fit rounded-full bg-halloween-pumpkin px-3 py-1 text-xs font-medium text-halloween-night">
-              −{HALLOWEEN_DISCOUNT_PERCENT}% Halloween
+              −{HALLOWEEN_DISCOUNT_PERCENT}% desarrollo
             </span>
             <span className="inline-flex w-fit rounded-full border border-halloween-mist/30 px-3 py-1 text-xs font-medium text-halloween-mist">
               Negociable
@@ -324,7 +341,8 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
               Precio personalizado
             </p>
             <p className="mt-2 text-sm text-halloween-glow">
-              {HALLOWEEN_DISCOUNT_PERCENT}% de descuento sobre la cotización
+              {HALLOWEEN_DISCOUNT_PERCENT}% de descuento en el desarrollo de la
+              cotización. El retainer, si aplica, queda a precio de lista.
             </p>
           </div>
 
@@ -351,15 +369,15 @@ export default function HalloweenPricingCards({ tiers, countryCode }: PricingCar
             rel="noopener noreferrer"
             className="w-full rounded-full border border-halloween-pumpkin px-6 py-3 text-center text-sm font-medium text-halloween-glow transition hover:bg-halloween-pumpkin hover:text-halloween-night"
           >
-            {CONTACT_TIER.contactLabel} · −{HALLOWEEN_DISCOUNT_PERCENT}%
+            {CONTACT_TIER.contactLabel}
           </a>
         </article>
       </div>
 
       <p className="mt-10 text-center text-xs text-halloween-mist/70">
         Por ahora las suscripciones se coordinan por WhatsApp: te confirmamos
-        alcance, el {HALLOWEEN_DISCOUNT_PERCENT}% de Halloween y el método de
-        pago. Detalle de reembolsos en{" "}
+        alcance, el {HALLOWEEN_DISCOUNT_PERCENT}% de Halloween en el desarrollo
+        y el método de pago. Detalle de reembolsos en{" "}
         <a
           href="/refund"
           className="underline underline-offset-2 hover:text-bone"

@@ -116,14 +116,14 @@ export function getSubscribeWhatsAppHref(
   options?: { halloweenPromo?: boolean },
 ): string {
   const text = options?.halloweenPromo
-    ? `Quiero suscribirme al plan ${tier.displayName} con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween (desarrollo y suscripción).`
+    ? `Quiero suscribirme al plan ${tier.displayName} con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween solo en el pago de desarrollo. La suscripción queda a precio de lista.`
     : `Quiero suscribirme al ${tier.displayName}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
 export function getCustomPlanWhatsAppHref(halloweenPromo = false): string {
   const text = halloweenPromo
-    ? `Hola IAGO, me interesa un plan a medida con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween.`
+    ? `Hola IAGO, me interesa un plan a medida con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween solo en el desarrollo.`
     : "Hola IAGO, me interesa un plan a medida.";
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
