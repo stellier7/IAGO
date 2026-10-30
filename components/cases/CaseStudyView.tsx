@@ -1,6 +1,5 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import type { CaseItem } from "@/lib/cases/recent";
 import { recentCases } from "@/lib/cases/recent";
 
@@ -10,20 +9,12 @@ type CaseStudyViewProps = {
 
 export default function CaseStudyView({ item }: CaseStudyViewProps) {
   const related = recentCases.filter((c) => c.slug !== item.slug).slice(0, 3);
-  const path = `/casos/${item.slug}`;
 
   return (
     <>
       <Nav theme="solid" />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <article className="mx-auto max-w-3xl px-6">
-          <Breadcrumbs
-            items={[
-              { name: "Inicio", path: "/" },
-              { name: "Casos", path: "/case-studies" },
-              { name: item.client, path },
-            ]}
-          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             Caso · {item.type}
           </p>

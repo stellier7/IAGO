@@ -1,138 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
 import CaseCard from "@/components/cases/CaseCard";
 import { recentCases } from "@/lib/cases/recent";
-
-/** Sub-pixel speed kept in a float accumulator — browsers truncate scrollLeft. */
-const AUTO_SCROLL_PX_PER_FRAME = 0.75;
-const RESUME_DELAY_MS = 1600;
-
-function CasesCarousel() {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-  const offsetRef = useRef(0);
-  const resumeTimerRef = useRef<number | null>(null);
-  const prefersReducedMotion = useReducedMotion();
-
-  // Two copies so we can wrap seamlessly when offset crosses the midpoint.
-  const track = useMemo(() => [...recentCases, ...recentCases], []);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-
-    const el = scrollerRef.current;
-    if (!el) return;
-
-    let frame = 0;
-    let visible = true;
-    offsetRef.current = el.scrollLeft;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-      },
-      { threshold: 0.05 },
-    );
-    observer.observe(el);
-
-    const tick = () => {
-      if (visible && !pausedRef.current) {
-        offsetRef.current += AUTO_SCROLL_PX_PER_FRAME;
-        const loopAt = el.scrollWidth / 2;
-        if (loopAt > 0 && offsetRef.current >= loopAt) {
-          offsetRef.current -= loopAt;
-        }
-        // Assign floored value; keep fractional remainder in offsetRef.
-        el.scrollLeft = offsetRef.current;
-      }
-      frame = window.requestAnimationFrame(tick);
-    };
-
-    frame = window.requestAnimationFrame(tick);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      observer.disconnect();
-    };
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    return () => {
-      if (resumeTimerRef.current !== null) {
-        window.clearTimeout(resumeTimerRef.current);
-      }
-    };
-  }, []);
-
-  const clearResumeTimer = () => {
-    if (resumeTimerRef.current !== null) {
-      window.clearTimeout(resumeTimerRef.current);
-      resumeTimerRef.current = null;
-    }
-  };
-
-  const syncOffsetFromDom = () => {
-    const el = scrollerRef.current;
-    if (el) offsetRef.current = el.scrollLeft;
-  };
-
-  const pause = () => {
-    pausedRef.current = true;
-    syncOffsetFromDom();
-    clearResumeTimer();
-  };
-
-  const scheduleResume = () => {
-    if (prefersReducedMotion) return;
-    syncOffsetFromDom();
-    clearResumeTimer();
-    resumeTimerRef.current = window.setTimeout(() => {
-      syncOffsetFromDom();
-      pausedRef.current = false;
-      resumeTimerRef.current = null;
-    }, RESUME_DELAY_MS);
-  };
-
-  return (
-    // Outer clips the native scrollbar gutter; inner keeps smooth OS swipe.
-    <div className="cases-carousel-viewport overflow-hidden">
-      <div
-        ref={scrollerRef}
-        data-lenis-prevent
-        className="cases-carousel flex gap-6 overflow-x-auto overscroll-x-contain px-6"
-        aria-label="Carrusel de casos recientes"
-        onPointerDown={pause}
-        onPointerUp={scheduleResume}
-        onPointerCancel={scheduleResume}
-        onTouchStart={pause}
-        onTouchEnd={scheduleResume}
-        onTouchCancel={scheduleResume}
-        onScroll={() => {
-          if (!pausedRef.current) return;
-          syncOffsetFromDom();
-          clearResumeTimer();
-          resumeTimerRef.current = window.setTimeout(() => {
-            syncOffsetFromDom();
-            pausedRef.current = false;
-            resumeTimerRef.current = null;
-          }, RESUME_DELAY_MS);
-        }}
-        onFocusCapture={pause}
-        onBlurCapture={scheduleResume}
-      >
-        {track.map((item, index) => (
-          <CaseCard
-            key={`${item.slug}-${index}`}
-            item={item}
-            className="h-[420px] w-[min(85vw,340px)] shrink-0 md:h-[460px] md:w-[340px]"
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function Work() {
   return (
@@ -151,8 +20,26 @@ export default function Work() {
         </p>
       </div>
 
-      <div className="mt-12 md:mt-16">
-        <CasesCarousel />
+      <div className="mt-16 hidden md:block">
+        <div className="flex gap-6 overflow-x-auto px-6 pb-4 [scrollbar-width:thin]">
+          {recentCases.map((item) => (
+            <CaseCard
+              key={item.slug}
+              item={item}
+              className="h-[460px] w-[340px] shrink-0"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-12 space-y-6 px-6 md:hidden">
+        {recentCases.map((item) => (
+          <CaseCard
+            key={item.slug}
+            item={item}
+            className="min-h-[420px] w-full"
+          />
+        ))}
       </div>
 
       <div className="mt-12 flex justify-center px-6 md:mt-16">

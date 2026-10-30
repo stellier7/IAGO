@@ -1,17 +1,11 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { buildPageMetadata } from "@/lib/seo/metadata";
-import {
-  FOUNDER,
-  SOCIAL_PROFILES,
-  footerSocialLinks,
-} from "@/lib/social/profiles";
 
 export const metadata = buildPageMetadata({
-  title: "iAGO Digital Honduras — Quiénes somos",
+  title: "About iAGO Digital",
   description:
-    "iAGO Digital (iagodigital.com) es la agencia de Santiago Tellier en Honduras: web, SEO y automatizaciones con IA. No somos iagoapp ni iago.digital.",
+    "Quiénes somos: agencia digital de web, SEO y automatizaciones con IA para negocios en Centroamérica, Latam y más.",
   path: "/about",
 });
 
@@ -21,12 +15,6 @@ export default function AboutPage() {
       <Nav theme="solid" />
       <main className="min-h-screen bg-bone pb-24 pt-32">
         <article className="mx-auto max-w-3xl px-6">
-          <Breadcrumbs
-            items={[
-              { name: "Inicio", path: "/" },
-              { name: "About", path: "/about" },
-            ]}
-          />
           <p className="text-sm font-medium uppercase tracking-widest text-coral">
             About
           </p>
@@ -34,71 +22,10 @@ export default function AboutPage() {
             iAGO Digital: web, SEO e IA con resultados medibles
           </h1>
           <p className="mt-6 text-lg text-mute">
-            Somos una agencia digital en Honduras que diseña sitios que
-            convierten, posiciona marcas en Google y automatiza lo repetitivo
-            con IA — para que tu equipo venda y atienda, no copie datos a mano.
-            Sitio oficial:{" "}
-            <a
-              href="https://www.iagodigital.com"
-              className="text-coral transition hover:text-ink"
-            >
-              www.iagodigital.com
-            </a>
-            .
+            Somos una agencia digital que diseña sitios que convierten,
+            posiciona marcas en Google y automatiza lo repetitivo con IA —
+            para que tu equipo venda y atienda, no copie datos a mano.
           </p>
-
-          <section className="mt-14">
-            <h2 className="font-display text-2xl font-bold text-ink">
-              Cómo encontrarnos (y qué no somos)
-            </h2>
-            <p className="mt-4 text-mute">
-              Si buscas <span className="text-ink">iAGO Digital</span> /
-              agencia web en Honduras, esta es la entidad correcta: fundador{" "}
-              {FOUNDER.name}, dominio{" "}
-              <span className="text-ink">iagodigital.com</span>, Instagram{" "}
-              <a
-                href={SOCIAL_PROFILES.instagram}
-                target="_blank"
-                rel="noopener noreferrer me"
-                className="text-coral transition hover:text-ink"
-              >
-                @iagodigital.web
-              </a>
-              , LinkedIn company{" "}
-              <a
-                href={SOCIAL_PROFILES.linkedInCompany}
-                target="_blank"
-                rel="noopener noreferrer me"
-                className="text-coral transition hover:text-ink"
-              >
-                iago-digital
-              </a>
-              . No somos la app de contenidos “iago / iagoapp”, ni el dominio
-              aparcado <span className="text-ink">iago.digital</span>, ni otras
-              marcas con nombre parecido.
-            </p>
-          </section>
-
-          <section className="mt-14">
-            <h2 className="font-display text-2xl font-bold text-ink">
-              Fundador
-            </h2>
-            <p className="mt-4 text-mute">
-              <span className="font-medium text-ink">{FOUNDER.name}</span>
-              {" · "}
-              {FOUNDER.jobTitle}. Construye iAGO Digital para que negocios en
-              Honduras y la región tengan web, SEO y automatizaciones que
-              generen consultas reales — no solo presencia decorativa.
-            </p>
-            <a
-              href={FOUNDER.linkedIn}
-              target="_blank"
-              rel="noopener noreferrer me"
-              className="mt-4 inline-flex text-sm font-medium text-coral transition hover:text-ink"
-            >
-              LinkedIn →
-            </a>
-          </section>
 
           <section className="mt-14">
             <h2 className="font-display text-2xl font-bold text-ink">
@@ -159,30 +86,6 @@ export default function AboutPage() {
               >
                 Contacto
               </a>
-            </div>
-          </section>
-
-          <section className="mt-14">
-            <h2 className="font-display text-2xl font-bold text-ink">
-              Presencia online
-            </h2>
-            <p className="mt-4 text-mute">
-              Misma identidad en la web y en perfiles públicos (nombre, dominio,
-              contacto). YouTube y el enlace estable de Google Business Profile
-              se suman cuando estén listos.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {footerSocialLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer me"
-                  className="rounded-full border border-ink-line/20 px-4 py-2 text-sm transition hover:border-coral hover:text-coral"
-                >
-                  {link.label}
-                </a>
-              ))}
             </div>
           </section>
 

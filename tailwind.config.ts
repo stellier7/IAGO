@@ -18,14 +18,6 @@ const config: Config = {
         },
         bone: "#F4F1EA",
         mute: "#8C8A85",
-        halloween: {
-          night: "#120816",
-          dusk: "#3A1848",
-          card: "#1B1024",
-          pumpkin: "#FF8C1A",
-          glow: "#FFB020",
-          mist: "#E7D7FF",
-        },
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
@@ -42,14 +34,9 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
-        flicker: {
-          "0%, 100%": { opacity: "0.9" },
-          "50%": { opacity: "0.35" },
-        },
       },
       animation: {
         marquee: "marquee 22s linear infinite",
-        flicker: "flicker 3.2s ease-in-out infinite",
       },
     },
   },

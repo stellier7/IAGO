@@ -1,4 +1,3 @@
-import { HALLOWEEN_DISCOUNT_PERCENT } from "@/lib/pricing/halloween-discount";
 import { getPlanPriceIds, type PlanKey } from "@/lib/pricing/price-ids";
 
 export interface Tier {
@@ -89,8 +88,6 @@ export function getPricingTiers(): Tier[] {
   });
 }
 
-export const WHATSAPP_NUMBER = "50489809800";
-
 export const CONTACT_TIER: ContactTier = {
   name: "A medida",
   displayName: "A medida",
@@ -102,31 +99,11 @@ export const CONTACT_TIER: ContactTier = {
     "Soporte prioritario",
     "Facturación flexible (proyecto y/o mensual)",
   ],
-  contactHref: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    "Hola IAGO, me interesa un plan a medida.",
-  )}`,
+  contactHref: "https://wa.me/50489809800?text=Hola%20IAGO%2C%20me%20interesa%20un%20plan%20a%20medida.",
   contactLabel: "Contáctanos",
 };
 
 export type BillingCycle = "month" | "year";
-
-/** Temporary CTA until self-serve checkout is ready. */
-export function getSubscribeWhatsAppHref(
-  tier: Tier,
-  options?: { halloweenPromo?: boolean },
-): string {
-  const text = options?.halloweenPromo
-    ? `Quiero suscribirme al plan ${tier.displayName} con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween solo en el pago de desarrollo. La suscripción queda a precio de lista.`
-    : `Quiero suscribirme al ${tier.displayName}`;
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-}
-
-export function getCustomPlanWhatsAppHref(halloweenPromo = false): string {
-  const text = halloweenPromo
-    ? `Hola IAGO, me interesa un plan a medida con el ${HALLOWEEN_DISCOUNT_PERCENT}% de descuento de Halloween solo en el desarrollo.`
-    : "Hola IAGO, me interesa un plan a medida.";
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-}
 
 export function getPriceIdsForCycle(
   tiers: Tier[],

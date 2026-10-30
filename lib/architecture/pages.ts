@@ -404,16 +404,6 @@ export const architecturePages: ArchitecturePage[] = [
           "Impresiones/clics en Search Console a las URLs trabajadas, indexación, menciones o citas que puedas verificar manualmente, y tráfico a páginas de pregunta/FAQ. No controlamos ni garantizamos aparición dentro de ChatGPT, Gemini o Perplexity.",
       },
       {
-        question: "¿Bloquear crawlers de IA afecta ChatGPT search?",
-        answer:
-          "Sí puede. Para descubrimiento en ChatGPT search, OpenAI usa OAI-SearchBot (distinto de GPTBot, que se asocia más a entrenamiento). En iAGO permitimos OAI-SearchBot explícitamente en /robots.txt además de Allow general. Un firewall o bot-fight que bloquee crawlers legítimos también puede ocultarte.",
-      },
-      {
-        question: "¿llms.txt hace que ChatGPT te recomiende?",
-        answer:
-          "No lo asumas. Puedes publicar un llms.txt experimental como mapa del sitio, pero prioriza crawlabilidad, contenido útil y casos con evidencia. Ver /llms.txt en este sitio como referencia ligera — no como truco de ranking.",
-      },
-      {
         question: "¿Qué es GEO?",
         answer:
           "Generative Engine Optimization: optimizar para respuestas generativas. En la práctica va de la mano con AI SEO — misma base de claridad y autoridad.",
@@ -425,11 +415,7 @@ export const architecturePages: ArchitecturePage[] = [
         label: "Artículo AI SEO",
         href: "/blog/ai-seo-aparecer-en-inteligencias-artificiales",
       },
-      {
-        label: "Guía de costos web HN",
-        href: "/blog/cuanto-cuesta-pagina-web-honduras-2027",
-      },
-      { label: "Casos", href: "/case-studies" },
+      { label: "WhatsApp automation", href: "/whatsapp-automation" },
     ],
   },
   {

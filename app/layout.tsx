@@ -21,9 +21,9 @@ const body = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.iagodigital.com"),
-  title: "iAGO Digital Honduras | Web, SEO y Automatizaciones con IA",
+  title: "iAGO Digital | Web, SEO & Automatizaciones con IA",
   description:
-    "iAGO Digital (iagodigital.com): agencia en Honduras de sitios que convierten, SEO con reportes y automatizaciones con IA — distinta de iagoapp / iago.digital.",
+    "Agencia digital para negocios en Centroamérica y Latam: sitios que convierten, SEO con reportes claros y automatizaciones con IA para no perder leads.",
   alternates: {
     canonical: "/",
     languages: {
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "iAGO Digital Honduras | Web, SEO y Automatizaciones con IA",
+    title: "iAGO Digital | Web, SEO & Automatizaciones con IA",
     description:
-      "Agencia en Honduras (iagodigital.com): web, SEO e IA para más consultas — distinta de iagoapp.",
+      "Web, SEO e IA para negocios que quieren más consultas — no solo “tener página”.",
     type: "website",
     locale: "es_LA",
     url: "/",
