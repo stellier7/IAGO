@@ -128,7 +128,7 @@ export default function Nav({ theme = "overlay", locale = "es" }: NavProps) {
       <div className="mx-auto flex max-w-content items-center justify-between px-6">
         <a
           href={isEn ? "/en" : "/"}
-          className={`font-display text-lg font-bold tracking-tightest transition-colors duration-300 ${logoClass(surface)}`}
+          className={`font-display text-lg font-extrabold tracking-tightest transition-colors duration-300 ${logoClass(surface)}`}
         >
           iA<span className="text-coral">GO</span>
           <span className="text-coral">.</span>
