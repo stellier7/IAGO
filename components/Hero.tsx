@@ -292,7 +292,7 @@ export default function Hero() {
             Agencia Digital ·{" "}
             <RotatingCountry paused={!!prefersReducedMotion} />
           </motion.p>
-          <h1 className="font-display font-bold leading-[0.95] tracking-tightest">
+          <h1 className="font-display font-extrabold leading-[0.95] tracking-tightest">
             {prefersReducedMotion ? (
               <>
                 <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
