@@ -14,8 +14,6 @@ import {
   letterFromRight,
   slideFromLeftBlur,
   lineSlideFromLeft,
-  staggerLettersLeft,
-  staggerLettersRight,
 } from "@/lib/motion-variants";
 import {
   BUTTON_DURATION,
@@ -30,8 +28,7 @@ import {
 } from "@/lib/hero-intro";
 import { heroSocialLinks } from "@/lib/social/profiles";
 
-const IAGO_LETTERS = ["i", "A", "G", "O"] as const;
-const DIGITAL_LETTERS = "Digital".split("");
+const WORDMARK_EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
 const BUTTON_TRANSITION = {
   type: "tween" as const,
@@ -292,7 +289,7 @@ export default function Hero() {
             Agencia Digital ·{" "}
             <RotatingCountry paused={!!prefersReducedMotion} />
           </motion.p>
-          <h1 className="font-display font-extrabold leading-[0.95] tracking-tightest">
+          <h1 className="font-display font-bold leading-[0.95] tracking-tightest">
             {prefersReducedMotion ? (
               <>
                 <span className="block text-[clamp(2.75rem,8vw,6.5rem)]">
@@ -307,41 +304,26 @@ export default function Hero() {
                 <div className="overflow-clip">
                   <motion.span
                     className="block text-[clamp(2.75rem,8vw,6.5rem)]"
-                    variants={staggerLettersLeft}
+                    variants={letterFromLeft}
                     initial="hidden"
                     animate="visible"
-                    aria-label="iAGO"
                   >
-                    {IAGO_LETTERS.map((char) => (
-                      <motion.span
-                        key={char}
-                        variants={letterFromLeft}
-                        className={`inline-block ${char === "G" || char === "O" ? "text-coral" : ""}`}
-                        aria-hidden
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
+                    iA<span className="text-coral">GO</span>
                   </motion.span>
                 </div>
                 <div className="overflow-clip">
                   <motion.span
                     className="mt-1 block text-[clamp(1.75rem,4.5vw,3.5rem)] text-coral"
-                    variants={staggerLettersRight}
+                    variants={letterFromRight}
                     initial="hidden"
                     animate="visible"
-                    aria-label="Digital"
+                    transition={{
+                      delay: 0.08,
+                      duration: 0.55,
+                      ease: WORDMARK_EASE,
+                    }}
                   >
-                    {DIGITAL_LETTERS.map((char, index) => (
-                      <motion.span
-                        key={`${char}-${index}`}
-                        variants={letterFromRight}
-                        className="inline-block"
-                        aria-hidden
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
+                    Digital
                   </motion.span>
                 </div>
               </>
