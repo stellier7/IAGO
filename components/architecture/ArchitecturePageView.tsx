@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import VisibilityShots from "@/components/proof/VisibilityShots";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLdScript from "@/components/seo/JsonLdScript";
 import type { ArchitecturePage } from "@/lib/architecture/pages";
@@ -77,6 +78,25 @@ export default function ArchitecturePageView({
             </h2>
             <p className="mt-4 text-mute">{page.exampleUseCase.detail}</p>
           </section>
+
+          {page.observedExample ? (
+            <section className="mt-14">
+              <h2 className="font-display text-2xl font-bold text-ink">
+                {page.observedExample.title}
+              </h2>
+              <p className="mt-4 text-mute">{page.observedExample.detail}</p>
+              <p className="mt-4 text-sm text-mute">
+                {page.observedExample.capturedOnLabel}
+              </p>
+              <VisibilityShots shots={page.observedExample.shots} />
+              <a
+                href={page.observedExample.caseHref}
+                className="mt-4 inline-block text-sm font-medium text-coral transition hover:text-ink"
+              >
+                {page.observedExample.caseLabel} →
+              </a>
+            </section>
+          ) : null}
 
           <section className="mt-14">
             <h2 className="font-display text-2xl font-bold text-ink">

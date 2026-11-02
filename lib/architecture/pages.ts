@@ -1,3 +1,10 @@
+import {
+  ichibanCapturedOnLabel,
+  ichibanChatGptShot,
+  ichibanGoogleShot,
+  type VisibilityShot,
+} from "@/lib/proof/visibility";
+
 export type ArchitectureSlug =
   | "website-design-honduras"
   | "ai-automation-honduras"
@@ -20,6 +27,14 @@ export type ArchitecturePage = {
   outcomes: string[];
   includes: string[];
   exampleUseCase: { title: string; detail: string };
+  observedExample?: {
+    title: string;
+    detail: string;
+    capturedOnLabel: string;
+    caseHref: string;
+    caseLabel: string;
+    shots: VisibilityShot[];
+  };
   faqs: { question: string; answer: string }[];
   related: { label: string; href: string }[];
 };
@@ -332,10 +347,20 @@ export const architecturePages: ArchitecturePage[] = [
       {
         question: "¿Cuánto tarda en verse algo?",
         answer:
-          "Señales técnicas en semanas; tráfico compuesto suele tomar meses según competencia. Por eso el reporte importa más que un screenshot de “#1”.",
+          "Señales técnicas en semanas; tráfico compuesto suele tomar meses según competencia. Por eso el reporte importa más que un screenshot de “#1”. Si mostramos una captura, va fechada y con las otras opciones visibles (ver Ichiban BJJ); no es una garantía.",
       },
     ],
+    observedExample: {
+      title: "Ejemplo observado, no una promesa de #1",
+      detail:
+        "El informe mensual sigue siendo el entregable: indexación, consultas y prioridades. Una captura ilustra un caso. Ichiban BJJ, academia cliente en Tegucigalpa, aparecía el 2 de noviembre de 2026 primero en el pack de negocios de Google para “jiu jitsu Honduras”, con otras academias en la misma pantalla. Ese mismo día, ChatGPT lo nombró como primera recomendación al pedir una academia de Jiu Jitsu en Honduras. El pack local también depende de la ficha de Google y las reseñas.",
+      capturedOnLabel: ichibanCapturedOnLabel,
+      caseHref: "/casos/ichiban-bjj",
+      caseLabel: "Ver caso Ichiban BJJ",
+      shots: [ichibanGoogleShot, ichibanChatGptShot],
+    },
     related: [
+      { label: "Caso Ichiban BJJ", href: "/casos/ichiban-bjj" },
       { label: "AI SEO / GEO", href: "/ai-seo-honduras" },
       { label: "Diseño web", href: "/website-design-honduras" },
       { label: "Planes", href: "/pricing" },
@@ -392,6 +417,15 @@ export const architecturePages: ArchitecturePage[] = [
       detail:
         "El SEO clásico prioriza rankings e impresiones en Google. AI SEO / GEO añade: respuestas citables, FAQs profundas y consistencia de entidad para motores generativos. En la práctica compartimos fundamentos (páginas útiles, schema, claridad). La diferencia está en el formato de las respuestas y en no medir solo “posición #3”.",
     },
+    observedExample: {
+      title: "Ejemplo observado: Ichiban BJJ en Google y en ChatGPT",
+      detail:
+        "Ichiban BJJ es una academia cliente en Tegucigalpa. El 2 de noviembre de 2026 pedimos a ChatGPT “Recomiéndame una academia de Jiu Jitsu en Honduras”: la primera opción fue Ichiban, con dirección, calificación y contacto alineados a su ficha pública. La respuesta también dice que hay otras opciones. En Google, “jiu jitsu Honduras” mostraba a Ichiban primero en el pack de negocios, junto a otras academias de la ciudad. Lo publicamos porque se puede contrastar. No prometemos que otra marca, otra consulta u otro día se vean igual.",
+      capturedOnLabel: ichibanCapturedOnLabel,
+      caseHref: "/casos/ichiban-bjj",
+      caseLabel: "Ver caso Ichiban BJJ",
+      shots: [ichibanChatGptShot, ichibanGoogleShot],
+    },
     faqs: [
       {
         question: "¿Reemplaza al SEO normal?",
@@ -401,7 +435,7 @@ export const architecturePages: ArchitecturePage[] = [
       {
         question: "¿Qué se puede medir de verdad?",
         answer:
-          "Impresiones/clics en Search Console a las URLs trabajadas, indexación, menciones o citas que puedas verificar manualmente, y tráfico a páginas de pregunta/FAQ. No controlamos ni garantizamos aparición dentro de ChatGPT, Gemini o Perplexity.",
+          "Impresiones/clics en Search Console a las URLs trabajadas, indexación, menciones o citas que puedas verificar manualmente, y tráfico a páginas de pregunta/FAQ. El caso Ichiban BJJ muestra cómo se ve una mención verificable: consulta, fecha y captura. No controlamos ni garantizamos aparición dentro de ChatGPT, Gemini o Perplexity.",
       },
       {
         question: "¿Bloquear crawlers de IA afecta ChatGPT search?",
@@ -420,6 +454,7 @@ export const architecturePages: ArchitecturePage[] = [
       },
     ],
     related: [
+      { label: "Caso Ichiban BJJ", href: "/casos/ichiban-bjj" },
       { label: "SEO services", href: "/seo-services-honduras" },
       {
         label: "Artículo AI SEO",

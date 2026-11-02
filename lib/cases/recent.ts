@@ -1,3 +1,10 @@
+import {
+  ichibanCapturedOnLabel,
+  ichibanChatGptShot,
+  ichibanGoogleShot,
+  type VisibilityShot,
+} from "@/lib/proof/visibility";
+
 export type CaseItem = {
   slug: string;
   client: string;
@@ -14,6 +21,10 @@ export type CaseItem = {
   evidence: string;
   deliverables: string[];
   stack: string[];
+  visibility?: {
+    capturedOnLabel: string;
+    shots: VisibilityShot[];
+  };
 };
 
 export const recentCases: CaseItem[] = [
@@ -168,8 +179,13 @@ export const recentCases: CaseItem[] = [
       "Base para SEO local",
     ],
     outcome:
-      "La academia tiene una base web clara para explicar la oferta y captar interés. No publicamos KPIs de matrícula sin confirmación del cliente.",
-    evidence: "Sitio público: ichibanbjj.com.",
+      "La academia tiene una base web clara para explicar la oferta y captar interés. El 2 de noviembre de 2026, Ichiban aparecía primero en el pack de negocios de Google para “jiu jitsu Honduras” y como primera recomendación de ChatGPT al pedir una academia de Jiu Jitsu en Honduras. No publicamos KPIs de matrícula, y esas capturas no son una posición garantizada.",
+    evidence:
+      "Sitio público: ichibanbjj.com. Abajo, las capturas de Google y ChatGPT. El pack local también depende de la ficha de Google, la categoría y las reseñas (en esa pantalla: 5.0 y 16 reseñas). Las respuestas de IA cambian según el modelo, la cuenta y el día; por eso el ejemplo va fechado.",
+    visibility: {
+      capturedOnLabel: ichibanCapturedOnLabel,
+      shots: [ichibanGoogleShot, ichibanChatGptShot],
+    },
     deliverables: [
       "Diseño y desarrollo del sitio",
       "Contenido de disciplinas",

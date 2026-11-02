@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import VisibilityShots from "@/components/proof/VisibilityShots";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import type { CaseItem } from "@/lib/cases/recent";
 import { recentCases } from "@/lib/cases/recent";
@@ -109,6 +110,14 @@ export default function CaseStudyView({ item }: CaseStudyViewProps) {
               6. La evidencia
             </h2>
             <p className="mt-4 text-mute">{item.evidence}</p>
+            {item.visibility ? (
+              <>
+                <p className="mt-4 text-sm text-mute">
+                  {item.visibility.capturedOnLabel}
+                </p>
+                <VisibilityShots shots={item.visibility.shots} />
+              </>
+            ) : null}
             <ul className="mt-6 space-y-3 text-mute">
               {item.deliverables.map((line) => (
                 <li key={line} className="flex gap-3">

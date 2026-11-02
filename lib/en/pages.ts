@@ -365,7 +365,7 @@ export const englishPages: EnglishPage[] = [
       {
         question: "What about AI SEO / GEO?",
         answer:
-          "It extends classic SEO with clearer entities and question-led pages. See /ai-seo-honduras for the Spanish deep-dive; English AI SEO copy stays honest about what is measurable.",
+          "It extends classic SEO with clearer entities and question-led pages. See /ai-seo-honduras for the Spanish deep-dive. A dated snapshot for a Tegucigalpa academy — Google’s local pack for “jiu jitsu Honduras” and ChatGPT’s first recommendation for a Jiu Jitsu academy in Honduras, captured 2 November 2026 — is at /casos/ichiban-bjj. It is an illustration, not a ranking guarantee.",
       },
     ],
     related: [

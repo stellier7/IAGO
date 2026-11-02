@@ -534,6 +534,14 @@ export const blogPosts: BlogPost[] = [
         ],
       },
       {
+        heading: "Ejemplo fechado: Ichiban BJJ",
+        body: [
+          "Ichiban BJJ, academia cliente en Tegucigalpa, es el caso que usamos para mostrar SEO local y GEO sin inventar números.",
+          "El 2 de noviembre de 2026, la búsqueda “jiu jitsu Honduras” en Google mostraba a Ichiban primero en el pack de negocios, con otras academias en la misma pantalla. ChatGPT, ante “Recomiéndame una academia de Jiu Jitsu en Honduras”, lo nombró como primera opción y aun así señaló que había más alternativas.",
+          "Eso no es una garantía para el siguiente cliente ni para el siguiente mes. Sirve para ver qué significa “mención verificable”: consulta concreta, fecha y captura. Caso: /casos/ichiban-bjj. Servicio: /ai-seo-honduras.",
+        ],
+      },
+      {
         heading: "Cómo te ayudamos",
         body: [
           "En IAGO combinamos desarrollo web, SEO técnico y contenido orientado a búsqueda + IA.",
@@ -654,6 +662,7 @@ export const blogPosts: BlogPost[] = [
           "Estructura que una máquina puede parsear: headings, FAQs, schema alineado a lo visible.",
           "Crawlabilidad para buscadores con IA (p. ej. permitir OAI-SearchBot; no confundir con GPTBot de entrenamiento).",
           "Medición más amplia: no solo posición #3 — también indexación, clics a URLs trabajadas y menciones verificables.",
+          "Un ejemplo con las dos superficies (pack de Google y recomendación de ChatGPT, 2 de noviembre de 2026) está en el caso Ichiban BJJ: /casos/ichiban-bjj.",
         ],
       },
       {

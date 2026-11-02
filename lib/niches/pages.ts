@@ -564,7 +564,7 @@ export const nichePages: NichePage[] = [
       {
         title: "Caso: Ichiban BJJ",
         detail:
-          "Web de academia en Tegucigalpa para presentar BJJ y Muay Thai y dar camino claro a nuevos alumnos. En producción.",
+          "Web de academia en Tegucigalpa para presentar BJJ y Muay Thai. El 2 de noviembre de 2026 aparecía primero en Google para “jiu jitsu Honduras” y como primera recomendación de ChatGPT. Captura fechada: no es matrícula ni una posición garantizada.",
         caseHref: "/casos/ichiban-bjj",
         caseLabel: "Ver caso Ichiban",
         liveHref: "https://www.ichibanbjj.com/",
