@@ -317,6 +317,7 @@ export const architecturePages: ArchitecturePage[] = [
       "Camino claro si luego quieres AI SEO",
     ],
     includes: [
+      "Google Business Profile cuando hay local: ficha alineada con el sitio",
       "Auditoría técnica y fixes prioritarios",
       "On-page y arquitectura de servicios",
       "Contenido pilar / local según plan (sin spam de ciudades)",
@@ -326,7 +327,7 @@ export const architecturePages: ArchitecturePage[] = [
     exampleUseCase: {
       title: "Cómo se ve el proceso",
       detail:
-        "Semana 1–2: auditoría, indexación, canónicos, páginas rotas. Luego: 1–2 páginas de servicio bien hechas y medición. En el plan continuo: revisar GSC, proponer el siguiente contenido o mejora, y reportar qué cambió. Técnico puntual ≠ retainer mensual — los cotizamos por separado cuando hace falta.",
+        "Uno de los primeros pasos, si atiendes en un local, es el Google Business Profile: nombre, categoría, horario, fotos y reseñas, escritos igual que en el sitio. Quien busca suele quedarse con los primeros resultados, así que la ficha sola a veces no alcanza. Si no apareces entre esos primeros, el perfil existe y casi no te eligen. Después viene la base técnica (auditoría, indexación, canónicos, páginas rotas), 1–2 páginas de servicio y la medición. En el plan continuo revisamos Search Console, proponemos el siguiente contenido o mejora, y reportamos qué cambió. El arreglo técnico puntual y el retainer mensual se cotizan por separado cuando hace falta.",
     },
     faqs: [
       {
@@ -353,7 +354,7 @@ export const architecturePages: ArchitecturePage[] = [
     observedExample: {
       title: "Ejemplo observado, no una promesa de #1",
       detail:
-        "El informe mensual sigue siendo el entregable: indexación, consultas y prioridades. Una captura ilustra un caso. Ichiban BJJ, academia cliente en Tegucigalpa, aparecía el 2 de noviembre de 2026 primero en el pack de negocios de Google para “jiu jitsu Honduras”, con otras academias en la misma pantalla. Ese mismo día, ChatGPT lo nombró como primera recomendación al pedir una academia de Jiu Jitsu en Honduras. El pack local también depende de la ficha de Google y las reseñas.",
+        "El informe mensual sigue siendo el entregable: indexación, consultas y prioridades. Una captura ilustra un caso. Ichiban BJJ, academia cliente en Tegucigalpa, aparecía el 2 de noviembre de 2026 primero en el pack de negocios de Google para “jiu jitsu Honduras”, con otras academias en la misma pantalla. Ese primer lugar es el que la gente suele elegir. Ese mismo día, ChatGPT lo nombró como primera recomendación al pedir una academia de Jiu Jitsu en Honduras. El pack local también depende de la ficha de Google y las reseñas.",
       capturedOnLabel: ichibanCapturedOnLabel,
       caseHref: "/casos/ichiban-bjj",
       caseLabel: "Ver caso Ichiban BJJ",
@@ -420,7 +421,7 @@ export const architecturePages: ArchitecturePage[] = [
     observedExample: {
       title: "Ejemplo observado: Ichiban BJJ en Google y en ChatGPT",
       detail:
-        "Ichiban BJJ es una academia cliente en Tegucigalpa. El 2 de noviembre de 2026 pedimos a ChatGPT “Recomiéndame una academia de Jiu Jitsu en Honduras”: la primera opción fue Ichiban, con dirección, calificación y contacto alineados a su ficha pública. La respuesta también dice que hay otras opciones. En Google, “jiu jitsu Honduras” mostraba a Ichiban primero en el pack de negocios, junto a otras academias de la ciudad. Lo publicamos porque se puede contrastar. No prometemos que otra marca, otra consulta u otro día se vean igual.",
+        "Ichiban BJJ es una academia cliente en Tegucigalpa. Uno de los pasos es el Google Business Profile, y a veces no alcanza por sí solo: quien busca suele quedarse con los primeros resultados. El 2 de noviembre de 2026 pedimos a ChatGPT “Recomiéndame una academia de Jiu Jitsu en Honduras”: la primera opción fue Ichiban, con dirección, calificación y contacto alineados a su ficha pública. La respuesta también dice que hay otras opciones. En Google, “jiu jitsu Honduras” mostraba a Ichiban primero en el pack de negocios, junto a otras academias de la ciudad. Lo publicamos porque se puede contrastar. No prometemos que otra marca, otra consulta u otro día se vean igual.",
       capturedOnLabel: ichibanCapturedOnLabel,
       caseHref: "/casos/ichiban-bjj",
       caseLabel: "Ver caso Ichiban BJJ",

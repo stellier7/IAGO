@@ -173,6 +173,7 @@ export const recentCases: CaseItem[] = [
     solution:
       "Sitio enérgico y directo, con foco en disciplinas, comunidad y CTAs para nuevos alumnos.",
     implementation: [
+      "Google Business Profile alineado con el sitio",
       "Páginas de disciplinas (BJJ / Muay Thai)",
       "Mensaje orientado a probar clase",
       "Diseño responsive",
@@ -181,7 +182,7 @@ export const recentCases: CaseItem[] = [
     outcome:
       "La academia tiene una base web clara para explicar la oferta y captar interés. El 2 de noviembre de 2026, Ichiban aparecía primero en el pack de negocios de Google para “jiu jitsu Honduras” y como primera recomendación de ChatGPT al pedir una academia de Jiu Jitsu en Honduras. No publicamos KPIs de matrícula, y esas capturas no son una posición garantizada.",
     evidence:
-      "Sitio público: ichibanbjj.com. Abajo, las capturas de Google y ChatGPT. El pack local también depende de la ficha de Google, la categoría y las reseñas (en esa pantalla: 5.0 y 16 reseñas). Las respuestas de IA cambian según el modelo, la cuenta y el día; por eso el ejemplo va fechado.",
+      "Sitio público: ichibanbjj.com. Uno de los pasos es el Google Business Profile: nombre, categoría, horario y reseñas, iguales a los del sitio. Quien busca suele quedarse con los primeros resultados, así que la ficha sola a veces no alcanza. Si no apareces entre esos primeros, el perfil existe y casi no te eligen. Abajo, las capturas de Google y ChatGPT (en esa pantalla: 5.0 y 16 reseñas). Las respuestas de IA cambian según el modelo, la cuenta y el día; por eso el ejemplo va fechado.",
     visibility: {
       capturedOnLabel: ichibanCapturedOnLabel,
       shots: [ichibanGoogleShot, ichibanChatGptShot],

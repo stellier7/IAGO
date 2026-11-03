@@ -319,6 +319,8 @@ export const englishPages: EnglishPage[] = [
       "SEO services: technical foundations, useful pages, and monthly reporting. No magic #1 guarantees — method and measurement instead.",
     intro:
       "English SEO buyers usually want the split between one-time technical work and ongoing content/reporting. We do not invent volume numbers; we align pages to real intents and show Search Console–based priorities.",
+    note:
+      "For a business with a location, an early step is the Google Business Profile: name, category, hours, photos, and reviews that match the site. People usually choose from the first results, so the profile alone is sometimes not enough. If you are not among those first results, the listing can exist and still get passed over.",
     keywordHypotheses: [
       "SEO services for small business",
       "technical SEO audit",
@@ -351,6 +353,7 @@ export const englishPages: EnglishPage[] = [
       "Actionable monthly priorities",
     ],
     includes: [
+      "Google Business Profile when there is a location, aligned with the site",
       "Technical audit and priority fixes",
       "On-page and service architecture",
       "Schema where useful",
