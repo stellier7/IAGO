@@ -44,6 +44,15 @@ export default function ArchitecturePageView({
           </h1>
           <p className="mt-6 text-lg text-mute">{page.intro}</p>
 
+          {page.lead ? (
+            <section className="mt-8 rounded-2xl border border-ink/10 bg-white px-6 py-5">
+              <h2 className="font-display text-xl font-bold text-ink">
+                {page.lead.title}
+              </h2>
+              <p className="mt-3 text-mute">{page.lead.detail}</p>
+            </section>
+          ) : null}
+
           <section className="mt-14">
             <h2 className="font-display text-2xl font-bold text-ink">
               ¿Para quién es?

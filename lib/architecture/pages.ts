@@ -21,6 +21,8 @@ export type ArchitecturePage = {
   headline: string;
   description: string;
   intro: string;
+  /** Shown directly under the intro, before the rest of the page. */
+  lead?: { title: string; detail: string };
   searchIntent: string;
   whoFor: string[];
   problems: { title: string; detail: string }[];
@@ -286,6 +288,11 @@ export const architecturePages: ArchitecturePage[] = [
       "Servicios SEO: auditoría y fixes técnicos, páginas útiles, y SEO continuo con reportes. Sin promesas de #1 mágicas.",
     intro:
       "Hay dos trabajos distintos: (1) arreglar la base técnica y la arquitectura de páginas, y (2) el SEO continuo — contenido, medición y prioridades mes a mes. Te explicamos qué entra en cada uno y qué verás en los reportes.",
+    lead: {
+      title: "Paso temprano: Google Business Profile",
+      detail:
+        "Si atiendes en un local, uno de los primeros pasos es la ficha de Google: nombre, categoría, horario, fotos y reseñas, escritos igual que en el sitio. Quien busca suele quedarse con los primeros resultados, así que la ficha sola a veces no alcanza. Si no apareces entre esos primeros, el perfil existe y casi no te eligen.",
+    },
     searchIntent: "Mejorar visibilidad orgánica en buscadores",
     whoFor: [
       "Negocios con web que no aparecen o casi no tienen impresiones",
@@ -327,7 +334,7 @@ export const architecturePages: ArchitecturePage[] = [
     exampleUseCase: {
       title: "Cómo se ve el proceso",
       detail:
-        "Uno de los primeros pasos, si atiendes en un local, es el Google Business Profile: nombre, categoría, horario, fotos y reseñas, escritos igual que en el sitio. Quien busca suele quedarse con los primeros resultados, así que la ficha sola a veces no alcanza. Si no apareces entre esos primeros, el perfil existe y casi no te eligen. Después viene la base técnica (auditoría, indexación, canónicos, páginas rotas), 1–2 páginas de servicio y la medición. En el plan continuo revisamos Search Console, proponemos el siguiente contenido o mejora, y reportamos qué cambió. El arreglo técnico puntual y el retainer mensual se cotizan por separado cuando hace falta.",
+        "El primer paso local es el Google Business Profile, arriba. Después viene la base técnica: auditoría, indexación, canónicos y páginas rotas. Luego, 1–2 páginas de servicio y la medición. En el plan continuo revisamos Search Console, proponemos el siguiente contenido o mejora, y reportamos qué cambió. El arreglo técnico puntual y el retainer mensual se cotizan por separado cuando hace falta.",
     },
     faqs: [
       {
