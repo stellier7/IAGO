@@ -1,89 +1,64 @@
 # Carruseles — IAGO Digital
 
-Cuatro carruseles, 24 láminas de 1080×1350. En Instagram y Facebook se suben como un solo post, en este orden.
+Tres carruseles de 4 láminas (1080×1350). Cada uno es un solo post. Se suben en orden, de la 01 a la 04.
 
-Temas: el visto de WhatsApp, por qué una web se vuelve consulta, SEO con la ficha de Google, y las tres fugas juntas.
+Están escritos para alguien que no sabe qué es una página web, qué es el SEO, ni qué es un agente. La primera foto deja la historia abierta. La explicación está en las siguientes.
 
-Sugerencia: uno por semana, en este orden. El texto de abajo es el único pie de foto del carrusel. El mismo paquete está en `IAGO-carruseles.pdf`.
+El texto de abajo es el pie de foto del carrusel completo. El mismo paquete está en `IAGO-carruseles.pdf`.
 
-## 1. Te dejaron en visto
+## 1. Para qué sirve una página web
 
-- Dónde: Carrusel · Feed IG + Facebook
-- Orden de las láminas:
-  1. `visto-01.png`
-  2. `visto-02.png`
-  3. `visto-03.png`
-  4. `visto-04.png`
-  5. `visto-05.png`
-  6. `visto-06.png`
-
-Te dejan en visto porque las mismas dos preguntas se contestan tarde.
-
-Quien escribe suele hablarle a más de un negocio. El primero que responde se queda con la conversación.
-
-En este carrusel: qué puede contestar un flujo y qué sigues contestando tú.
-
-¿Cuáles son esas dos preguntas en tu negocio?
-wa.me/50489809800
-
-#IAGODigital #WhatsApp #Automatizacion #Honduras #Pymes
-
-## 2. Por qué una web se vuelve venta
-
-- Dónde: Carrusel · Feed IG + Facebook
+- Dónde: Carrusel de 4 · Feed IG + Facebook
 - Orden de las láminas:
   1. `web-01.png`
   2. `web-02.png`
   3. `web-03.png`
   4. `web-04.png`
-  5. `web-05.png`
-  6. `web-06.png`
 
-Una web que se ve bien y no pide el siguiente paso se queda en visita.
+Cerraste el negocio. Alguien todavía quería comprarte.
 
-Para que se vuelva consulta hace falta esto: que se entienda en cinco segundos, que haya una sola acción, que funcione en el celular y que se vea qué pasa después.
+Una página web sirve para que esa persona vea qué vendes, cuánto cuesta y cómo escribirte, aunque el local ya esté cerrado.
 
-¿Tu sitio pide la venta o solo se presenta?
+Si esa página no existe, le compra al que sí aparece.
+
 wa.me/50489809800
 
-#IAGODigital #DiseñoWeb #Ventas #Honduras #Pymes
+#IAGODigital #PaginaWeb #Honduras #Pymes #Ventas
 
-## 3. SEO sin humo
+## 2. Qué es el SEO
 
-- Dónde: Carrusel · Feed IG + Facebook
+- Dónde: Carrusel de 4 · Feed IG + Facebook
 - Orden de las láminas:
   1. `seo-01.png`
   2. `seo-02.png`
   3. `seo-03.png`
   4. `seo-04.png`
-  5. `seo-05.png`
-  6. `seo-06.png`
 
-Si alguien busca lo que vendes y no apareces, elige a quien sí está ahí.
+Alguien buscó en Google exactamente lo que tú vendes. Le salió otro.
 
-El SEO de un negocio con local empieza por la ficha de Google (nombre, horario, fotos, reseñas), alineada con el sitio. Después viene la base técnica y el contenido que responde búsquedas reales. Se mide por mes, no en siete días.
+SEO es aparecer cuando la gente ya está buscando. Hoy también se lo preguntan a ChatGPT: “recomiéndame uno”. Si la inteligencia artificial no te conoce, no te nombra.
 
-¿En qué búsqueda quieres salir?
+Te posicionamos en Google y en IA como ChatGPT.
+
 wa.me/50489809800
 
-#IAGODigital #SEO #Google #Honduras #SEOLocal
+#IAGODigital #SEO #ChatGPT #Google #Honduras
 
-## 4. Tres lugares donde se van
+## 3. Un empleado más, no solo un bot
 
-- Dónde: Carrusel · Feed IG + Facebook
+- Dónde: Carrusel de 4 · Feed IG + Facebook
 - Orden de las láminas:
-  1. `fugas-01.png`
-  2. `fugas-02.png`
-  3. `fugas-03.png`
-  4. `fugas-04.png`
-  5. `fugas-05.png`
-  6. `fugas-06.png`
+  1. `agente-01.png`
+  2. `agente-02.png`
+  3. `agente-03.png`
+  4. `agente-04.png`
 
-Las consultas se escapan en tres momentos: cuando te buscan en Google y aparece otro, cuando entran a la web y no hay un siguiente paso, y cuando escriben por WhatsApp y se quedan en visto.
+¿Otra vez la misma pregunta? ¿Otra vez te dejaron en visto? ¿Y cuando quieres escribirle a alguien, no sabes a quién?
 
-No hace falta arreglar los tres el mismo día. Se empieza por el que hoy te está costando mensajes.
+Un bot solo responde. Un agente hace el trabajo: contesta, anota al cliente, da seguimiento, y ayuda con inventario y servicio al cliente.
 
-¿Cuál te duele: web, Google o WhatsApp?
+Es un empleado más.
+
 wa.me/50489809800
 
-#IAGODigital #WhatsApp #SEO #DiseñoWeb #Honduras
+#IAGODigital #Automatizacion #WhatsApp #CRM #Honduras

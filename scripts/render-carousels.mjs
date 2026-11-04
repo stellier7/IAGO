@@ -18,260 +18,152 @@ const chromePath = process.env.CHROME_PATH || "/usr/local/bin/google-chrome";
 
 const carousels = [
   {
-    id: "visto",
-    name: "Te dejaron en visto",
-    where: "Carrusel · Feed IG + Facebook",
-    caption: `Te dejan en visto porque las mismas dos preguntas se contestan tarde.
-
-Quien escribe suele hablarle a más de un negocio. El primero que responde se queda con la conversación.
-
-En este carrusel: qué puede contestar un flujo y qué sigues contestando tú.
-
-¿Cuáles son esas dos preguntas en tu negocio?
-wa.me/50489809800`,
-    tags: ["IAGODigital", "WhatsApp", "Automatizacion", "Honduras", "Pymes"],
-    slides: [
-      {
-        file: "visto-01.png",
-        theme: "ink",
-        role: "cover",
-        kicker: "WhatsApp",
-        title: "Te dejaron\nen visto.",
-        body: "Las mismas dos preguntas. Otra vez.",
-      },
-      {
-        file: "visto-02.png",
-        theme: "bone",
-        role: "point",
-        kicker: "Las preguntas",
-        title: "Siempre son\nlas mismas.",
-        body: "¿Cuánto cuesta? ¿Sigue disponible? ¿Dónde quedan? ¿A qué hora abren?",
-      },
-      {
-        file: "visto-03.png",
-        theme: "ink",
-        role: "point",
-        kicker: "El doble check",
-        title: "El azul\nno espera.",
-        body: "Esas palomitas significan que lo leyeron. Si la respuesta llega tarde, ya le escribió a otro.",
-      },
-      {
-        file: "visto-04.png",
-        theme: "bone",
-        role: "point",
-        kicker: "Lo repetido",
-        title: "Eso se contesta\nsolo.",
-        body: "Precio, horario, ubicación, disponibilidad. Un flujo lo responde en el momento, de día o de noche.",
-      },
-      {
-        file: "visto-05.png",
-        theme: "ink",
-        role: "point",
-        kicker: "Lo que es tuyo",
-        title: "Tú entras\ncuando cierra.",
-        body: "La duda rara. El caso especial. La persona que ya quiere comprar. Ahí sí hace falta tu voz.",
-      },
-      {
-        file: "visto-06.png",
-        theme: "coral",
-        role: "cta",
-        kicker: "Siguiente paso",
-        title: "¿Cuáles son\nesas dos?",
-        body: "Cuéntanoslas. Las dejamos contestadas para que dejen de quedarse en visto.",
-        pill: "WhatsApp · +504 8980-9800",
-      },
-    ],
-  },
-  {
     id: "web",
-    name: "Por qué una web se vuelve venta",
-    where: "Carrusel · Feed IG + Facebook",
-    caption: `Una web que se ve bien y no pide el siguiente paso se queda en visita.
+    name: "Para qué sirve una página web",
+    where: "Carrusel de 4 · Feed IG + Facebook",
+    caption: `Cerraste el negocio. Alguien todavía quería comprarte.
 
-Para que se vuelva consulta hace falta esto: que se entienda en cinco segundos, que haya una sola acción, que funcione en el celular y que se vea qué pasa después.
+Una página web sirve para que esa persona vea qué vendes, cuánto cuesta y cómo escribirte, aunque el local ya esté cerrado.
 
-¿Tu sitio pide la venta o solo se presenta?
+Si esa página no existe, le compra al que sí aparece.
+
 wa.me/50489809800`,
-    tags: ["IAGODigital", "DiseñoWeb", "Ventas", "Honduras", "Pymes"],
+    tags: ["IAGODigital", "PaginaWeb", "Honduras", "Pymes", "Ventas"],
     slides: [
       {
         file: "web-01.png",
-        theme: "bone",
+        theme: "ink",
         role: "cover",
-        kicker: "Conversión",
-        title: "Una web clara\nsí vende.",
-        body: "Se entiende rápido y pide un solo paso.",
+        kicker: "Esta noche",
+        title: "Cerraste\nel negocio.",
+        body: "Alguien todavía quería comprarte.",
       },
       {
         file: "web-02.png",
-        theme: "ink",
+        theme: "bone",
         role: "point",
-        kicker: "El primer vistazo",
-        title: "Cinco\nsegundos.",
-        body: "En ese tiempo tienen que entender qué vendes y para quién. Si no, siguen de largo.",
+        kicker: "Las 11 de la noche",
+        title: "El local\nya no contestaba.",
+        body: "No pudo ver lo que vendes. No pudo preguntar el precio. No supo cómo pedirlo.",
       },
       {
         file: "web-03.png",
-        theme: "bone",
+        theme: "ink",
         role: "point",
-        kicker: "El botón",
-        title: "Una sola\nacción.",
-        body: "Escribir, comprar o agendar. Si todo grita al mismo tiempo, nadie toca nada.",
+        kicker: "Para eso sirve",
+        title: "Una página\nque no cierra.",
+        body: "Ahí ven qué vendes, cuánto cuesta y cómo escribirte. Aunque tú ya estés en la casa.",
       },
       {
         file: "web-04.png",
-        theme: "ink",
-        role: "point",
-        kicker: "Dónde llega la gente",
-        title: "Se ve en\nel celular.",
-        body: "Ahí abre la mayoría. Si en el teléfono se rompe, la visita también.",
-      },
-      {
-        file: "web-05.png",
-        theme: "bone",
-        role: "point",
-        kicker: "Para decidir",
-        title: "Prueba y\nsiguiente paso.",
-        body: "Fotos reales, un precio o un rango, y un botón que diga qué pasa después de tocarlo.",
-      },
-      {
-        file: "web-06.png",
         theme: "coral",
         role: "cta",
-        kicker: "Revisión",
-        title: "¿Pide\nla venta?",
-        body: "Lo vemos y te decimos qué está frenando las consultas.",
+        kicker: "El que sí aparece",
+        title: "Si no está,\nle compran a otro.",
+        body: "Armamos esa página para tu negocio. Sigue abierta cuando tú ya cerraste.",
         pill: "WhatsApp · +504 8980-9800",
       },
     ],
   },
   {
     id: "seo",
-    name: "SEO sin humo",
-    where: "Carrusel · Feed IG + Facebook",
-    caption: `Si alguien busca lo que vendes y no apareces, elige a quien sí está ahí.
+    name: "Qué es el SEO",
+    where: "Carrusel de 4 · Feed IG + Facebook",
+    caption: `Alguien buscó en Google exactamente lo que tú vendes. Le salió otro.
 
-El SEO de un negocio con local empieza por la ficha de Google (nombre, horario, fotos, reseñas), alineada con el sitio. Después viene la base técnica y el contenido que responde búsquedas reales. Se mide por mes, no en siete días.
+SEO es aparecer cuando la gente ya está buscando. Hoy también se lo preguntan a ChatGPT: “recomiéndame uno”. Si la inteligencia artificial no te conoce, no te nombra.
 
-¿En qué búsqueda quieres salir?
+Te posicionamos en Google y en IA como ChatGPT.
+
 wa.me/50489809800`,
-    tags: ["IAGODigital", "SEO", "Google", "Honduras", "SEOLocal"],
+    tags: ["IAGODigital", "SEO", "ChatGPT", "Google", "Honduras"],
     slides: [
       {
         file: "seo-01.png",
         theme: "ink",
         role: "cover",
-        kicker: "SEO",
-        title: "Si no sales\nen Google,\nvende otro.",
-        body: "La gente elige entre los primeros que ve.",
+        kicker: "Una búsqueda",
+        title: "Buscó lo que\ntú vendes.",
+        body: "En Google le salió otro.\n*¿Por qué?*",
       },
       {
         file: "seo-02.png",
         theme: "bone",
         role: "point",
-        kicker: "Qué es",
-        title: "Que Google\nte entienda.",
-        body: "Qué ofreces, a quién y en qué ciudad. Meter palabras sueltas no alcanza.",
+        kicker: "Qué es el SEO",
+        title: "Aparecer cuando\nya te buscan.",
+        body: "Escriben tu oficio y tu ciudad. Google muestra pocos negocios. Si no estás en esa lista, ni te consideran.",
       },
       {
         file: "seo-03.png",
         theme: "ink",
         role: "point",
-        kicker: "Si tienes local",
-        title: "La ficha,\nprimero.",
-        body: "Nombre, horario, fotos y reseñas, escritos igual que en el sitio. Si la ficha y la web se contradicen, confían menos.",
+        kicker: "Ya no es solo Google",
+        title: "También se lo\npiden a ChatGPT.",
+        body: "“Recomiéndame uno en Honduras.” Si la inteligencia artificial no te conoce, recomienda a otro.",
       },
       {
         file: "seo-04.png",
-        theme: "bone",
-        role: "point",
-        kicker: "La base",
-        title: "Luego,\nque se pueda leer.",
-        body: "Que cargue, que funcione en el celular y que cada página diga una sola cosa.",
-      },
-      {
-        file: "seo-05.png",
-        theme: "ink",
-        role: "point",
-        kicker: "El tiempo",
-        title: "Se queda\ncon el tiempo.",
-        body: "Un informe al mes. Lo que cambió y qué sigue. Nada de “puesto 1 en siete días”.",
-      },
-      {
-        file: "seo-06.png",
         theme: "coral",
         role: "cta",
-        kicker: "Por dónde empezar",
-        title: "¿En qué búsqueda\nquieres salir?",
-        body: "Partimos por esa frase. Sin prometer el primer lugar.",
+        kicker: "Los dos lugares",
+        title: "Google\ny las IA.",
+        body: "Te posicionamos en los dos. Para que la próxima búsqueda te encuentre a ti.",
         pill: "WhatsApp · +504 8980-9800",
       },
     ],
   },
   {
-    id: "fugas",
-    name: "Tres lugares donde se van",
-    where: "Carrusel · Feed IG + Facebook",
-    caption: `Las consultas se escapan en tres momentos: cuando te buscan en Google y aparece otro, cuando entran a la web y no hay un siguiente paso, y cuando escriben por WhatsApp y se quedan en visto.
+    id: "agente",
+    name: "Un empleado más, no solo un bot",
+    where: "Carrusel de 4 · Feed IG + Facebook",
+    caption: `¿Otra vez la misma pregunta? ¿Otra vez te dejaron en visto? ¿Y cuando quieres escribirle a alguien, no sabes a quién?
 
-No hace falta arreglar los tres el mismo día. Se empieza por el que hoy te está costando mensajes.
+Un bot solo responde. Un agente hace el trabajo: contesta, anota al cliente, da seguimiento, y ayuda con inventario y servicio al cliente.
 
-¿Cuál te duele: web, Google o WhatsApp?
+Es un empleado más.
+
 wa.me/50489809800`,
-    tags: ["IAGODigital", "WhatsApp", "SEO", "DiseñoWeb", "Honduras"],
+    tags: ["IAGODigital", "Automatizacion", "WhatsApp", "CRM", "Honduras"],
     slides: [
       {
-        file: "fugas-01.png",
+        file: "agente-01.png",
         theme: "ink",
         role: "cover",
-        kicker: "El mapa",
-        title: "Se te van\nen tres lugares.",
-        body: "Google. La web. El visto.",
+        kicker: "Otra vez",
+        title: "¿La misma\npregunta?",
+        body: "Y después te dejan en visto.",
       },
       {
-        file: "fugas-02.png",
+        file: "agente-02.png",
         theme: "bone",
         role: "point",
-        kicker: "01",
-        title: "Google.",
-        body: "Te buscan y aparece otro. La ficha y el sitio tienen que decir lo mismo.",
+        kicker: "El otro problema",
+        title: "¿A quién\nle escribes?",
+        body: "Quieres dar seguimiento. El chat se perdió. Ya no sabes quién preguntó y quién iba a comprar.",
       },
       {
-        file: "fugas-03.png",
+        file: "agente-03.png",
         theme: "ink",
         role: "point",
-        kicker: "02",
-        title: "La web.",
-        body: "Entran, no entienden la oferta y no hay un paso claro. La visita no se vuelve consulta.",
+        kicker: "Más que un bot",
+        title: "Un agente.\nUn empleado más.",
+        body: "Un bot suelta una respuesta y se queda ahí. Un agente hace tareas por ti, todo el día.",
       },
       {
-        file: "fugas-04.png",
-        theme: "bone",
-        role: "point",
-        kicker: "03",
-        title: "El visto.",
-        body: "Escribieron. Lo leyeron. La respuesta llegó tarde. Ya están hablando con otro.",
-      },
-      {
-        file: "fugas-05.png",
-        theme: "ink",
-        role: "point",
-        kicker: "El orden",
-        title: "Empieza por\nel que duele.",
-        body: "Un canal a la vez. El lugar donde hoy se te quedan los mensajes sin respuesta.",
-      },
-      {
-        file: "fugas-06.png",
+        file: "agente-04.png",
         theme: "coral",
         role: "cta",
-        kicker: "48 horas",
-        title: "¿Cuál\nte duele?",
-        body: "Web, Google o WhatsApp. Respondemos en menos de 48 horas con un alcance claro.",
+        kicker: "Qué puede hacer",
+        title: "El trabajo\nque se repite.",
+        body: "Contesta.\nAnota cada cliente.\nLes escribe si no respondieron.\nAyuda con inventario y servicio.",
         pill: "WhatsApp · +504 8980-9800",
       },
     ],
   },
 ];
+
+
 
 const fontData = new Map();
 
@@ -284,7 +176,9 @@ function escapeHtml(value) {
 }
 
 function rich(value) {
-  return escapeHtml(value).replaceAll("\n", "<br>");
+  return escapeHtml(value)
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replaceAll("\n", "<br>");
 }
 
 function fontFaceCss() {
@@ -303,10 +197,11 @@ function fontFaceCss() {
 }
 
 function titleSize(title) {
-  const longest = Math.max(...title.split("\n").map((line) => line.length));
-  if (longest >= 18) return 78;
-  if (longest >= 14) return 88;
-  return 100;
+  const plain = title.replaceAll("*", "");
+  const longest = Math.max(...plain.split("\n").map((line) => line.length));
+  if (longest >= 18) return 72;
+  if (longest >= 14) return 80;
+  return 92;
 }
 
 function dots(count, index, theme) {
@@ -396,9 +291,9 @@ function htmlFor(slide, index, total) {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding-bottom: 36px;
+      justify-content: center;
     }
+    h1 em, .body em { font-style: normal; color: var(--em); }
     .kicker {
       font-size: 22px;
       font-weight: 600;
@@ -413,11 +308,12 @@ function htmlFor(slide, index, total) {
     }
     .body {
       margin-top: 28px;
-      max-width: 860px;
-      font-size: 34px;
-      line-height: 1.32;
+      max-width: 880px;
+      font-size: 36px;
+      line-height: 1.35;
       color: var(--muted);
     }
+    .theme-bone { --muted: #3f3d39; }
     .pill {
       margin-top: 36px;
       display: inline-flex;
@@ -471,11 +367,11 @@ function calendario() {
   const lines = [
     "# Carruseles — IAGO Digital",
     "",
-    "Cuatro carruseles, 24 láminas de 1080×1350. En Instagram y Facebook se suben como un solo post, en este orden.",
+    "Tres carruseles de 4 láminas (1080×1350). Cada uno es un solo post. Se suben en orden, de la 01 a la 04.",
     "",
-    "Temas: el visto de WhatsApp, por qué una web se vuelve consulta, SEO con la ficha de Google, y las tres fugas juntas.",
+    "Están escritos para alguien que no sabe qué es una página web, qué es el SEO, ni qué es un agente. La primera foto deja la historia abierta. La explicación está en las siguientes.",
     "",
-    "Sugerencia: uno por semana, en este orden. El texto de abajo es el único pie de foto del carrusel. El mismo paquete está en \`IAGO-carruseles.pdf\`.",
+    "El texto de abajo es el pie de foto del carrusel completo. El mismo paquete está en \`IAGO-carruseles.pdf\`.",
     "",
   ];
   carousels.forEach((carousel, carouselIndex) => {
