@@ -29,6 +29,39 @@ export type CaseItem = {
 
 export const recentCases: CaseItem[] = [
   {
+    slug: "perfumes-y-belleza",
+    client: "Perfumes y Belleza",
+    type: "E-commerce · Web",
+    result: "Perfumes & skincare · Honduras",
+    href: "https://www.perfumesybelleza.com/",
+    location: "Honduras",
+    businessType:
+      "Tienda online de perfumes, belleza, cuidado personal y skincare coreano con envío a todo Honduras.",
+    summary:
+      "E-commerce para vender perfumes de diseñador y árabes, maquillaje, cuidado personal y rutinas de skincare coreano, con pedido armado hacia WhatsApp.",
+    challenge:
+      "Pasar de vender por redes a un catálogo propio donde el visitante pueda explorar fragancias, belleza y skincare, y confirmar el pedido sin fricción.",
+    solution:
+      "Tienda online organizada por categorías (perfumería, belleza, cuidado personal, skincare coreano), con destacados de producto y flujo de compra hacia WhatsApp / transferencia.",
+    implementation: [
+      "Catálogo e-commerce por categorías de producto",
+      "Destacados de perfumería, belleza y skincare coreano",
+      "Flujo de pedido hacia WhatsApp y pago por transferencia",
+      "Información clara de envío a todo Honduras",
+    ],
+    outcome:
+      "El negocio tiene un canal propio para mostrar inventario de perfumes y belleza y convertir interés en pedidos. No atribuimos volumen de ventas sin datos del cliente.",
+    evidence:
+      "Sitio público en producción: perfumesybelleza.com — revisa catálogo, categorías y flujo de pedido en vivo.",
+    deliverables: [
+      "Diseño e implementación e-commerce",
+      "Categorías de perfumes, belleza y skincare",
+      "Integración de contacto / WhatsApp",
+      "Despliegue en producción",
+    ],
+    stack: ["E-commerce", "Next.js", "Responsive"],
+  },
+  {
     slug: "bienes-raices-altair",
     client: "Bienes Raíces Altair",
     type: "Web · Inmobiliaria",
