@@ -28,7 +28,7 @@ import {
   TAGLINE_DELAY,
   TAGLINE_DURATION,
 } from "@/lib/hero-intro";
-import { heroSocialLinks } from "@/lib/social/profiles";
+import { GOOGLE_REVIEW_URL, heroSocialLinks } from "@/lib/social/profiles";
 
 const IAGO_LETTERS = ["i", "A", "G", "O"] as const;
 const DIGITAL_LETTERS = "Digital".split("");
@@ -76,40 +76,26 @@ function SocialIcon({ label }: { label: HeroSocialLabel }) {
   }
 }
 
-function HeroSocialLinks({ paused }: { paused: boolean }) {
+function ReviewStarIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M12 2.4l2.86 5.8 6.4.93-4.63 4.51 1.09 6.37L12 17.77 6.28 20.01l1.09-6.37L2.74 9.13l6.4-.93L12 2.4z" />
+    </svg>
+  );
+}
+
+function HeroSocialItems() {
   const linkClass =
     "text-bone/55 transition-colors duration-200 hover:text-coral focus-visible:text-coral focus-visible:outline-none";
 
-  if (paused) {
-    return (
-      <nav aria-label="Redes sociales" className="mt-6 flex items-center gap-5">
-        {heroSocialLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer me"
-            aria-label={link.label}
-            className={linkClass}
-          >
-            <SocialIcon label={link.label} />
-          </a>
-        ))}
-      </nav>
-    );
-  }
-
   return (
-    <motion.nav
-      aria-label="Redes sociales"
-      className="mt-6 flex items-center gap-5"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        ...BUTTON_TRANSITION,
-        delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
-      }}
-    >
+    <>
       {heroSocialLinks.map((link) => (
         <a
           key={link.href}
@@ -122,6 +108,42 @@ function HeroSocialLinks({ paused }: { paused: boolean }) {
           <SocialIcon label={link.label} />
         </a>
       ))}
+      <a
+        href={GOOGLE_REVIEW_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1.5 rounded-full border border-bone/25 px-3.5 py-1.5 text-xs font-semibold text-bone/80 transition-colors duration-200 hover:border-coral hover:text-coral focus-visible:border-coral focus-visible:text-coral focus-visible:outline-none"
+      >
+        <ReviewStarIcon />
+        Deja una reseña
+      </a>
+    </>
+  );
+}
+
+function HeroSocialLinks({ paused }: { paused: boolean }) {
+  const navClass = "mt-6 flex flex-wrap items-center gap-x-5 gap-y-3";
+
+  if (paused) {
+    return (
+      <nav aria-label="Redes sociales" className={navClass}>
+        <HeroSocialItems />
+      </nav>
+    );
+  }
+
+  return (
+    <motion.nav
+      aria-label="Redes sociales"
+      className={navClass}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        ...BUTTON_TRANSITION,
+        delay: BUTTON_ENTRANCE_DELAY + BUTTON_STAGGER,
+      }}
+    >
+      <HeroSocialItems />
     </motion.nav>
   );
 }
