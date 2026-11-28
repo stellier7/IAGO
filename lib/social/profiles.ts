@@ -38,3 +38,9 @@ export const heroSocialLinks = [
   { label: "Facebook", href: SOCIAL_PROFILES.facebook },
   { label: "LinkedIn", href: SOCIAL_PROFILES.linkedInCompany },
 ] as const;
+
+/**
+ * Opens the Google review form. This is an action URL, not the Business
+ * Profile listing, so it stays out of organization sameAs.
+ */
+export const GOOGLE_REVIEW_URL = "https://g.page/r/CW9iQFt5NTS8EAE/review";
