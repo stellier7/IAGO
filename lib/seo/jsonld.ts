@@ -1,5 +1,9 @@
 import { absoluteUrl, SITE_URL } from "@/lib/seo/site";
-import { FOUNDER, organizationSameAs } from "@/lib/social/profiles";
+import {
+  FOUNDER,
+  SOCIAL_PROFILES,
+  organizationSameAs,
+} from "@/lib/social/profiles";
 
 export type BreadcrumbItem = {
   name: string;
@@ -155,7 +159,7 @@ export function buildSiteGraph() {
       {
         "@type": "Organization",
         "@id": ORG_ID,
-        name: "IAGO Digital",
+        name: "iAGO Digital",
         legalName: "iAGO Digital",
         url: SITE_URL,
         logo: logoImage,
@@ -200,7 +204,7 @@ export function buildSiteGraph() {
         "@type": "WebSite",
         "@id": WEBSITE_ID,
         url: SITE_URL,
-        name: "IAGO Digital",
+        name: "iAGO Digital",
         description:
           "Web, SEO e IA para negocios que quieren más consultas — no solo tener página.",
         publisher: { "@id": ORG_ID },
@@ -209,8 +213,9 @@ export function buildSiteGraph() {
       {
         "@type": "ProfessionalService",
         "@id": BUSINESS_ID,
-        name: "IAGO Digital",
+        name: "iAGO Digital",
         url: SITE_URL,
+        hasMap: SOCIAL_PROFILES.googleBusinessProfile,
         image: [absoluteUrl("/og-image.png"), absoluteUrl("/icon.png")],
         telephone: "+50489809800",
         email: "info@iagodigital.com",
