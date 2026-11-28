@@ -168,8 +168,7 @@ export default function AboutPage() {
             </h2>
             <p className="mt-4 text-mute">
               Misma identidad en la web y en perfiles públicos (nombre, dominio,
-              contacto). YouTube y el enlace estable de Google Business Profile
-              se suman cuando estén listos.
+              contacto). YouTube se suma cuando esté listo.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               {footerSocialLinks.map((link) => (
